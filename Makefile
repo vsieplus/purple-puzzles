@@ -8,7 +8,7 @@ INCPATHS := -Iinclude -IC:\mingw-libs\i686-w64-mingw32\include\SDL2 \
 BUILD 	 := build
 EXEC_DIR := $(BUILD)\executables
 
-TARGET := main
+TARGET := memswap
 
 SRC  := $(wildcard src/*.cpp) \
 	    $(wildcard src/gameStates/*.cpp)
@@ -30,6 +30,6 @@ release: COMPILER_FLAGS += -Bstatic
 release: all
 
 clean:
-	rm -rvf  $(EXEC_DIR)\*
+	rm -rvf  $(wildcard $(EXEC_DIR)\*)
 
 .PHONY: all build clean debug
