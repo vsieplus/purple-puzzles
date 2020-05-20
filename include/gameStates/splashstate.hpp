@@ -24,7 +24,6 @@ class SplashState : public GameState {
 
     private:
         bool loadingRes = true;
-        
 
         // Load all game resources from res/
         void loadResources();

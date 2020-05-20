@@ -12,7 +12,8 @@
  #include "memswap.hpp"
 
 MemSwap::MemSwap(SDL_Window * window, SDL_Renderer * renderer) : 
-    window(window), renderer(renderer) {
+    window(window), renderer(renderer), timer(std::make_unique<Timer>()) {
+
 
     // Load game resources from splash state
     std::unique_ptr<GameState> splashState = std::make_unique<SplashState>();

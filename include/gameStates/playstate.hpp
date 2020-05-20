@@ -3,10 +3,16 @@
 #ifndef PLAYSTATE_HPP
 #define PLAYSTATE_HPP
 
+#include <memory>
+
 #include "gameStates/gamestate.hpp"
+#include "utils/timer.hpp"
 
 // Singleton class for the Play State
 class PlayState : public GameState {
+    private:
+        std::unique_ptr<Timer> timer;
+
     public:
         PlayState();
 
