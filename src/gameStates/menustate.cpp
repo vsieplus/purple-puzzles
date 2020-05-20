@@ -11,8 +11,6 @@
 
 #include "gameStates/menustate.hpp"
 
-#include <stdio.h>
-
 MenuState::MenuState() {
     gameStateID = GAME_STATE_MENU;
 }

@@ -31,8 +31,8 @@ void MemSwap::render(SDL_Window * window, SDL_Renderer * renderer) {
 
 /// Add a game state to the stack (enter a game state)
 void MemSwap::pushGameState(std::unique_ptr<GameState> & state) {
-    gameStates.push_back(std::move(state));
     state->enterState();
+    gameStates.push_back(std::move(state));
 }
 
 /// Remove a game state from the stack (exit a game state)

@@ -1,5 +1,5 @@
 CC 		 := g++
-CC_FLAGS := -Wall
+CC_FLAGS := -Wall 
 LDFLAGS  := -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -ltmxlite
 LIBPATHS := -LC:\mingw-libs\i686-w64-mingw32\lib -LC:\mingw-libs\tmxlite\build
 INCPATHS := -I.\include -IC:\mingw-libs\i686-w64-mingw32\include\SDL2 \
@@ -23,10 +23,10 @@ $(EXEC_DIR)\$(TARGET): $(SRC)
 build:
 	if not exist $(EXEC_DIR) mkdir $(EXEC_DIR)
 
-debug: COMPILER_FLAGS += -g3
+debug: CC_FLAGS += -g3
 debug: all
 
-release: COMPILER_FLAGS += -Bstatic
+release: CC_FLAGS += -Bstatic
 release: all
 
 clean:
