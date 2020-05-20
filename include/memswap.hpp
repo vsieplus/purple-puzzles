@@ -11,14 +11,11 @@
 #include "gameStates/gamestate.hpp"
 #include "gameStates/splashstate.hpp"
 #include "gameStates/menustate.hpp"
-#include "utils/timer.hpp"
 
 class MemSwap {
     private:
         SDL_Window * window;
         SDL_Renderer * renderer;
-
-        std::unique_ptr<Timer> timer;
 
         // Stack for tracking the game states
         std::vector<std::unique_ptr<GameState>> gameStates;

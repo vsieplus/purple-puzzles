@@ -12,7 +12,7 @@
  #include "memswap.hpp"
 
 MemSwap::MemSwap(SDL_Window * window, SDL_Renderer * renderer) : 
-    window(window), renderer(renderer), timer(std::make_unique<Timer>()) {
+    window(window), renderer(renderer) {
 
 
     // Load game resources from splash state
