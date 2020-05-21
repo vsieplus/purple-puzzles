@@ -27,11 +27,11 @@ void MenuState::exitState() {
 
 }
 
-void MenuState::handleEvents() {
+void MenuState::handleEvents(MemSwap * game) {
     
 }
 
-void MenuState::update() {
+void MenuState::update(MemSwap * game) {
     printf("menu state");
 }
 

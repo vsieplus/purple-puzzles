@@ -20,6 +20,8 @@ class MemSwap {
         // Stack for tracking the game states
         std::vector<std::unique_ptr<GameState>> gameStates;
 
+        int nextState = GAME_STATE_NULL;
+
         bool playing = true;
 
     public:
@@ -36,6 +38,9 @@ class MemSwap {
         void render(SDL_Window * window, SDL_Renderer * renderer);
 
         // Manage game states
+        void changeState();
+        void setNextState(int gameID);
+
         void pushGameState(std::unique_ptr<GameState> & state);
         void popGameState();
 

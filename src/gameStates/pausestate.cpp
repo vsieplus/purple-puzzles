@@ -27,11 +27,11 @@ void PauseState::exitState() {
 
 }
 
-void PauseState::handleEvents() {
+void PauseState::handleEvents(MemSwap * game) {
     
 }
 
-void PauseState::update() {
+void PauseState::update(MemSwap * game) {
 }
 
 /// Render function for the game state

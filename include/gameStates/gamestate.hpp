@@ -7,12 +7,16 @@
 
 #include <SDL.h>
 
+#include "utils/texture.hpp"
+
 enum GameStateID {
+    GAME_STATE_NULL,    // NULL placeholder
     GAME_STATE_SPLASH,  // load res
     GAME_STATE_MENU,    // menu
     GAME_STATE_PLAY,    // play state
     GAME_STATE_PAUSE,   // pause state
     GAME_STATE_SCORE,   // post-game/score state
+    GAME_STATE_EXIT,    // when user wants to exit the game
 };
 
 class MemSwap;
@@ -20,22 +24,20 @@ class MemSwap;
 class GameState {
     protected:
         int gameStateID; 
+        SDL_Event e;
 
     public:
         // Entering/exiting this specific state
         virtual void enterState() = 0;
         virtual void exitState() = 0;
 
-        // Changing to another state from this state
-        void enterNewState(MemSwap * game, std::unique_ptr<GameState> & state);
-
         virtual ~GameState() {};
 
         /// Event handling method for the game state
-        virtual void handleEvents() = 0;
+        virtual void handleEvents(MemSwap * game) = 0;
 
         /// Update method for the particular game state 
-        virtual void update() = 0;
+        virtual void update(MemSwap * game) = 0;
 
         /// Render function for the game state
         virtual void render(SDL_Window * window, SDL_Renderer * renderer) = 0;

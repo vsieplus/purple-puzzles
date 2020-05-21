@@ -27,11 +27,11 @@ void ScoreState::exitState() {
 
 }
 
-void ScoreState::handleEvents() {
+void ScoreState::handleEvents(MemSwap * game) {
     
 }
 
-void ScoreState::update() {
+void ScoreState::update(MemSwap * game) {
     printf("score state");
 }
 

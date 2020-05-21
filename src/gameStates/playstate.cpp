@@ -27,11 +27,11 @@ void PlayState::exitState() {
 
 }
 
-void PlayState::handleEvents() {
+void PlayState::handleEvents(MemSwap * game) {
     
 }
 
-void PlayState::update() {
+void PlayState::update(MemSwap * game) {
     printf("play state");
 }
 

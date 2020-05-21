@@ -9,6 +9,7 @@
  * 
  */
 
+#include "memswap.hpp"
 #include "gameStates/splashstate.hpp"
 
 SplashState::SplashState() {
@@ -19,21 +20,35 @@ SplashState::~SplashState() {
     exitState();
 }
 
-void SplashState::enterState() {
-
+void SplashState::enterState() {    
 }
 
 void SplashState::exitState() {
 
 }
 
-void SplashState::handleEvents() {
-    
+// Events to handle during splash screen
+void SplashState::handleEvents(MemSwap * game) {
+    while(SDL_PollEvent(&e)) {
+        if(e.type == SDL_QUIT) {
+            game->setNextState(GAME_STATE_EXIT);
+        }
+
+        // Check if user pressed Enter
+        if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN) {
+            advance = true;
+        }
+    } 
 }
 
-void SplashState::update() {
+void SplashState::update(MemSwap * game) {
+    // Continue loading resources until finished
+    if(loadingRes) {
 
-    
+    } else if (advance) {
+            // Otherwise finish the SPLASH state the MENU state when
+            game->setNextState(GAME_STATE_MENU);
+    }     
 }
 
 /// Render function for the game state

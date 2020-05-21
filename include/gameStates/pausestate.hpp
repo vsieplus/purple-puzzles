@@ -15,8 +15,8 @@ class PauseState : public GameState {
         void enterState() override;
         void exitState() override;
 
-        void handleEvents() override;
-        void update() override;
+        void handleEvents(MemSwap * game) override;
+        void update(MemSwap * game) override;
         void render(SDL_Window * window, SDL_Renderer * renderer) override;
 };
 

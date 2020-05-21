@@ -7,6 +7,7 @@
 #include <SDL_image.h>
 
 #include "gameStates/gamestate.hpp"
+#include "utils/texture.hpp"
 
 // Singleton class for the Splash State
 class SplashState : public GameState {
@@ -18,12 +19,16 @@ class SplashState : public GameState {
         void enterState() override;
         void exitState() override;
 
-        void handleEvents() override;
-        void update() override;
+        void handleEvents(MemSwap * game) override;
+        void update(MemSwap * game) override;
         void render(SDL_Window * window, SDL_Renderer * renderer) override;
 
     private:
-        bool loadingRes = true;
+        // BG texture to show while loading res..
+        Texture * bgTexture;
+
+        bool loadingRes = true;     // if we're loading resources
+        bool advance = false;       // if the user wants to advance
 
         // Load all game resources from res/
         void loadResources();

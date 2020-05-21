@@ -10,8 +10,3 @@
  */
 
  #include "gameStates/gamestate.hpp"
- #include "memswap.hpp"
-
-void GameState::enterNewState(MemSwap * game, std::unique_ptr<GameState> & state) {
-    game->pushGameState(state);
-}

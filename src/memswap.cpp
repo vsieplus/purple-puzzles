@@ -14,26 +14,71 @@
 MemSwap::MemSwap(SDL_Window * window, SDL_Renderer * renderer) : 
     window(window), renderer(renderer) {
 
-
-    // Load game resources from splash state
-    std::unique_ptr<GameState> splashState = std::make_unique<SplashState>();
-    pushGameState(splashState);
+    // Start game in splash state to load res/
+    setNextState(GAME_STATE_SPLASH);
+    changeState();
 }
 
-/// Hand game events
+/// Handle game events
 void MemSwap::handleEvents() {
-    gameStates.back()->handleEvents();
+    gameStates.back()->handleEvents(this);
 }
 
 
 /// Update the current game state
 void MemSwap::update() {
-    gameStates.back()->update();
+    gameStates.back()->update(this);
+
+    changeState();
 }
 
 /// Render the current game state
 void MemSwap::render(SDL_Window * window, SDL_Renderer * renderer) {
     gameStates.back()->render(window, renderer);
+}
+
+/// Set next state to change to indicated by the given state ID
+void MemSwap::setNextState(int stateID) {
+    nextState = stateID;
+}
+
+/// Change states if needed
+void MemSwap::changeState() {
+    int currState = getGameStateID();
+
+    if(nextState != currState) {
+        // If next state set to exit, stop playing
+        if(nextState == GAME_STATE_EXIT) {
+            playing = false;
+            return;
+        }
+
+        // Pop off current state, unless it's a PLAY state
+        if(currState != GAME_STATE_NULL && currState != GAME_STATE_PLAY) {
+            popGameState();
+        }
+
+        std::unique_ptr<GameState> nextGameState = NULL;
+
+        switch(nextState) {
+            case GAME_STATE_SPLASH:
+                // Load game resources from splash state
+                nextGameState = std::make_unique<SplashState>();
+                break;
+            case GAME_STATE_MENU:
+
+                break;
+            case GAME_STATE_PLAY:
+
+                break;
+            case GAME_STATE_SCORE:
+
+                break;
+        }
+
+        // Push the next game state
+        pushGameState(nextGameState);
+    }
 }
 
 /// Add a game state to the stack (enter a game state)
@@ -51,5 +96,14 @@ void MemSwap::quit() {
     gameStates.clear();
 }
 
-bool MemSwap::isPlaying() { return playing; }
-int MemSwap::getGameStateID() { return gameStates.back()->getGameStateID(); }
+bool MemSwap::isPlaying() { 
+    return playing; 
+}
+
+int MemSwap::getGameStateID() { 
+    if(gameStates.empty()) {
+        return GAME_STATE_NULL;
+    }
+
+    return gameStates.back()->getGameStateID(); 
+}
