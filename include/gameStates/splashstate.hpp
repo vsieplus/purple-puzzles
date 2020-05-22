@@ -9,7 +9,7 @@
 #include "gameStates/gamestate.hpp"
 #include "utils/texture.hpp"
 
-// Singleton class for the Splash State
+// class for the Splash State
 class SplashState : public GameState {
     public:
         SplashState();

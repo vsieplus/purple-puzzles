@@ -37,7 +37,7 @@ bool MemSwap::init () {
 
 	// Try to create window
 	window = SDL_CreateWindow(GAME_TITLE.c_str(), SDL_WINDOWPOS_UNDEFINED, 
-		SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
+		SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_RESIZABLE);
 
 	if (window == NULL) {
 		printf("SDL_Error: %s\n", SDL_GetError());
@@ -83,7 +83,48 @@ bool MemSwap::initLibs() {
 
 /// Handle game events
 void MemSwap::handleEvents() {
-    gameStates.back()->handleEvents(this);
+    // Handle window events
+    handleWindowEvents();
+
+    // Handle game events
+    if(nextState != GAME_STATE_EXIT || minimized) {
+        gameStates.back()->handleEvents(this);
+    }   
+}
+
+void MemSwap::handleWindowEvents() {
+    while(SDL_PollEvent(&e)) {        
+        if(e.type == SDL_QUIT) {
+            setNextState(GAME_STATE_EXIT);
+        }
+
+        // Check for resizing/minimization
+        if(e.type == SDL_WINDOWEVENT) {
+            switch(e.window.event) {
+                case SDL_WINDOWEVENT_MINIMIZED:
+                    minimized = true;
+                    break;
+                case SDL_WINDOWEVENT_RESTORED:
+                    minimized = false;
+                    break;
+                case SDL_WINDOWEVENT_SIZE_CHANGED:
+                    screenWidth = e.window.data1;
+                    screenHeight = e.window.data2;
+                    break;
+            }
+        }
+
+        // If user presses F11, toggle fullscreen
+        if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_F11) {
+            if(fullscreen) {
+                fullscreen = false;
+                SDL_SetWindowFullscreen(window, SDL_FALSE);
+            } else {
+                fullscreen = true;
+                SDL_SetWindowFullscreen(window, SDL_TRUE);
+            }
+        }
+    }
 }
 
 
@@ -94,9 +135,19 @@ void MemSwap::update() {
     changeState();
 }
 
-/// Render the current game state
+/// Render the current game state, if not minimized
 void MemSwap::render() {
-    gameStates.back()->render(window, renderer);
+    if(!minimized) {
+        // Clear renderer
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(renderer);
+        
+        // Render stuff for current game state
+        gameStates.back()->render(window, renderer);
+        
+        // render to screen
+        SDL_RenderPresent(renderer);
+    }    
 }
 
 /// Set next state to change to indicated by the given state ID
@@ -175,4 +226,8 @@ int MemSwap::getGameStateID() {
     }
 
     return gameStates.back()->getGameStateID(); 
+}
+
+SDL_Event MemSwap::getEvent() {
+    return e;
 }

@@ -29,12 +29,9 @@ void SplashState::exitState() {
 
 // Events to handle during splash screen
 void SplashState::handleEvents(MemSwap * game) {
+    e = game->getEvent();
     while(SDL_PollEvent(&e)) {
-        if(e.type == SDL_QUIT) {
-            game->setNextState(GAME_STATE_EXIT);
-        }
-
-        // Check if user pressed Enter
+        // Check if user pressed Enter to advance from splash
         if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN) {
             advance = true;
         }

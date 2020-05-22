@@ -23,6 +23,7 @@ class MemSwap {
     private:
         SDL_Window * window;
         SDL_Renderer * renderer;
+        SDL_Event e;
 
         // Stack for tracking the game states
         std::vector<std::unique_ptr<GameState>> gameStates;
@@ -30,8 +31,8 @@ class MemSwap {
         int nextState = GAME_STATE_NULL;
 
         // Window constants
-        const int SCREEN_WIDTH = 720;
-        const int SCREEN_HEIGHT = 480;
+        int screenWidth = 720;
+        int screenHeight = 480;
 
         // Audio
         const int SOUND_FREQ = 44100;
@@ -41,6 +42,9 @@ class MemSwap {
         const std::string GAME_TITLE = "Memory Swap";
 
         bool playing = true;
+
+        bool minimized = false;
+        bool fullscreen = false; // Press F11 to toggle fullscreen
 
     public:
         /// Constructor
@@ -52,6 +56,7 @@ class MemSwap {
 
         // Handle events
         void handleEvents();
+        void handleWindowEvents();
 
         /// Update the game state
         void update();
@@ -70,6 +75,7 @@ class MemSwap {
 
         bool isPlaying();
         int getGameStateID();
+        SDL_Event getEvent();
 };
 
 #endif // MEMSWAP_HPP
