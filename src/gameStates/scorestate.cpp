@@ -11,15 +11,13 @@
 
 #include "gameStates/scorestate.hpp"
 
-ScoreState::ScoreState() {
-    gameStateID = GAME_STATE_SCORE;
-}
+ScoreState::ScoreState() : GameState(GAME_STATE_SCORE) {}
 
 ScoreState::~ScoreState() {
     exitState();
 }
 
-void ScoreState::enterState() {
+void ScoreState::enterState(MemSwap * game) {
 
 }
 
@@ -36,6 +34,6 @@ void ScoreState::update(MemSwap * game) {
 }
 
 /// Render function for the game state
-void ScoreState::render(SDL_Window * window, SDL_Renderer * renderer) {
+void ScoreState::render(SDL_Renderer * renderer) {
 
 }

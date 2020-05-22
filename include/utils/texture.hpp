@@ -25,19 +25,21 @@ class TextureLoadException : public std::exception {
 
 class Texture {
     private:
-        SDL_Texture* texture;
+        SDL_Texture* texture = NULL;
 
-        int width, height;
+        int width = 0;
+        int height = 0;
 
     public:
-        // constructor initializing texture from an image path
-        Texture(std::string path, SDL_Renderer* renderer);
-
-        // constructor initializing textual texture from an input string/font
-        Texture(std::string textureText, SDL_Color textColor, TTF_Font * font, 
-            SDL_Renderer* renderer);
-
+        Texture();
         ~Texture();
+
+        // initializing texture from an image path
+        void loadTexture(std::string path, SDL_Renderer* renderer);
+
+        // initializing textual texture from an input string/font
+        void loadTextTexture(std::string textureText, SDL_Color textColor, TTF_Font * font, 
+            SDL_Renderer* renderer);
 
         // free old texture
         void freeTexture();

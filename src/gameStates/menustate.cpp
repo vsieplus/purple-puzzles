@@ -11,15 +11,13 @@
 
 #include "gameStates/menustate.hpp"
 
-MenuState::MenuState() {
-    gameStateID = GAME_STATE_MENU;
-}
+MenuState::MenuState() : GameState(GAME_STATE_MENU) {}
 
 MenuState::~MenuState() {
     exitState();
 }
 
-void MenuState::enterState() {
+void MenuState::enterState(MemSwap * game) {
     // Load menu resources
 }
 
@@ -36,6 +34,6 @@ void MenuState::update(MemSwap * game) {
 }
 
 /// Render function for the game state
-void MenuState::render(SDL_Window * window, SDL_Renderer * renderer) {
+void MenuState::render(SDL_Renderer * renderer) {
 
 }

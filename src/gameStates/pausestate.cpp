@@ -11,15 +11,13 @@
 
 #include "gameStates/pausestate.hpp"
 
-PauseState::PauseState() {
-    gameStateID = GAME_STATE_PAUSE;
-}
+PauseState::PauseState() : GameState(GAME_STATE_PAUSE) {}
 
 PauseState::~PauseState() {
     exitState();
 }
 
-void PauseState::enterState() {
+void PauseState::enterState(MemSwap * game) {
 
 }
 
@@ -35,6 +33,6 @@ void PauseState::update(MemSwap * game) {
 }
 
 /// Render function for the game state
-void PauseState::render(SDL_Window * window, SDL_Renderer * renderer) {
+void PauseState::render(SDL_Renderer * renderer) {
 
 }

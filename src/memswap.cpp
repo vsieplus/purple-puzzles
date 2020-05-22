@@ -45,7 +45,11 @@ bool MemSwap::init () {
 	}
 	
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+
+    // for rescaling
+    SDL_SetHint (SDL_HINT_RENDER_SCALE_QUALITY, 0);
+    SDL_RenderSetLogicalSize(renderer, screenWidth, screenHeight);
 
 	return true;
 }
@@ -139,11 +143,11 @@ void MemSwap::update() {
 void MemSwap::render() {
     if(!minimized) {
         // Clear renderer
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
         SDL_RenderClear(renderer);
         
         // Render stuff for current game state
-        gameStates.back()->render(window, renderer);
+        gameStates.back()->render(renderer);
         
         // render to screen
         SDL_RenderPresent(renderer);
@@ -166,7 +170,7 @@ void MemSwap::changeState() {
             return;
         }
 
-        // Pop off current state, unless it's a PLAY state
+        // Pop off current non-null state, unless it's a PLAY state
         if(currState != GAME_STATE_NULL && currState != GAME_STATE_PLAY) {
             popGameState();
         }
@@ -196,7 +200,7 @@ void MemSwap::changeState() {
 
 /// Add a game state to the stack (enter a game state)
 void MemSwap::pushGameState(std::unique_ptr<GameState> & state) {
-    state->enterState();
+    state->enterState(this);
     gameStates.push_back(std::move(state));
 }
 
@@ -230,4 +234,8 @@ int MemSwap::getGameStateID() {
 
 SDL_Event MemSwap::getEvent() {
     return e;
+}
+
+SDL_Renderer * MemSwap::getRenderer() {
+    return renderer;
 }

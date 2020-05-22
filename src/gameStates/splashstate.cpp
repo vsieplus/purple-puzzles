@@ -12,15 +12,15 @@
 #include "memswap.hpp"
 #include "gameStates/splashstate.hpp"
 
-SplashState::SplashState() {
-    gameStateID = GAME_STATE_SPLASH;
-}
+SplashState::SplashState() : GameState(GAME_STATE_SPLASH) {}
 
 SplashState::~SplashState() {
     exitState();
 }
 
-void SplashState::enterState() {    
+void SplashState::enterState(MemSwap * game) {
+    // load bg texture
+    bgTexture.loadTexture(SPLASH_BG_PATH, game->getRenderer());
 }
 
 void SplashState::exitState() {
@@ -49,8 +49,13 @@ void SplashState::update(MemSwap * game) {
 }
 
 /// Render function for the game state
-void SplashState::render(SDL_Window * window, SDL_Renderer * renderer) {
+void SplashState::render(SDL_Renderer * renderer) {
+    // Render background
+    bgTexture.render(0, 0, renderer);
 
+    // Render progress
+
+    // Render graphic indicating loading is done
 }
 
 void SplashState::loadResources() {

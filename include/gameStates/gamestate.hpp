@@ -23,12 +23,14 @@ class MemSwap;
 
 class GameState {
     protected:
-        int gameStateID; 
+        int gameStateID;
         SDL_Event e;
 
     public:
+        GameState(int stateID) : gameStateID(stateID) {};
+
         // Entering/exiting this specific state
-        virtual void enterState() = 0;
+        virtual void enterState(MemSwap * game) = 0;
         virtual void exitState() = 0;
 
         virtual ~GameState() {};
@@ -40,7 +42,7 @@ class GameState {
         virtual void update(MemSwap * game) = 0;
 
         /// Render function for the game state
-        virtual void render(SDL_Window * window, SDL_Renderer * renderer) = 0;
+        virtual void render(SDL_Renderer * renderer) = 0;
 
         int getGameStateID() {
             return gameStateID;

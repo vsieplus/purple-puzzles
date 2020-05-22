@@ -11,15 +11,13 @@
 
 #include "gameStates/playstate.hpp"
 
-PlayState::PlayState() {
-    gameStateID = GAME_STATE_PLAY;
-}
+PlayState::PlayState() : GameState(GAME_STATE_PLAY) {}
 
 PlayState::~PlayState() {
     exitState();
 }
 
-void PlayState::enterState() {
+void PlayState::enterState(MemSwap * game) {
 
 }
 
@@ -36,6 +34,6 @@ void PlayState::update(MemSwap * game) {
 }
 
 /// Render function for the game state
-void PlayState::render(SDL_Window * window, SDL_Renderer * renderer) {
+void PlayState::render(SDL_Renderer * renderer) {
 
 }

@@ -31,7 +31,7 @@ class MemSwap {
         int nextState = GAME_STATE_NULL;
 
         // Window constants
-        int screenWidth = 720;
+        int screenWidth = 640;
         int screenHeight = 480;
 
         // Audio
@@ -76,6 +76,7 @@ class MemSwap {
         bool isPlaying();
         int getGameStateID();
         SDL_Event getEvent();
+        SDL_Renderer * getRenderer();
 };
 
 #endif // MEMSWAP_HPP

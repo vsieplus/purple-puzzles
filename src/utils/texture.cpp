@@ -2,8 +2,10 @@
 
 #include "utils/texture.hpp"
 
+Texture::Texture() {}
+
 /// image texture constructor
-Texture::Texture(std::string path, SDL_Renderer* renderer) {
+void Texture::loadTexture(std::string path, SDL_Renderer* renderer) {
     SDL_Texture* newTexture = NULL;
 
     SDL_Surface* surface = IMG_Load(path.c_str());
@@ -21,7 +23,7 @@ Texture::Texture(std::string path, SDL_Renderer* renderer) {
     texture = newTexture;
 }
 
-Texture::Texture(std::string textureText, SDL_Color textColor, TTF_Font * font,
+void Texture::loadTextTexture(std::string textureText, SDL_Color textColor, TTF_Font * font,
     SDL_Renderer* renderer) {
 
     SDL_Surface* surface = TTF_RenderText_Solid(font, textureText.c_str(), 
