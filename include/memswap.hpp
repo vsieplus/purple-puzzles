@@ -16,6 +16,8 @@
 #include "gameStates/gamestate.hpp"
 #include "gameStates/splashstate.hpp"
 #include "gameStates/menustate.hpp"
+#include "gameStates/playstate.hpp"
+#include "gameStates/scorestate.hpp"
 
 
 
@@ -29,6 +31,7 @@ class MemSwap {
         std::vector<std::unique_ptr<GameState>> gameStates;
 
         int nextState = GAME_STATE_NULL;
+        int currState = GAME_STATE_NULL;
 
         // Window constants
         int screenWidth = 640;

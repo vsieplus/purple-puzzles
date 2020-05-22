@@ -25,7 +25,7 @@ void PlayState::exitState() {
 
 }
 
-void PlayState::handleEvents(MemSwap * game) {
+void PlayState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
     
 }
 

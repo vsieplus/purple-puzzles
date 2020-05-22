@@ -28,13 +28,10 @@ void SplashState::exitState() {
 }
 
 // Events to handle during splash screen
-void SplashState::handleEvents(MemSwap * game) {
-    e = game->getEvent();
-    while(SDL_PollEvent(&e)) {
-        // Check if user pressed Enter to advance from splash
-        if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN) {
-            advance = true;
-        }
+void SplashState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
+    // Check if user pressed Enter to advance from splash
+    if(keyStates[SDL_SCANCODE_RETURN]) {
+        advance = true;
     } 
 }
 
@@ -43,7 +40,7 @@ void SplashState::update(MemSwap * game) {
     if(loadingRes) {
 
     } else if (advance) {
-            // Otherwise finish the SPLASH state the MENU state when
+            // Otherwise finish the SPLASH state and set next as the MENU state
             game->setNextState(GAME_STATE_MENU);
     }     
 }

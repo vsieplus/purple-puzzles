@@ -25,12 +25,11 @@ void MenuState::exitState() {
 
 }
 
-void MenuState::handleEvents(MemSwap * game) {
+void MenuState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
     
 }
 
 void MenuState::update(MemSwap * game) {
-    printf("menu state");
 }
 
 /// Render function for the game state

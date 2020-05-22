@@ -21,7 +21,7 @@ class SplashState : public GameState {
         void enterState(MemSwap * game) override;
         void exitState() override;
 
-        void handleEvents(MemSwap * game) override;
+        void handleEvents(MemSwap * game, const Uint8 * keyStates) override;
         void update(MemSwap * game) override;
         void render(SDL_Renderer * renderer) override;
 
@@ -31,7 +31,7 @@ class SplashState : public GameState {
 
         std::string SPLASH_BG_PATH = "res/images/splash/bg.png";
 
-        bool loadingRes = true;     // if we're loading resources
+        bool loadingRes = false;     // if we're loading resources
         bool advance = false;       // if the user wants to advance
 
         // Load all game resources from res/

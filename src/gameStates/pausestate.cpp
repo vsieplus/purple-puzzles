@@ -25,7 +25,7 @@ void PauseState::exitState() {
 
 }
 
-void PauseState::handleEvents(MemSwap * game) {
+void PauseState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
     
 }
 

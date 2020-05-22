@@ -11,7 +11,7 @@
 
  #include "memswap.hpp"
 
-MemSwap::MemSwap() {
+MemSwap::MemSwap() : gameStates() {
     // Initialize SDL components
     if(!(init() && initLibs())) {
         printf("Failed to initialize SDL");
@@ -92,7 +92,10 @@ void MemSwap::handleEvents() {
 
     // Handle game events
     if(nextState != GAME_STATE_EXIT || minimized) {
-        gameStates.back()->handleEvents(this);
+        if(!gameStates.empty()) {
+            const Uint8 * keyStates = SDL_GetKeyboardState(NULL);
+            gameStates.back()->handleEvents(this, keyStates);
+        }
     }   
 }
 
@@ -134,8 +137,10 @@ void MemSwap::handleWindowEvents() {
 
 /// Update the current game state
 void MemSwap::update() {
-    gameStates.back()->update(this);
-
+    if(!gameStates.empty()) {
+        gameStates.back()->update(this);
+    }
+        
     changeState();
 }
 
@@ -161,8 +166,6 @@ void MemSwap::setNextState(int stateID) {
 
 /// Change states if needed
 void MemSwap::changeState() {
-    int currState = getGameStateID();
-
     if(nextState != currState) {
         // If next state set to exit, stop playing
         if(nextState == GAME_STATE_EXIT) {
@@ -183,18 +186,20 @@ void MemSwap::changeState() {
                 nextGameState = std::make_unique<SplashState>();
                 break;
             case GAME_STATE_MENU:
-
+                nextGameState = std::make_unique<MenuState>();
                 break;
             case GAME_STATE_PLAY:
-
+                nextGameState = std::make_unique<PlayState>();
                 break;
             case GAME_STATE_SCORE:
-
+                nextGameState = std::make_unique<ScoreState>();
                 break;
         }
 
         // Push the next game state
         pushGameState(nextGameState);
+
+        currState = nextState;
     }
 }
 
@@ -225,11 +230,7 @@ bool MemSwap::isPlaying() {
 }
 
 int MemSwap::getGameStateID() { 
-    if(gameStates.empty()) {
-        return GAME_STATE_NULL;
-    }
-
-    return gameStates.back()->getGameStateID(); 
+    return currState; 
 }
 
 SDL_Event MemSwap::getEvent() {

@@ -25,7 +25,7 @@ void ScoreState::exitState() {
 
 }
 
-void ScoreState::handleEvents(MemSwap * game) {
+void ScoreState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
     
 }
 
