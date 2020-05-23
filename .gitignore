@@ -1,4 +1,4 @@
 build/*
-*.pdn
+res/*
 *.wav
 *.exe
