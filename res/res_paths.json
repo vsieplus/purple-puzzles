@@ -1,0 +1,24 @@
+{
+    "images":{
+        "splash_bg": "splash/bg.png",
+        "menu_bg": "menu/bg.png"
+    },
+    "maps": {
+        "tutorial": "tutorial/tutorial.tmx",
+        "1-1": "1-1.tmx",
+        "1-2": "1-2.tmx",
+        "1-3": "1-3.tmx",
+        "1-4": "1-4.tmx",
+        "1-5": "1-5.tmx"
+    },
+    "sounds": {
+        "flip": "flip.wav",
+        "bonk": "bonk.wav",
+        "teleport": "teleport.wav"
+    },
+    "music": {
+        "world01": "world01.ogg",
+        "world02": "world02.ogg",
+        "world03": "world03.ogg"
+    }
+}

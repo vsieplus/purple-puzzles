@@ -1,4 +1,7 @@
 build/*
-res/*
 *.wav
+*.png
+*.pdn
+*.tmx
+*.txt
 *.exe
