@@ -5,6 +5,9 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <tmxlite/Map.hpp>
+#include <tmxlite/Layer.hpp>
+#include <tmxlite/TileLayer.hpp>
 
 #include <string>
 #include <vector>
@@ -12,9 +15,6 @@
 #include <memory>
 #include <utility>
 
-#include "tmxlite/Map.hpp"
-#include "tmxlite/Layer.hpp"
-#include "tmxlite/TileLayer.hpp"
 #include "entities/entity.hpp"
 #include "level/tile.hpp"
 
