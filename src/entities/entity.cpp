@@ -18,14 +18,17 @@ Entity::~Entity() {
  * @return true if there is a collision
  */
 bool Entity::checkCollision(Level * level, int destGridX, int destGridY) {
-    // Check if new position is in bounds
-    if(!( (destGridX > 0 && destGridX < level->getGridWidth() - 1) && 
-          (destGridY > 0 && destGridY < level->getGridHeight() - 1) )) {
+    // Check if new position is out of bounds, treat as collision
+    if((destGridX < 0 || destGridX > level->getGridWidth() - 1) ||
+       (destGridY < 0 || destGridY > level->getGridHeight() - 1)) {
         return true;
     }
 
     // check collision with dest position. Return true if non-null entity
-    return !level->getGrid().at(level->xyToIndex(destGridX, destGridY));
+    bool entityAtNewPos = 
+        level->getGrid().at(level->xyToIndex(destGridX, destGridY)) != nullptr;
+
+    return entityAtNewPos;
 }
 
 int Entity::getScreenX() const {

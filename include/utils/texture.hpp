@@ -25,6 +25,7 @@ class TextureLoadException : public std::exception {
 
 class Texture {
     private:
+        // pointer to the SDL texture
         SDL_Texture * texture = NULL;
 
         int width = 0;

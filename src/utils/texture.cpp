@@ -45,6 +45,7 @@ Texture::~Texture() {
 
 void Texture::freeTexture() {
     if(texture != NULL) {
+        // Destroy the texture allocated by SDL
         SDL_DestroyTexture(texture);
         width = 0;
         height = 0;

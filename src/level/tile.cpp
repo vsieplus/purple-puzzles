@@ -1,13 +1,30 @@
 #include "level/tile.hpp"
 
-Tile::Tile(int mapX, int mapY, int tilesetX, int tilesetY, int width, int height, 
-    std::shared_ptr<SDL_Texture> texture) : x(mapX), y(mapY), width(width), 
-    height(height), tilesetTexture(texture) {
-
-    tilesheetClip = {tilesetX, tilesetY, width, height};
-    renderArea = {mapX, mapY, width, height};
+Tile::Tile(int mapX, int mapY, int tileWidth, int tileHeight, int tilesetFirstGID,
+        int tilesetGID, int tileParity) : x(mapX), y(mapY), 
+        tilesetFirstGID(tilesetFirstGID), tilesetGID(tilesetGID), 
+        tileParity(tileParity) {
+    renderArea = {mapX, mapY, tileWidth, tileHeight};
 }
 
-void Tile::render(SDL_Renderer* renderer) const {
-    SDL_RenderCopy(renderer, tilesetTexture.get(), &tilesheetClip, &renderArea);
+void Tile::render(SDL_Renderer * renderer, SDL_Texture * tilesetTexture, 
+        const SDL_Rect & tilesheetClip) const {
+    SDL_RenderCopy(renderer, tilesetTexture, &tilesheetClip, &renderArea);
+}
+
+// Filp tile's parity, update tilesheetClip
+void Tile::flip() {
+    tileParity = tileParity == PARITY_GRAY ? PARITY_PURPLE : PARITY_GRAY;
+}
+
+int Tile::getTilesetFirstGID() const {
+    return tilesetFirstGID;
+}
+
+int Tile::getTilesetGID() const {
+    return tilesetGID;
+}
+
+int Tile::getTileParity() const {
+    return tileParity;
 }

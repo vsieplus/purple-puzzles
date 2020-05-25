@@ -1,25 +1,38 @@
 #ifndef TILE_HPP
 #define TILE_HPP
 
-#include <memory>
-
 #include <SDL.h>
+
+enum TileParity {
+    PARITY_GRAY,    // 0 ~ gray
+    PARITY_PURPLE   // 1 ~ purple
+};
 
 class Tile {
     private:
-        int x, y, width, height;
+        int x, y;
 
-        SDL_Rect tilesheetClip;      // where on tilesheet texture to render
-        SDL_Rect renderArea;         // where on screen to render
+        // First GID of the tileset the tile belongs to, and its own GID 
+        int tilesetFirstGID, tilesetGID;
 
-        // pointer to the right tilesheet texture
-        std::shared_ptr<SDL_Texture> tilesetTexture; 
+        int tileParity;   // indicate tile color (0:gray, 1:purple)
+
+        SDL_Rect renderArea;     // where on screen to render
         
     public:
-        Tile(int mapX, int mapY, int tilesetX, int tilesetY, int width,
-             int height, std::shared_ptr<SDL_Texture> texture);
+        Tile(int mapX, int mapY, int tileWidth, int tileHeight, 
+            int tilesetFirstGID, int tilesetGID, int tileParity);
 
-        void render(SDL_Renderer* renderer) const;
+        void render(SDL_Renderer * renderer, SDL_Texture * tilesetTexture, 
+            const SDL_Rect & tilesheetClip) const;
+
+        // flip the tile parity
+        void flip();
+
+        int getTilesetFirstGID() const;
+        int getTilesetGID() const;
+        
+        int getTileParity() const;
 };
 
 #endif

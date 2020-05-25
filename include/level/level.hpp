@@ -16,7 +16,7 @@
 #include <utility>
 
 #include "entities/entity.hpp"
-#include "level/tile.hpp"
+#include "level/map.hpp"
 
 class Level {
     private:
@@ -29,8 +29,8 @@ class Level {
         // A map holding the entities in the grid, key = index, value = u_ptr
         std::unordered_map<int, std::shared_ptr<Entity>> grid;
 
-        // A vector holding the background tiles for the map
-        std::vector<Tile> mapTiles;
+        // The map representation of the background
+        Map map;
 
     public:
         Level();
@@ -42,22 +42,12 @@ class Level {
         void update();
         void render(SDL_Renderer * renderer) const;
 
-        // Load the tiledmap for this level
-        void loadMap(std::string tiledMapPath, SDL_Renderer * renderer);
-
-        void addBGTiles(const tmx::TileLayer * tileLayer, 
-            const std::map<int, std::shared_ptr<SDL_Texture>> & tilesets);
         void addEntityTiles(const tmx::TileLayer * tileLayer, 
-            const std::map<int, std::shared_ptr<SDL_Texture>> & tilesets);
+            const std::map<int, std::shared_ptr<SDL_Texture>> & tilesetTextures);
 
         void initGrid();
 
-        void updateSize(const tmx::Map & map);
-
-        int TILE_HEIGHT;
-        int TILE_WIDTH;
-
-        const static std::string BG_LAYER_NAME, ENTITY_LAYER_NAME;
+        void updateSize(const tmx::Map & map, int tileWidth, int tileHeight);
 
         int getGridWidth() const;
         int getGridHeight() const;

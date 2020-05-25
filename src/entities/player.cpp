@@ -31,7 +31,7 @@ void Player::render(SDL_Renderer* renderer) const {
 }
 
 void Player::checkMovement(const Uint8* keyStates, Level * level) {
-    int newDir = DIR_NONE;
+    Direction newDir = DIR_NONE;
 
     // Check for key inputs
     if(keyStates[SDL_SCANCODE_UP]) {
@@ -144,6 +144,6 @@ std::pair<int,int> Player::lerp(int startX, int startY, int endX,
     return std::make_pair(newX, newY);
 }
 
-float Player::getMoveProg() {
+float Player::getMoveProg() const {
     return moveProg; 
 }

@@ -22,7 +22,6 @@ void PlayState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
 }
 
 void PlayState::update(MemSwap * game) {
-    printf("play state");
     level.update();
 }
 
