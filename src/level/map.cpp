@@ -17,7 +17,7 @@ Map::~Map() {
 }
 
 // Update each tile in the map
-void update(Level * level) {
+void Map::update(Level * level) {
     for(Tile tile: mapTiles) {
         tile.update(level);
     }

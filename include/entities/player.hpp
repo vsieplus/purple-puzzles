@@ -42,7 +42,7 @@ class Player : public Entity {
         Player(int screenX, int screenY, int gridX, int gridY, 
             SDL_Renderer * renderer);
 
-        const int PLAYER_VELOCITY = 5;         // Pixels moved per sec.
+        const int PLAYER_VELOCITY = 6;         // Pixels moved per sec.
         const float MOVEMENT_BUFFER = 0.85f;   // How soon through the curr 
                                                // movement player can buffer
 

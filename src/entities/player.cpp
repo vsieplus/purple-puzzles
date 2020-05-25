@@ -1,5 +1,7 @@
 // Implementation for Player class
 
+#include <stdlib.h>
+
 #include "entities/player.hpp"
 #include "level/level.hpp"
 
@@ -112,8 +114,10 @@ void Player::move(Level * level) {
 
         // Perform linear interpolation if not yet reached
         std::pair<int, int> newPos = lerp(startX, startY, endX, endY, moveProg);
-        screenX = newPos.first;
-        screenY = newPos.second;
+
+        // For possible overshoot from float error, set to end position
+        screenX = abs(newPos.first - startX) < abs(endX - startX) ? newPos.first : endX;
+        screenY = abs(newPos.second - startY) < abs(endY - startY) ? newPos.second : endY;
     } else {
         // Check if a move is buffered
         if(bufferedDir != DIR_NONE) {
@@ -122,10 +126,6 @@ void Player::move(Level * level) {
         } else {
             moving = false;
             moveStartTime = 0;
-            
-            // Account for float error
-            screenX = endX;
-            screenY = endY;
         }
     }
         
