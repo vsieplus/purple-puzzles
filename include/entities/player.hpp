@@ -29,7 +29,7 @@ class Player : public Entity {
         int startX, startY, endX, endY;   // Start and end positions for movement
 
         // parity of tile player is currently on
-        TileParity tileParity = PARITY_GRAY;
+        int tileParity = PARITY_GRAY;
 
         Direction moveDir = DIR_NONE;     // direction of player's move
         Direction bufferedDir = DIR_NONE; // direction of player's buffered move

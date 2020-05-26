@@ -18,6 +18,11 @@ void PlayState::exitState() {
 }
 
 void PlayState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
+    // Check for level reset
+    if(keyStates[SDL_SCANCODE_SPACE]) {
+        enterState(game);
+    }
+
     level.handleEvents(keyStates);
 }
 

@@ -68,7 +68,10 @@ class Map {
         bool inBounds(int x, int y) const;
 
         // Update bg tiles when the specified movement occurs
-        void flipTiles(int movedFromX, int movedFromY, int moveDir, Level * level);
+        void flipTiles(int tileX, int tileY, int moveDir, Level * level);
+
+        // Get parity of tile at the specified grid location
+        int getTileParity(int x, int y) const;
 };
 
 #endif // MAP_HPP

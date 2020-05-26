@@ -74,41 +74,48 @@ void Player::initMovement(int direction, Level * level) {
 
 /**
  * @brief attempt to initialize player movement to the specified new
- *        position
+ *        position. Returns early if unable to
  */
 void Player::initMovement(int xPosChange, int yPosChange, int xGridChange, 
     int yGridChange, int direction, Level * level) {
 
-    // Check for collisions or invalid tile movement
-    if(checkCollision(level, gridX + xGridChange, gridY + yGridChange)) {
+    int newGridX = gridX + xGridChange;
+    int newGridY = gridY + yGridChange;
+
+    // Check for collisions or invalid tile movement (differing tileParity)
+    if(checkCollision(level, newGridX, newGridY) || 
+       tileParity != level->getMap().getTileParity(newGridX, newGridY)) {
         return;
-    } else {
-        // Flip map tiles
-        if(direction != DIR_NONE) {
-            level->flipMapTiles(gridX, gridY, direction);
-        }
-
-        // Reset movement
-        moveProg = 0.f;
-        startX = screenX;
-        startY = screenY;
-
-        moving = true;
-        moveStartTime = SDL_GetTicks();
-        
-        // Update player position
-        endX += xPosChange;
-        endY += yPosChange;
-
-        int oldGridX = gridX;
-        int oldGridY = gridY;
-        
-        gridX += xGridChange;
-        gridY += yGridChange; 
-
-        // Update pos. of ptr in the level grid
-        level->setGridElement(oldGridX, oldGridY, gridX, gridY);
     }
+
+    // Flip map tiles
+    if(direction != DIR_NONE) {
+        level->flipMapTiles(newGridX, newGridY, direction);
+    }
+
+    // Reset movement
+    moveProg = 0.f;
+    startX = screenX;
+    startY = screenY;
+
+    moving = true;
+    moveStartTime = SDL_GetTicks();
+    
+    // Update player position
+    endX += xPosChange;
+    endY += yPosChange;
+
+    int oldGridX = gridX;
+    int oldGridY = gridY;
+    
+    gridX = newGridX;
+    gridY = newGridY; 
+
+    // Update pos. of ptr in the level grid
+    level->setGridElement(oldGridX, oldGridY, gridX, gridY);
+
+    // Update player parity
+    tileParity = level->getMap().getTileParity(gridX, gridY);
 }
 
 // Move the player

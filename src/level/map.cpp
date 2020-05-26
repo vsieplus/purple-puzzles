@@ -98,7 +98,7 @@ void Map::loadTilesets(const tmx::Map & map, SDL_Renderer * renderer) {
             const auto & tiles = tileset.getTiles();
 
             for(auto & tile: tiles) {
-                // check/store this tile's parity
+                // check/store this tile's parity if properties nonempty
                 checkTileParity(tile, tileset.getFirstGID());
 
                 // Get position of tile in the tileset to create the clip
@@ -174,20 +174,21 @@ bool Map::inBounds(int x, int y) const {
 
 
 // Update bg tiles when the specified movement occurs
-void Map::flipTiles(int movedFromX, int movedFromY, int moveDir, Level * level) {
+void Map::flipTiles(int tileX, int tileY, int moveDir, Level * level) {
     // Get indices for all tiles on map surrounding the old pos
     std::list<std::pair<int, int>> tileIndices;
 
-    // Up, down, left, right (order matches Direction enum)
-    tileIndices.push_back(std::make_pair(movedFromX, movedFromY - 1));
-    tileIndices.push_back(std::make_pair(movedFromX, movedFromY + 1));
-    tileIndices.push_back(std::make_pair(movedFromX - 1, movedFromY));
-    tileIndices.push_back(std::make_pair(movedFromX + 1, movedFromY));
+    // none, Up, down, left, right (order matches Direction enum)
+//    tileIndices.push_back(std::make_pair(tileX, tileY));
+    tileIndices.push_back(std::make_pair(tileX, tileY - 1));
+    tileIndices.push_back(std::make_pair(tileX, tileY + 1));
+    tileIndices.push_back(std::make_pair(tileX - 1, tileY));
+    tileIndices.push_back(std::make_pair(tileX + 1, tileY));
 
     // Remove the pair for the tile we moved onto
-    auto it = tileIndices.begin();
+ /*    auto it = tileIndices.begin();
     advance(it, moveDir - 1);
-    tileIndices.erase(it);
+    tileIndices.erase(it);  */
 
     // For each tile except the one we moved onto, try to call flip if inbounds
     for(auto indices: tileIndices) {
@@ -210,4 +211,8 @@ void Map::flipTiles(int movedFromX, int movedFromY, int moveDir, Level * level) 
 
         }
     }
+}
+
+int Map::getTileParity(int x, int y) const {
+    return mapTiles.at(x + y * mapWidth).getTileParity();
 }
