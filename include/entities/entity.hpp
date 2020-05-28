@@ -21,8 +21,8 @@ class Entity {
         int gridX, gridY;
 
     public:
-        Entity(int sX, int sY, int gX, int gY, std::string texturePath, SDL_Renderer * renderer);
-        ~Entity();
+        Entity(int sX, int sY, int gX, int gY, std::string texturePath,
+            SDL_Renderer * renderer);
 
         virtual void handleEvents(const Uint8 * keyStates, Level * level) = 0;
         virtual void update(Level * level) = 0;

@@ -22,6 +22,8 @@ class Tile {
         int tileParity;          // indicate tile color (0:gray, 1:purple)
                                  // (-1 for no parity)
 
+        bool flipped = false;
+
         SDL_Rect renderArea;     // where on screen to render
         
     public:
@@ -40,6 +42,8 @@ class Tile {
         int getTilesetGID() const;
         
         int getTileParity() const;
+
+        bool isFlipped() const;
 };
 
 #endif

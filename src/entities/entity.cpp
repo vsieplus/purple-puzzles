@@ -4,13 +4,9 @@
 #include "level/level.hpp"
 #include "level/map.hpp"
 
-Entity::Entity(int sX, int sY, int gX, int gY, std::string texturePath, SDL_Renderer * renderer) :
-    screenX(sX), screenY(sY), gridX(gX), gridY(gY) {
+Entity::Entity(int sX, int sY, int gX, int gY, std::string texturePath, 
+    SDL_Renderer * renderer) : screenX(sX), screenY(sY), gridX(gX), gridY(gY) {
     texture.loadTexture(texturePath, renderer);
-}
-
-Entity::~Entity() {
-    
 }
 
 /**

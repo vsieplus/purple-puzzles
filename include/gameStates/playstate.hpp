@@ -18,8 +18,6 @@ class PlayState : public GameState {
     public:
         PlayState();
 
-        ~PlayState();
-
         void enterState(MemSwap * game) override;
         void exitState() override;
 

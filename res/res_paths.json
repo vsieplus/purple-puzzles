@@ -5,16 +5,24 @@
     },
     "maps": {
         "tutorial": "tutorial/tutorial.tmx",
-        "1-1": "1-1.tmx",
-        "1-2": "1-2.tmx",
-        "1-3": "1-3.tmx",
-        "1-4": "1-4.tmx",
-        "1-5": "1-5.tmx"
+        "1-1": "1-1.tmx", "1-2": "1-2.tmx", "1-3": "1-3.tmx",
+        "1-4": "1-4.tmx", "1-5": "1-5.tmx", "1-6": "1-6.tmx",
+        "1-7": "1-7.tmx", "1-8": "1-8.tmx", "1-9": "1-9.tmx",
+        "1-10": "1-10.tmx", "2-1": "2-1.tmx", "2-2": "2-2.tmx",
+        "2-3": "2-3.tmx", "2-4": "2-4.tmx", "2-5": "2-5.tmx",
+        "2-6": "2-6.tmx", "2-7": "2-7.tmx", "2-8": "2-8.tmx",
+        "2-9": "2-9.tmx", "2-10": "2-10.tmx", "3-1": "3-1.tmx",
+        "3-2": "3-2.tmx", "3-3": "3-3.tmx", "3-4": "3-4.tmx",
+        "3-5": "3-5.tmx", "3-6": "3-6.tmx", "3-7": "3-7.tmx",
+        "3-8": "3-8.tmx", "3-9": "3-9.tmx", "3-10": "3-10.tmx"
     },
     "sounds": {
         "flip": "flip.wav",
         "bonk": "bonk.wav",
-        "teleport": "teleport.wav"
+        "teleport": "teleport.wav",
+        "zoom": "zoom.wav",
+        "jump": "jump.wav",
+        "complete": "complete.wav"
     },
     "music": {
         "world01": "world01.ogg",

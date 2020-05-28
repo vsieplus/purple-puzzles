@@ -18,6 +18,8 @@
 #include "entities/entity.hpp"
 #include "level/map.hpp"
 
+class MemSwap;
+
 class Level {
     private:
         // Width/height in tiles
@@ -34,9 +36,7 @@ class Level {
 
     public:
         Level();
-        Level(std::string tiledMapPath, SDL_Renderer * renderer);
-
-        ~Level();
+        Level(std::string tiledMapPath, SDL_Renderer * renderer, MemSwap * game);
 
         // game loop
         void handleEvents(const Uint8 * keyStates);

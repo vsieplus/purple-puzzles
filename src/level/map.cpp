@@ -1,5 +1,6 @@
 // Implementation for map class
 
+#include "memswap.hpp"
 #include "entities/player.hpp"
 #include "level/level.hpp"
 #include "level/map.hpp"
@@ -13,10 +14,6 @@ Map::Map() {}
 // store map path
 Map::Map(std::string tiledMapPath) : mapPath(tiledMapPath) {}
 
-Map::~Map() {
-    mapTilesets.clear();
-}
-
 // Update each tile in the map
 void Map::update(Level * level) {
     for(Tile tile: mapTiles) {
@@ -25,6 +22,8 @@ void Map::update(Level * level) {
 }
 
 void Map::render(SDL_Renderer * renderer) const {
+    // Render map background (dimmed texture)
+
     // Render the background tiles
     for(Tile tile: mapTiles) {
         // Render tile with correct tileset + clip
@@ -34,7 +33,7 @@ void Map::render(SDL_Renderer * renderer) const {
 }
 
 // Load the map for the given level
-void Map::loadMap(SDL_Renderer * renderer, Level * level) {
+void Map::loadMap(SDL_Renderer * renderer, Level * level, MemSwap * game) {
     tmx::Map map;
 
     if(map.load(mapPath)) {
@@ -61,7 +60,7 @@ void Map::loadMap(SDL_Renderer * renderer, Level * level) {
             // process tiles differently depending on the layer we're on
             if(layer->getName() == BG_LAYER_NAME) {
                 // Load background tiles
-                addBGTiles(tileLayer, level);
+                addBGTiles(tileLayer, level, game);
             } else if (layer->getName() == ENTITY_LAYER_NAME) {
                 // load entities into the level
                 level->addEntityTiles(tileLayer, mapTilesets);
@@ -124,7 +123,8 @@ void Map::checkTileParity(const tmx::Tileset::Tile & tile, int tilesetFirstGID) 
     unsigned int i = 0;
     while(i < tileProperties.size()) {
         if(tileProperties[i].getName() == "parity") {
-            tileParities.emplace(tile.ID + tilesetFirstGID, tileProperties[i].getIntValue());
+            tileParities.emplace(tile.ID + tilesetFirstGID, 
+                tileProperties[i].getIntValue());
             break;
         }
         i++;
@@ -132,8 +132,14 @@ void Map::checkTileParity(const tmx::Tileset::Tile & tile, int tilesetFirstGID) 
 }
 
 // Add background tiles to the map
-void Map::addBGTiles(const tmx::TileLayer * tileLayer, Level * level) {
+void Map::addBGTiles(const tmx::TileLayer * tileLayer, Level * level, 
+    MemSwap * game) {
+    
     auto & layerTiles = tileLayer->getTiles();
+
+    // Compute where to start placing tiles, given map size (center the map)
+    renderX = (game->getScreenWidth() / 2) - (mapWidth * tileWidth / 2);
+    renderY = (game->getScreenHeight() / 2) - (mapHeight * tileHeight / 2);            
             
     // Iterate through each tile in this layer (top left corner -> down right)
     for(int y = 0; y < mapHeight; y++) {
@@ -152,9 +158,9 @@ void Map::addBGTiles(const tmx::TileLayer * tileLayer, Level * level) {
                 tilesetFirstGID = tileset.first;
             }
 
-            // Get position of tile in the map
-            auto mapX = x * tileWidth;
-            auto mapY = y * tileHeight;
+            // Get position of tile in the map, centered for the given map size 
+            auto mapX = renderX + x * tileWidth;
+            auto mapY = renderY + y * tileHeight;
 
             // Get parity of the BG Tile if available (0:gray, 1:purple)
             auto tileParity = tileParities.find(tileGID);
@@ -179,16 +185,16 @@ void Map::flipTiles(int tileX, int tileY, int moveDir, Level * level) {
     std::list<std::pair<int, int>> tileIndices;
 
     // none, Up, down, left, right (order matches Direction enum)
-//    tileIndices.push_back(std::make_pair(tileX, tileY));
+    tileIndices.push_back(std::make_pair(tileX, tileY));
     tileIndices.push_back(std::make_pair(tileX, tileY - 1));
     tileIndices.push_back(std::make_pair(tileX, tileY + 1));
     tileIndices.push_back(std::make_pair(tileX - 1, tileY));
     tileIndices.push_back(std::make_pair(tileX + 1, tileY));
 
     // Remove the pair for the tile we moved onto
- /*    auto it = tileIndices.begin();
-    advance(it, moveDir - 1);
-    tileIndices.erase(it);  */
+    auto it = tileIndices.begin();
+    advance(it, moveDir);
+    tileIndices.erase(it);
 
     // For each tile except the one we moved onto, try to call flip if inbounds
     for(auto indices: tileIndices) {
@@ -202,6 +208,9 @@ void Map::flipTiles(int tileX, int tileY, int moveDir, Level * level) {
             // Get new tileset GID (gray <-> purple)
             int tileGID = currTile.getTilesetGID();
             for(auto & tp: tileParities) {
+                // skip tiles already flipped once
+                if(currTile.isFlipped()) continue;
+
                 // Flip upon finding the first non-matching GID tile parity
                 if(tp.first != tileGID) {
                     currTile.flip(tp.first);
@@ -215,4 +224,12 @@ void Map::flipTiles(int tileX, int tileY, int moveDir, Level * level) {
 
 int Map::getTileParity(int x, int y) const {
     return mapTiles.at(x + y * mapWidth).getTileParity();
+}
+
+int Map::getRenderX() const {
+    return renderX;
+}
+
+int Map::getRenderY() const {
+    return renderY;
 }

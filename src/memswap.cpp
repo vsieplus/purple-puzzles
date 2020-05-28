@@ -225,18 +225,26 @@ void MemSwap::quit() {
 	SDL_Quit();
 }
 
-bool MemSwap::isPlaying() { 
+bool MemSwap::isPlaying() const { 
     return playing; 
 }
 
-int MemSwap::getGameStateID() { 
+int MemSwap::getGameStateID() const { 
     return currState; 
 }
 
-SDL_Event MemSwap::getEvent() {
+SDL_Event MemSwap::getEvent() const {
     return e;
 }
 
-SDL_Renderer * MemSwap::getRenderer() {
+SDL_Renderer * MemSwap::getRenderer() const {
     return renderer;
+}
+
+int MemSwap::getScreenWidth() const {
+    return screenWidth;
+}
+
+int MemSwap::getScreenHeight() const {
+    return screenHeight;
 }

@@ -74,10 +74,13 @@ class MemSwap {
 
         void quit();
 
-        bool isPlaying();
-        int getGameStateID();
-        SDL_Event getEvent();
-        SDL_Renderer * getRenderer();
+        bool isPlaying() const;
+        int getGameStateID() const;
+        SDL_Event getEvent() const;
+        SDL_Renderer * getRenderer() const;
+
+        int getScreenWidth() const;
+        int getScreenHeight() const;        
 };
 
 #endif // MEMSWAP_HPP

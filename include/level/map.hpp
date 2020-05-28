@@ -19,12 +19,16 @@
 
 #include "level/tile.hpp"
 
+class MemSwap;
+
 class Level;
 
 class Map {
     private:
         int mapWidth, mapHeight;         // size of map in tiles
         int tileWidth, tileHeight;       // size of tiles in pixels
+
+        int renderX, renderY;            // x,y on the screen to render map
 
         std::string mapPath;             // path to map (tmx file)
 
@@ -50,19 +54,20 @@ class Map {
 
         Map();
         Map(std::string tiledMapPath);
-        ~Map();
 
         void update(Level * level);
         void render(SDL_Renderer * renderer) const;
 
         // Load map for the level
-        void loadMap(SDL_Renderer * renderer, Level * level);
+        void loadMap(SDL_Renderer * renderer, Level * level, MemSwap * game);
         void loadTilesets(const tmx::Map & map, SDL_Renderer * renderer);
 
-        void checkTileParity(const tmx::Tileset::Tile & tile, int tilesetFirstGID);
+        void checkTileParity(const tmx::Tileset::Tile & tile, 
+            int tilesetFirstGID);
 
         // add background tiles to the map from the given tileLayer
-        void addBGTiles(const tmx::TileLayer * tileLayer, Level * level);
+        void addBGTiles(const tmx::TileLayer * tileLayer, Level * level,
+            MemSwap * game);
 
         // Check if a tile is in bounds
         bool inBounds(int x, int y) const;
@@ -72,6 +77,9 @@ class Map {
 
         // Get parity of tile at the specified grid location
         int getTileParity(int x, int y) const;
+
+        int getRenderX() const;
+        int getRenderY() const;
 };
 
 #endif // MAP_HPP

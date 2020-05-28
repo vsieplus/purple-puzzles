@@ -5,12 +5,8 @@
 
 PlayState::PlayState() : GameState(GAME_STATE_PLAY) {}
 
-PlayState::~PlayState() {
-    exitState();
-}
-
 void PlayState::enterState(MemSwap * game) {
-    level = Level("res/maps/tutorial/tutorial.tmx", game->getRenderer());
+    level = Level("res/maps/0-0.tmx", game->getRenderer(), game);
 }
 
 void PlayState::exitState() {

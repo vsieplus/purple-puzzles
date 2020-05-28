@@ -8,6 +8,10 @@ Tile::Tile(int mapX, int mapY, int tileWidth, int tileHeight, int tilesetFirstGI
         tilesetFirstGID(tilesetFirstGID), tilesetGID(tilesetGID), 
         tileParity(tileParity) {
     renderArea = {mapX, mapY, tileWidth, tileHeight};
+
+    if(tileParity == PARITY_PURPLE) {
+        flipped = true;
+    }
 }
 
 void Tile::update(Level * level) {
@@ -23,6 +27,7 @@ void Tile::render(SDL_Renderer * renderer, SDL_Texture * tilesetTexture,
 void Tile::flip(int newTilesetGID) {
     tileParity = tileParity == PARITY_GRAY ? PARITY_PURPLE : PARITY_GRAY;
     tilesetGID = newTilesetGID;
+    flipped = true;
 }
 
 int Tile::getTilesetFirstGID() const {
@@ -35,4 +40,8 @@ int Tile::getTilesetGID() const {
 
 int Tile::getTileParity() const {
     return tileParity;
+}
+
+bool Tile::isFlipped() const {
+    return flipped;
 }

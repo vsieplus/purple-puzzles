@@ -6,16 +6,15 @@
 
 Level::Level() {}
 
-Level::Level(std::string tiledMapPath, SDL_Renderer * renderer) : map(tiledMapPath) {
-    map.loadMap(renderer, this);
+Level::Level(std::string tiledMapPath, SDL_Renderer * renderer, MemSwap * game) 
+    : map(tiledMapPath) {
+    
+    map.loadMap(renderer, this, game);
 
     // initialize entity grid
     initGrid();
-    grid[0] = std::make_shared<Player>(0, 0, 0, 0, renderer);
-}
-
-Level::~Level(){
-    grid.clear();
+    grid[0] = std::make_shared<Player>(map.getRenderX() + 0, map.getRenderY() + 0, 
+        0, 0, renderer);
 }
 
 void Level::initGrid() {
@@ -59,7 +58,7 @@ void Level::render(SDL_Renderer * renderer) const {
     // Render the map
     map.render(renderer); 
 
-    // Render the objs in the grid
+    // Render the entities in the grid
     for(int y = 0; y < gridHeight; y++) {
         for(int x = 0; x < gridWidth; x++) {
             int currIdx = xyToIndex(x,y);
