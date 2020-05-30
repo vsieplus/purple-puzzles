@@ -19,15 +19,10 @@
 #include "gameStates/playstate.hpp"
 #include "gameStates/scorestate.hpp"
 
+#include "utils/resmanager.hpp"
+
 class MemSwap {
     private:
-        SDL_Window * window;
-        SDL_Renderer * renderer;
-        SDL_Event e;
-
-        // Stack for tracking the game states
-        std::vector<std::unique_ptr<GameState>> gameStates;
-
         int nextState = GAME_STATE_NULL;
         int currState = GAME_STATE_NULL;
 
@@ -41,11 +36,22 @@ class MemSwap {
         const int SAMPLE_SIZE = 2048;
 
         const std::string GAME_TITLE = "Memory Swap";
+        const std::string RES_PATHS_FILE = "res/res_paths.json";
 
         bool playing = true;
 
         bool minimized = false;
         bool fullscreen = false; // Press F11 to toggle fullscreen
+        
+        SDL_Window * window;
+        SDL_Renderer * renderer;
+        SDL_Event e;
+
+        // Stack for tracking the game states
+        std::vector<std::unique_ptr<GameState>> gameStates;
+
+        // Resource manager for the game
+        ResManager resourceManager = ResManager(RES_PATHS_FILE);
 
     public:
         /// Constructor
@@ -55,6 +61,9 @@ class MemSwap {
         bool init ();
         bool initLibs();
 
+        // (called during splash state)
+        int loadNextResource();
+
         // Handle events
         void handleEvents();
         void handleWindowEvents();
@@ -63,7 +72,7 @@ class MemSwap {
         void update();
 
         /// Render the current state of the game
-        void render();
+        void render() const;
 
         // Manage game states
         void changeState();
@@ -80,7 +89,9 @@ class MemSwap {
         SDL_Renderer * getRenderer() const;
 
         int getScreenWidth() const;
-        int getScreenHeight() const;        
+        int getScreenHeight() const;
+
+        ResManager & getResManager();
 };
 
 #endif // MEMSWAP_HPP

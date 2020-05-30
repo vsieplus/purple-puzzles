@@ -31,6 +31,11 @@ class Texture {
         int width = 0;
         int height = 0;
 
+        // for texture transparency
+        const static int ALPHA_MAX = 255;
+        int textureAlpha = 255;
+
+        bool alphaIncreasing = false;
     public:
         Texture();
         ~Texture();
@@ -52,7 +57,8 @@ class Texture {
         void setBlendMode(SDL_BlendMode blending);
 
         // transparency
-        void setAlpha(Uint8 alpha);
+        void updateAlpha();             // flashing effect
+        void setAlpha(Uint8 alpha);     // one-time update
 
         /**
          * @brief   Render the texture at position x,y to the given renderer
@@ -65,7 +71,6 @@ class Texture {
 
         int getHeight();
         int getWidth();
-
 };
 
 #endif // TEXTURE_HPP

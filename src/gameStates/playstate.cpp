@@ -30,7 +30,7 @@ void PlayState::update(MemSwap * game) {
 }
 
 /// Render function for the game state
-void PlayState::render(SDL_Renderer * renderer) {
+void PlayState::render(SDL_Renderer * renderer) const {
     // Render background
     bgTexture.render(0, 0, renderer);
 

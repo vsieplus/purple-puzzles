@@ -1,6 +1,7 @@
 {
     "images":{
         "splash_bg": "splash/bg.png",
+        "splash_adv": "splash/adv.png",
         "menu_bg": "menu/bg.png",
         "play_bg": "play/bg.png"
     },

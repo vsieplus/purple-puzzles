@@ -33,6 +33,6 @@ void MenuState::update(MemSwap * game) {
 }
 
 /// Render function for the game state
-void MenuState::render(SDL_Renderer * renderer) {
+void MenuState::render(SDL_Renderer * renderer) const {
 
 }

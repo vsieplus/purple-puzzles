@@ -145,7 +145,7 @@ void MemSwap::update() {
 }
 
 /// Render the current game state, if not minimized
-void MemSwap::render() {
+void MemSwap::render() const {
     if(!minimized) {
         // Clear renderer
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
@@ -247,4 +247,8 @@ int MemSwap::getScreenWidth() const {
 
 int MemSwap::getScreenHeight() const {
     return screenHeight;
+}
+
+ResManager & MemSwap::getResManager() {
+    return resourceManager;
 }

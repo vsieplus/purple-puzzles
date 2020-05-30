@@ -42,7 +42,7 @@ class GameState {
         virtual void update(MemSwap * game) = 0;
 
         /// Render function for the game state
-        virtual void render(SDL_Renderer * renderer) = 0;
+        virtual void render(SDL_Renderer * renderer) const = 0;
 
         int getGameStateID() {
             return gameStateID;

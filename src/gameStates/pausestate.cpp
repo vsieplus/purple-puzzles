@@ -33,6 +33,6 @@ void PauseState::update(MemSwap * game) {
 }
 
 /// Render function for the game state
-void PauseState::render(SDL_Renderer * renderer) {
+void PauseState::render(SDL_Renderer * renderer) const {
 
 }

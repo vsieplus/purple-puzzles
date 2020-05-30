@@ -34,6 +34,6 @@ void ScoreState::update(MemSwap * game) {
 }
 
 /// Render function for the game state
-void ScoreState::render(SDL_Renderer * renderer) {
+void ScoreState::render(SDL_Renderer * renderer) const {
 
 }

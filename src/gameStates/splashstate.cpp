@@ -11,6 +11,7 @@
 
 #include "memswap.hpp"
 #include "gameStates/splashstate.hpp"
+#include "utils/resmanager.hpp"
 
 SplashState::SplashState() : GameState(GAME_STATE_SPLASH) {}
 
@@ -19,8 +20,15 @@ SplashState::~SplashState() {
 }
 
 void SplashState::enterState(MemSwap * game) {
-    // load bg texture
-    bgTexture.loadTexture("res/images/splash/bg.png", game->getRenderer());
+    // load splash textures prematurely
+    bgTexture.loadTexture(game->getResManager().getResPath(BG_ID), 
+        game->getRenderer());
+    advTexture.loadTexture(game->getResManager().getResPath(ADV_ID), 
+        game->getRenderer());
+
+    // set advText render pos
+    advTextX = (game->getScreenWidth() / 2) - (advTexture.getWidth() / 2);
+    advTextY = (game->getScreenHeight() / 2) - (advTexture.getHeight() / 2);
 }
 
 void SplashState::exitState() {
@@ -38,23 +46,28 @@ void SplashState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
 void SplashState::update(MemSwap * game) {
     // Continue loading resources until finished
     if(loadingRes) {
-
-    } else if (advance) {
+        game->getResManager().loadNextResource();
+        loadingRes = game->getResManager().loadingResources();
+    } else {
+        if (advance) {
             // Otherwise finish the SPLASH state and set next as the MENU state
             game->setNextState(GAME_STATE_PLAY);
+        }
+
+        // Flash advance text graphic to signal user
+        advTexture.updateAlpha();
     }     
 }
 
 /// Render function for the game state
-void SplashState::render(SDL_Renderer * renderer) {
+void SplashState::render(SDL_Renderer * renderer) const {
     // Render background
     bgTexture.render(0, 0, renderer);
 
     // Render progress
 
     // Render graphic indicating loading is done
-}
-
-void SplashState::loadResources() {
-
+    if(!loadingRes) {
+        advTexture.render(advTextX, advTextY, renderer);
+    }
 }

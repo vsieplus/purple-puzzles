@@ -14,16 +14,20 @@ void ResManager::parseJSON(std::string resourcePathsFile) {
     // load the json string to the resourcePaths json obj.
     std::ifstream instream(resourcePathsFile);
     instream >> resourcePaths;
+
+    // count total resources (excluding maps)
+    totalResources = 100;
 }
 
 // load all resources
-void ResManager::loadResourceMaps() {
-    // load each map
-    loadTextures();
-    loadSpritesheets();
-    loadSounds();
-    loadMusic();
+void ResManager::loadNextResource() {
+    if(!loadingResources()) return;
+
+
+
+    resourcesLoaded++;
 }
+
 
 void ResManager::loadTextures() {
 }
@@ -38,6 +42,11 @@ void ResManager::loadSounds() {
 
 void ResManager::loadMusic() {
 //    gMusic = Mix_LoadMUS("safe.mp3");
+}
+
+// return whether done loading resources
+bool ResManager::loadingResources() const {
+    return resourcesLoaded < totalResources;
 }
 
 // to retrieve resources, call w/resource id
@@ -57,7 +66,8 @@ std::shared_ptr<Mix_Music> ResManager::getMusic(std::string id) const {
     return musics.at(resHash(id));
 }
 
-// Return the actual path to the tmx file
-std::string ResManager::getMapPath(std::string id) const {
-    return resourcePaths["maps"][id];
+// Return the actual path to the file containing the resource with ID id
+std::string ResManager::getResPath(std::string id) const {
+    return "foo.txt";
+//    return resourcePaths[id];
 }

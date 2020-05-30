@@ -42,6 +42,10 @@ class ResManager {
         // for hashing
         std::hash<std::string> resHash;
 
+        // track number of resources (excluding maps)
+        int totalResources;
+        int resourcesLoaded = 0;
+
     public:
         // Construct the resource manager with a path to file containing the
         // resource paths (json)
@@ -50,20 +54,22 @@ class ResManager {
         // parse the json file
         void parseJSON(std::string resourcePathsFile);
 
-        // load all resources
-        void loadResourceMaps();
+        // load the next resource
+        void loadNextResource();
 
         void loadTextures();
         void loadSpritesheets();
         void loadSounds();
         void loadMusic();
 
+        bool loadingResources() const;
+
         // to retrieve resources, call w/resource id
         std::shared_ptr<Texture> getTexture(std::string id) const;
         std::shared_ptr<Texture> getSpritesheet(std::string id) const;
         std::shared_ptr<Mix_Chunk> getSound(std::string id) const;
         std::shared_ptr<Mix_Music> getMusic(std::string id) const;
-        std::string getMapPath(std::string id) const;
+        std::string getResPath(std::string id) const;
 };
 
 #endif // RESMANAGER_HPP

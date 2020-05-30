@@ -3,6 +3,8 @@
 #ifndef SPLASHSTATE_HPP
 #define SPLASHSTATE_HPP
 
+#include <string>
+
 #include <SDL.h>
 #include <SDL_image.h>
 
@@ -21,17 +23,19 @@ class SplashState : public GameState {
 
         void handleEvents(MemSwap * game, const Uint8 * keyStates) override;
         void update(MemSwap * game) override;
-        void render(SDL_Renderer * renderer) override;
+        void render(SDL_Renderer * renderer) const override;
 
     private:
-        // BG texture to show while loading resources
-        Texture bgTexture;
+        Texture bgTexture;  // BG texture to show while loading resources
+        Texture advTexture; // Texture to prompt player to advance
+
+        const std::string BG_ID = "splash_bg";
+        const std::string ADV_ID = "splash_adv";
+
+        int advTextX, advTextY;
 
         bool loadingRes = false;     // if we're loading resources
         bool advance = false;       // if the user wants to advance
-
-        // Load all game resources from res/
-        void loadResources();
 };
 
 #endif // SPLASHSTATE_HPP

@@ -87,8 +87,25 @@ void Texture::setBlendMode(SDL_BlendMode blending) {
 }
 
 /// Transparency
+void Texture::updateAlpha() {
+    if(alphaIncreasing) {
+        setAlpha(textureAlpha + 1);
+
+        if(textureAlpha == ALPHA_MAX) {
+            alphaIncreasing = false;
+        }
+    } else {
+        setAlpha(textureAlpha - 1);
+
+        if(textureAlpha == 0) {
+            alphaIncreasing = true;
+        }
+    }
+}
+
 void Texture::setAlpha(Uint8 alpha) {
     SDL_SetTextureAlphaMod(texture, alpha);
+    textureAlpha = alpha;
 }
 
 int Texture::getHeight() {
