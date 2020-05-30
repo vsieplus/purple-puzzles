@@ -45,10 +45,10 @@ class ResManager {
         SDL_Renderer * renderer;
 
         // map. holding data that maps hashes of resourceType IDs -> paths
-        std::unordered_map<std::string, std::string> resourcePaths;
+        std::unordered_map<int, std::string> resourcePaths;
 
-        // stack of resourceIDs to be loaded
-        std::vector<std::string> resourcesToLoad;
+        // stack of hashes of resourceIDs to be loaded
+        std::vector<int> resourcesToLoad;
 
         // hashmaps for game resources; 
         //   key: hash of resource id (as specified in json file),
@@ -86,9 +86,9 @@ class ResManager {
         // load the next resource
         void loadNextResource();
 
-        void loadTexture(std::string resourceID, std::string resourcePath);        
-        void loadSound(std::string resourceID, std::string resourcePath);
-        void loadMusic(std::string resourceID, std::string resourcePath);
+        void loadTexture(int resourceIDHash, std::string resourcePath);        
+        void loadSound(int resourceIDHash, std::string resourcePath);
+        void loadMusic(int resourceIDHash, std::string resourcePath);
 
         void loadSpritesheets(std::string resourcePath);
         void checkTileParity(const tmx::Tileset::Tile & tile, int tilesetFirstGID);

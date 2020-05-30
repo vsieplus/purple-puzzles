@@ -33,11 +33,13 @@ void ResManager::parseJSON(std::string resourcePathsFile) {
             resPath = RES_FOLDER_NAME + PATH_SEP + jsonObj.first +
                 PATH_SEP + resPath;
 
-            resourcePaths.emplace(res.first, resPath);
+            int resHashID = resHash(res.first);
+
+            resourcePaths.emplace(resHashID, resPath);
 
             // add to stack of resources to load if not map or is 0-0 map
             if(jsonObj.first != RES_MAPS_NAME || res.first == "0-0") {
-                resourcesToLoad.push_back(res.first);
+                resourcesToLoad.push_back(resHashID);
             }
         }
     }
@@ -47,7 +49,7 @@ void ResManager::parseJSON(std::string resourcePathsFile) {
 void ResManager::loadNextResource() {
     if(!loadingResources()) return;
 
-    std::string currResID = resourcesToLoad.back();
+    int currResID = resourcesToLoad.back();
     resourcesToLoad.pop_back();
 
     std::string currResFilepath = resourcePaths.at(currResID);
@@ -67,11 +69,11 @@ void ResManager::loadNextResource() {
 }
 
 // load a standalone texture
-void ResManager::loadTexture(std::string resourceID, std::string resourcePath) {
+void ResManager::loadTexture(int resourceIDHash, std::string resourcePath) {
     std::shared_ptr<Texture> texture (new Texture());
     texture->loadTexture(resourcePath, renderer);
 
-    textures.emplace(resHash(resourceID), texture);
+    textures.emplace(resourceIDHash, texture);
 }
 
 // load a spritesheet via tutorial tiledmap (from resourcePath)
@@ -138,11 +140,11 @@ void ResManager::checkTileParity(const tmx::Tileset::Tile & tile,
     }
 }
 
-void ResManager::loadSound(std::string resourceID, std::string resourcePath) {
+void ResManager::loadSound(int resourceIDHash, std::string resourcePath) {
 //    gBeep = Mix_LoadWAV("beep.wav");
 }
 
-void ResManager::loadMusic(std::string resourceID, std::string resourcePath) {
+void ResManager::loadMusic(int resourceIDHash, std::string resourcePath) {
 //    gMusic = Mix_LoadMUS("safe.mp3");
 }
 
@@ -183,5 +185,5 @@ std::shared_ptr<Mix_Music> ResManager::getMusic(std::string id) const {
 
 // Return the actual path to the file containing the resource with ID id
 std::string ResManager::getResPath(std::string id) const {
-    return resourcePaths.at(id);
+    return resourcePaths.at(resHash(id));
 }

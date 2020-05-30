@@ -16,7 +16,9 @@ class PlayState : public GameState {
         Level level;
 
         // Texture to show in the background
-        Texture bgTexture;
+        std::shared_ptr<Texture> bgTexture;
+
+        const std::string BG_ID = "play_bg";
 
     public:
         PlayState();

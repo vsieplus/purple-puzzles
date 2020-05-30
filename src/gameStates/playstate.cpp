@@ -6,10 +6,11 @@
 PlayState::PlayState() : GameState(GAME_STATE_PLAY) {}
 
 void PlayState::enterState(MemSwap * game) {
-    level = Level("res/maps/0-0.tmx", game->getRenderer(), game);
+    std::string mapPath = game->getResManager().getResPath("1-1");
+    level = Level(mapPath, game->getRenderer(), game);
 
     // load bg texture
-    bgTexture.loadTexture("res/images/play/bg.png", game->getRenderer());
+    bgTexture = game->getResManager().getTexture(BG_ID);
 }
 
 void PlayState::exitState() {
@@ -32,7 +33,7 @@ void PlayState::update(MemSwap * game) {
 /// Render function for the game state
 void PlayState::render(SDL_Renderer * renderer) const {
     // Render background
-    bgTexture.render(0, 0, renderer);
+    bgTexture->render(0, 0, renderer);
 
     level.render(renderer);
 }
