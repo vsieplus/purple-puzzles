@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string>
 #include <exception>
+#include <memory>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -23,10 +24,12 @@ class TextureLoadException : public std::exception {
         }
 };
 
+const int ALPHA_STEP = 5;
+
 class Texture {
     private:
         // pointer to the SDL texture
-        SDL_Texture * texture = NULL;
+        std::shared_ptr<SDL_Texture> texture;
 
         int width = 0;
         int height = 0;
@@ -38,7 +41,6 @@ class Texture {
         bool alphaIncreasing = false;
     public:
         Texture();
-        ~Texture();
 
         // initializing texture from an image path
         void loadTexture(std::string path, SDL_Renderer* renderer);
@@ -46,9 +48,6 @@ class Texture {
         // initializing textual texture from an input string/font
         void loadTextTexture(std::string textureText, SDL_Color textColor, TTF_Font * font, 
             SDL_Renderer* renderer);
-
-        // free old texture
-        void freeTexture();
 
         // set texture color
         void setColor(Uint8 red, Uint8 green, Uint8 blue);
@@ -71,6 +70,7 @@ class Texture {
 
         int getHeight();
         int getWidth();
+        std::shared_ptr<SDL_Texture> getTexture();
 };
 
 #endif // TEXTURE_HPP

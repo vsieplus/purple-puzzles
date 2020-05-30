@@ -19,6 +19,7 @@
 #include "level/map.hpp"
 
 class MemSwap;
+class Texture;
 
 class Level {
     private:
@@ -47,7 +48,7 @@ class Level {
         void updateSize(const tmx::Map & map, int tileWidth, int tileHeight);
         void initGrid();
         void addEntityTiles(const tmx::TileLayer * tileLayer, 
-            const std::map<int, std::shared_ptr<SDL_Texture>> & tilesetTextures);
+            const std::map<int, std::shared_ptr<Texture>> & tilesetTextures);
 
         void flipMapTiles(int movedFromX, int movedFromY, int moveDir);
 

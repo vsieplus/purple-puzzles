@@ -71,7 +71,7 @@ void Level::render(SDL_Renderer * renderer) const {
 
 // Add entities from map to entity grid
 void Level::addEntityTiles(const tmx::TileLayer * tileLayer, 
-    const std::map<int, std::shared_ptr<SDL_Texture>> & tilesetTextures) {
+    const std::map<int, std::shared_ptr<Texture>> & tilesetTextures) {
 
 }
 

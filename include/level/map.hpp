@@ -18,6 +18,7 @@
 #include <tmxlite/TileLayer.hpp>
 
 #include "level/tile.hpp"
+#include "utils/texture.hpp"
 
 class MemSwap;
 
@@ -35,22 +36,21 @@ class Map {
         // A vector holding the background tiles for the map
         std::vector<Tile> mapTiles;
         
-        // map of pointers to textures of tilesets used in the map
+        // ptr to map of pointers to textures of tilesets used in the map
         // key: first tileset GID, val: pointer to ts texture 
-        std::map<int, std::shared_ptr<SDL_Texture>> mapTilesets;
+        std::map<int, std::shared_ptr<Texture>> * mapTilesets;
 
-        // map of tile parities for BG Tiles (Should only contain 2 elems)
+        // ptr to map of tile parities for BG Tiles (Should only contain 2 elems)
         // key: tile GID, val: Tile parity (int indicating parity) 
-        std::map<int, int> tileParities;
+        std::map<int, int> * tileParities;
 
-        // map of tileset clips for BG tiles
-        // key: tile GID, val: SDL_Rect
-        std::unordered_map<int, SDL_Rect> bgTilesetClips;
+        // ptr to map of tileset clips for map tiles
+        // key: tile GID, val: SDL_Rect representing clip in its tileset
+        std::unordered_map<int, SDL_Rect> * tilesetClips;
 
     public:
         // strings used to interface with tiledmap properties/labels
-        const static std::string BG_LAYER_NAME, ENTITY_LAYER_NAME,
-            BG_TILESET_NAME;
+        const static std::string BG_LAYER_NAME, ENTITY_LAYER_NAME;
 
         Map();
         Map(std::string tiledMapPath);
@@ -60,10 +60,6 @@ class Map {
 
         // Load map for the level
         void loadMap(SDL_Renderer * renderer, Level * level, MemSwap * game);
-        void loadTilesets(const tmx::Map & map, SDL_Renderer * renderer);
-
-        void checkTileParity(const tmx::Tileset::Tile & tile, 
-            int tilesetFirstGID);
 
         // add background tiles to the map from the given tileLayer
         void addBGTiles(const tmx::TileLayer * tileLayer, Level * level,

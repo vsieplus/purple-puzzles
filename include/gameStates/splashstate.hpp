@@ -34,7 +34,7 @@ class SplashState : public GameState {
 
         int advTextX, advTextY;
 
-        bool loadingRes = false;     // if we're loading resources
+        bool loadingRes = true;     // if we're loading resources
         bool advance = false;       // if the user wants to advance
 };
 

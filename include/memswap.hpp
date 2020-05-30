@@ -51,7 +51,7 @@ class MemSwap {
         std::vector<std::unique_ptr<GameState>> gameStates;
 
         // Resource manager for the game
-        ResManager resourceManager = ResManager(RES_PATHS_FILE);
+        ResManager resourceManager;
 
     public:
         /// Constructor

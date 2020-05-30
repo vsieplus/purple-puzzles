@@ -11,7 +11,7 @@
 
  #include "memswap.hpp"
 
-MemSwap::MemSwap() : gameStates() {
+MemSwap::MemSwap() : gameStates(), resourceManager(RES_PATHS_FILE, renderer) {
     // Initialize SDL components
     if(!(init() && initLibs())) {
         printf("Failed to initialize SDL");

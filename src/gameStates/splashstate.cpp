@@ -28,7 +28,7 @@ void SplashState::enterState(MemSwap * game) {
 
     // set advText render pos
     advTextX = (game->getScreenWidth() / 2) - (advTexture.getWidth() / 2);
-    advTextY = (game->getScreenHeight() / 2) - (advTexture.getHeight() / 2);
+    advTextY = (2 * game->getScreenHeight() / 3) - (advTexture.getHeight() / 2);
 }
 
 void SplashState::exitState() {
