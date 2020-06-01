@@ -13,13 +13,14 @@
 #include <fstream>
 
 #include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
+
 #include <nlohmann/json.hpp>
 #include <tmxlite/Map.hpp>
 
 #include "utils/texture.hpp"
 #include "utils/spritesheet.hpp"
+#include "utils/sound.hpp"
+#include "utils/music.hpp"
 
 using json = nlohmann::json;
 
@@ -61,9 +62,8 @@ class ResManager {
         std::unordered_map<int, std::shared_ptr<SpriteSheet>> spritesheets;
 
         // sound fx/music
-        // Deleters: Mix_FreeChunk/Mix_FreeMusic
-        std::unordered_map<int, std::shared_ptr<Mix_Chunk>> sounds;
-        std::unordered_map<int, std::shared_ptr<Mix_Music>> musics;
+        std::unordered_map<int, std::shared_ptr<Sound>> sounds;
+        std::unordered_map<int, std::shared_ptr<Music>> musics;
 
         // tileset names
         std::unordered_map<int, std::string> tilesetNames;
@@ -94,8 +94,8 @@ class ResManager {
         // to retrieve resources, call w/resource id
         std::shared_ptr<Texture> getTexture(std::string id) const;
         std::shared_ptr<SpriteSheet> getSpriteSheet(std::string id) const;
-        std::shared_ptr<Mix_Chunk> getSound(std::string id) const;
-        std::shared_ptr<Mix_Music> getMusic(std::string id) const;
+        std::shared_ptr<Sound> getSound(std::string id) const;
+        std::shared_ptr<Music> getMusic(std::string id) const;
         
         std::string getResPath(std::string id) const;
 };

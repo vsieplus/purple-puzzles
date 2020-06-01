@@ -107,11 +107,15 @@ void ResManager::loadSpritesheet(int resourceIDHash, std::string resourcePath) {
 }
 
 void ResManager::loadSound(int resourceIDHash, std::string resourcePath) {
-//    gBeep = Mix_LoadWAV("beep.wav");
+/*    std::shared_ptr<Sound> (resourcePath)
+      sounds.emplace(resourceIDHash, resourcePath)
+ */
 }
 
 void ResManager::loadMusic(int resourceIDHash, std::string resourcePath) {
-//    gMusic = Mix_LoadMUS("safe.mp3");
+/*    std::shared_ptr<Music> (resourcePath)
+      musics.emplace(resourceIDHash, resourcePath)
+ */
 }
 
 // return whether done loading resources
@@ -134,11 +138,11 @@ std::shared_ptr<SpriteSheet> ResManager::getSpriteSheet(std::string id) const {
 }
 
 
-std::shared_ptr<Mix_Chunk> ResManager::getSound(std::string id) const {
+std::shared_ptr<Sound> ResManager::getSound(std::string id) const {
     return sounds.at(resHash(id));
 }
 
-std::shared_ptr<Mix_Music> ResManager::getMusic(std::string id) const {
+std::shared_ptr<Music> ResManager::getMusic(std::string id) const {
     return musics.at(resHash(id));
 }
 
