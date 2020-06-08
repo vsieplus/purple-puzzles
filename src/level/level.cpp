@@ -7,75 +7,22 @@
 Level::Level() {}
 
 Level::Level(std::string tiledMapPath, SDL_Renderer * renderer, MemSwap * game) 
-    : map(tiledMapPath, renderer, this, game) {
-
-    grid[0] = std::make_shared<Player>(map.getRenderX() + 0, map.getRenderY() + 0, 
-        0, 0, renderer);
-}
-
-void Level::initGrid() {
-    for(int y = 0; y < gridHeight; y++) {
-        for(int x = 0; x < gridWidth; x++) {
-            int currIdx = xyToIndex(x,y);
-            grid[currIdx] = nullptr;
-        }
-    }
-}
+    : map(tiledMapPath, renderer, this, game) {}
 
 // Event loop (down right)
 void Level::handleEvents(const Uint8 * keyStates) {
-    for(int y = 0; y < gridHeight; y++) {
-        for(int x = 0; x < gridWidth; x++) {
-            int currIdx = xyToIndex(x,y);
-            if(grid.at(currIdx)) {
-                grid.at(currIdx)->handleEvents(keyStates, this);
-            }
-        }
-    }
+    map.handleEvents(this, keyStates);
 }
 
 // Update loop
-void Level::update() {
-    // Update the entities
-    for(int y = 0; y < gridHeight; y++) {
-        for(int x = 0; x < gridWidth; x++) {
-            int currIdx = xyToIndex(x,y);
-            if(grid.at(currIdx)) {
-                grid.at(currIdx)->update(this);
-            }
-        }
-    }
-
-    // Update the map tiles
-    map.update(this);
+void Level::update(float delta) {
+    // Update the map
+    map.update(this, delta);
 }
 
 void Level::render(SDL_Renderer * renderer) const {
     // Render the map
     map.render(renderer); 
-
-    // Render the entities in the grid
-    for(int y = 0; y < gridHeight; y++) {
-        for(int x = 0; x < gridWidth; x++) {
-            int currIdx = xyToIndex(x,y);
-            if(grid.at(currIdx)) {
-                grid.at(currIdx)->render(renderer);
-            }
-        }
-    }    
-}
-
-// Add entities from map to entity grid
-void Level::addEntityTiles(const tmx::TileLayer * tileLayer, 
-    const std::unordered_map<int, std::shared_ptr<SpriteSheet>> & tilesetTextures) {
-
-    // initialize empty grid
-    initGrid();
-
-    // add any entities to their correct location
-    auto & layerTiles = tileLayer->getTiles();
-
-
 }
 
 // flip tiles in the map for the specified movement
@@ -92,16 +39,6 @@ void Level::updateSize(const tmx::Map & map, int tileWidth, int tileHeight) {
 
     pixelWidth = tileWidth * gridWidth;
     pixelHeight = tileHeight * gridHeight;
-}
-
-int Level::xyToIndex(int x, int y) const {
-    return x + y * gridWidth;
-}
-
-std::pair<int, int> Level::indexToXY(int index) const {
-    int x = index % gridWidth;
-    int y = index / gridWidth;
-    return std::make_pair(x,y);
 }
 
 int Level::getGridWidth() const { 
@@ -124,11 +61,9 @@ const Map & Level::getMap() const {
     return map;
 }
 
-const std::unordered_map<int, std::shared_ptr<Entity>> & Level::getGrid() {
-    return grid;
-}
-
 // Move a grid element from start x,y to end
 void Level::setGridElement(int startX, int startY, int endX, int endY) {
-    grid[xyToIndex(endX, endY)] = std::move(grid[xyToIndex(startX, startY)]);
+    if(map.inBounds(startX, startY) && map.inBounds(endX, endY)) {
+        map.setGridElement(startX, startY, endX, endY);
+    }
 }

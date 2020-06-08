@@ -41,7 +41,7 @@ const std::string FONT_EXT = "son";
 
 const std::string BG_TILESET_NAME = "bgTiles";
 
-const std::string BASE_MAP_ID = "0-0";
+const std::string BASE_MAP_ID = "testing";
 
 class ResManager {
     private:

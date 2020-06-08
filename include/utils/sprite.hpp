@@ -18,6 +18,9 @@ class Sprite {
         Sprite(std::shared_ptr<Texture> spritesheet, const SDL_Rect & clip);
 
         void render(SDL_Renderer * renderer, const SDL_Rect & renderArea) const;
+
+        int getWidth() const;
+        int getHeight() const;
 };
 
 #endif // SPRITE_HPP

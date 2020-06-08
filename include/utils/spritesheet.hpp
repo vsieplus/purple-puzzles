@@ -15,8 +15,6 @@
 #include "utils/texture.hpp"
 #include "utils/sprite.hpp"
 
-const std::string TILENAME_PROPERTY = "tilename";
-
 class SpriteSheet {
     private:
         // first global ID which appears on this spritesheet
@@ -46,8 +44,8 @@ class SpriteSheet {
             return std::any_cast<T>(tileProperties.at(tileID).at(propertyName));
         }
 
-        // Get the sprite in this sheet with the specified tilename
-        std::shared_ptr<Sprite> getSprite(int tileID) const;
+        // Get the sprite in this sheet with the specified id
+        std::shared_ptr<Sprite> getSprite(int tileID);
 
         SDL_Texture * getTexture() const;
 

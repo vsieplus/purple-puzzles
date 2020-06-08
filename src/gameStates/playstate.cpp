@@ -29,7 +29,7 @@ void PlayState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
 }
 
 void PlayState::update(MemSwap * game, float delta) {
-    level.update();
+    level.update(delta);
 }
 
 /// Render function for the game state

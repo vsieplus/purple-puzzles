@@ -1,28 +1,30 @@
 // Abstract Entity class
 
 #include "entities/entity.hpp"
-#include "level/level.hpp"
 #include "level/map.hpp"
 
-Entity::Entity(int sX, int sY, int gX, int gY, std::string texturePath, 
-    SDL_Renderer * renderer) : screenX(sX), screenY(sY), gridX(gX), gridY(gY) {
-    texture.loadTexture(texturePath, renderer);
-}
+Entity::Entity(int sX, int sY, int gX, int gY, std::shared_ptr<Sprite> entitySprite) : 
+    screenX(sX), screenY(sY), gridX(gX), gridY(gY), entitySprite(entitySprite),
+    renderArea{sX, sY, entitySprite->getWidth(), entitySprite->getHeight()} {}
 
 /**
  * @brief Checks collision for current entity with the specified destination
  * 
  * @return true if there is a collision (including with the boundary)
  */
-bool Entity::checkCollision(Level * level, int destGridX, int destGridY) {
+bool Entity::checkCollision(const Map & map, int destGridX, int destGridY) {
     // Check if new position is out of bounds, treat as collision (w/wall)
-    if(!level->getMap().inBounds(destGridX, destGridY)) return true;
+    if(!map.inBounds(destGridX, destGridY)) return true;
 
     // check collision with dest position. Return true if non-null entity
     bool entityAtNewPos = 
-        level->getGrid().at(level->xyToIndex(destGridX, destGridY)) != nullptr;
+        map.getGrid().at(map.xyToIndex(destGridX, destGridY)) != nullptr;
 
     return entityAtNewPos;
+}
+
+void Entity::render(SDL_Renderer * renderer) const {
+    entitySprite->render(renderer, renderArea);
 }
 
 int Entity::getScreenX() const {

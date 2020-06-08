@@ -5,9 +5,15 @@
 #include "level/level.hpp"
 #include "level/map.hpp"
 
+
 const std::string Map::BG_LAYER_NAME = "background";
 const std::string Map::ENTITY_LAYER_NAME = "entities";
+
 const std::string Map::PARITY_PROP = "parity";
+const std::string Map::NAME_PROP = "name";
+
+const std::string Map::PLAYER_ENAME = "player";
+const std::string Map::RECEPTOR_ENAME = "receptor";
 
 // constructors
 Map::Map() {}
@@ -16,10 +22,32 @@ Map::Map(std::string tiledMapPath, SDL_Renderer * renderer, Level * level,
     loadMap(tiledMapPath, renderer, level, game);
 }
 
+// handle events
+void Map::handleEvents(Level * level, const Uint8 * keyStates) {
+    for(int y = 0; y < mapHeight; y++) {
+        for(int x = 0; x < mapWidth; x++) {
+            int currIdx = xyToIndex(x,y);
+            if(entityGrid.at(currIdx)) {
+                entityGrid.at(currIdx)->handleEvents(keyStates, level);
+            }
+        }
+    }
+}
+
 // Update each tile in the map
-void Map::update(Level * level) {
+void Map::update(Level * level, float delta) {
     for(Tile tile: mapTiles) {
         tile.update(level);
+    }
+    
+    // Update the entities
+    for(int y = 0; y < mapHeight; y++) {
+        for(int x = 0; x < mapWidth; x++) {
+            int currIdx = xyToIndex(x,y);
+            if(entityGrid.at(currIdx)) {
+                entityGrid.at(currIdx)->update(level, delta);
+            }
+        }
     }
 }
 
@@ -28,6 +56,16 @@ void Map::render(SDL_Renderer * renderer) const {
     for(Tile tile: mapTiles) {
         tile.render(renderer);
     }
+    
+    // Render the entities in the grid
+    for(int y = 0; y < mapHeight; y++) {
+        for(int x = 0; x < mapWidth; x++) {
+            int currIdx = xyToIndex(x,y);
+            if(entityGrid.at(currIdx)) {
+                entityGrid.at(currIdx)->render(renderer);
+            }
+        }
+    }    
 }
 
 // Load the map for the given level
@@ -63,20 +101,14 @@ void Map::loadMap(std::string tiledMapPath, SDL_Renderer * renderer,
             auto * tileLayer = dynamic_cast<const tmx::TileLayer*>(layer.get());
             
             // process tiles differently depending on the layer we're on
-            if(layer->getName() == BG_LAYER_NAME) {
-                // Load background tiles
-                addBGTiles(tileLayer, level, game);
-            } else if (layer->getName() == ENTITY_LAYER_NAME) {
-                // load entities into the level
-                level->addEntityTiles(tileLayer, mapSpritesheets);
-            }
+            addTiles(tileLayer, level, game, layer->getName());
         }
     }
 }
 
-// Add background tiles to the map
-void Map::addBGTiles(const tmx::TileLayer * tileLayer, Level * level, 
-    MemSwap * game) {
+// Add tiles to the map
+void Map::addTiles(const tmx::TileLayer * tileLayer, Level * level, 
+    MemSwap * game, std::string layerName) {
     
     auto & layerTiles = tileLayer->getTiles();
 
@@ -87,7 +119,7 @@ void Map::addBGTiles(const tmx::TileLayer * tileLayer, Level * level,
     // Iterate through each tile in this layer (top left corner -> down right)
     for(int y = 0; y < mapHeight; y++) {
         for(int x = 0; x < mapWidth; x++) {
-            int tileIndex = level->xyToIndex(x,y);
+            int tileIndex = xyToIndex(x,y);
 
             // Get the GID for the current tile in this layer
             int tileGID = layerTiles[tileIndex].ID;
@@ -108,21 +140,70 @@ void Map::addBGTiles(const tmx::TileLayer * tileLayer, Level * level,
             int tileID = tileGID - tilesetFirstGID;
 
             // Get position of tile in the map, centered for the given map size 
-            auto mapX = renderX + x * tileWidth;
-            auto mapY = renderY + y * tileHeight;
+            auto screenX = renderX + x * tileWidth;
+            auto screenY = renderY + y * tileHeight;
 
-            // Get parity of the BG Tile from spritesheet properties
+            // Get the spritesheet of the tile
             auto & tileSpritesheet = mapSpritesheets.at(tilesetFirstGID);
-            int tileParity = tileSpritesheet->getPropertyValue<int>(tileID, PARITY_PROP);
-            
-            // add to parityTileIDs if not yet complete
-            if(parityTileSprites.size() < 2) {
-                parityTileSprites.emplace(tileParity, tileSpritesheet->getSprite(tileID));
+
+            // Depending on the type of layer we're loading, process differently
+            if(layerName == BG_LAYER_NAME) {
+                addBGTile(screenX, screenY, tileID, tileSpritesheet);
+            } else if(layerName == ENTITY_LAYER_NAME) {
+                // initialize grid before loading first entity
+                if(entityGrid.size() == 0) initGrid();
+
+                addEntity(screenX, screenY, x, y, tileID, tileSpritesheet);
             }
-            
-            // Add new tile to mapTiles
-            mapTiles.emplace_back(mapX, mapY, tileWidth, tileHeight, 
-                tileParity, tileSpritesheet->getSprite(tileID));
+        }
+    }
+}
+
+// add a given bg tile
+void Map::addBGTile(int screenX, int screenY, int tileID, 
+    const std::shared_ptr<SpriteSheet> & tileSpritesheet) {
+    
+    // Get parity of the BG Tile from spritesheet properties
+    int tileParity = tileSpritesheet->getPropertyValue<int>(tileID, PARITY_PROP);
+    
+    // add to parityTileIDs if not yet complete
+    if(parityTileSprites.size() < 2) {
+        parityTileSprites.emplace(tileParity, tileSpritesheet->getSprite(tileID));
+    }
+    
+    // Add new tile to mapTiles
+    mapTiles.emplace_back(screenX, screenY, tileWidth, tileHeight, tileParity,
+        tileSpritesheet->getSprite(tileID));
+}
+
+void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID, 
+    const std::shared_ptr<SpriteSheet> & tileSpritesheet) {
+
+    auto entitySprite = tileSpritesheet->getSprite(tileID);
+
+    // Get name of entity to determine what entity to create
+    auto entityName = tileSpritesheet->getPropertyValue<std::string>(tileID, NAME_PROP);
+    
+    std::shared_ptr<Entity> newEntity;
+
+    if(entityName == PLAYER_ENAME) {
+        newEntity = std::make_shared<Player>(screenX, screenY, gridX, gridY, 
+            entitySprite);
+    } else if(entityName == RECEPTOR_ENAME) {
+        ///
+    } /// ...
+
+    if(newEntity.get()) {
+        entityGrid[xyToIndex(gridX, gridY)] = newEntity;
+    }
+}
+
+// init entity grid
+void Map::initGrid() {
+    for(int y = 0; y < mapHeight; y++) {
+        for(int x = 0; x < mapWidth; x++) {
+            int currIdx = xyToIndex(x,y);
+            entityGrid[currIdx] = nullptr;
         }
     }
 }
@@ -138,7 +219,7 @@ bool Map::inBounds(int x, int y) const {
 void Map::flipTile(int tileX, int tileY, int entityParity, Level * level) {
     // Check if in bounds
     if(inBounds(tileX, tileY)) {
-        Tile & currTile = mapTiles.at(level->xyToIndex(tileX, tileY));
+        Tile & currTile = mapTiles.at(xyToIndex(tileX, tileY));
 
         // skip if tile is parity-neutral/has already been flipped
         if(currTile.getTileParity() == PARITY_NONE || currTile.isFlipped()) return;
@@ -150,9 +231,29 @@ void Map::flipTile(int tileX, int tileY, int entityParity, Level * level) {
     }
 }
 
+const std::unordered_map<int, std::shared_ptr<Entity>> & Map::getGrid() const {
+    return entityGrid;
+}
+
+void Map::setGridElement(int startX, int startY, int endX, int endY) {
+    entityGrid[xyToIndex(endX, endY)] = 
+        std::move(entityGrid[xyToIndex(startX, startY)]);
+}
+
 int Map::getTileParity(int x, int y) const {
     return mapTiles.at(x + y * mapWidth).getTileParity();
 }
+
+int Map::xyToIndex(int x, int y) const {
+    return x + y * mapWidth;
+}
+
+std::pair<int, int> Map::indexToXY(int index) const {
+    int x = index % mapWidth;
+    int y = index / mapWidth;
+    return std::make_pair(x,y);
+}
+
 
 int Map::getRenderX() const {
     return renderX;
