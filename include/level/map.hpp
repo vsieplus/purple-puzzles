@@ -48,7 +48,9 @@ class Map {
         // strings used to interface with tiledmap properties/labels
         const static std::string BG_LAYER_NAME, ENTITY_LAYER_NAME;
         const static std::string PARITY_PROP, NAME_PROP;
-        const static std::string PLAYER_ENAME, RECEPTOR_ENAME;
+
+        const static std::string PLAYER_ENAME, RECEPTOR_ENAME, DIAMOND_ENAME,
+            BOOST_ENAME, PORTAL_ENAME, EXIT_ENAME;
 
         Map();
         Map(std::string tiledMapPath, SDL_Renderer * renderer, Level * level, 
@@ -82,7 +84,7 @@ class Map {
         // Get parity of tile at the specified grid location
         int getTileParity(int x, int y) const;
 
-        const std::unordered_map<int, std::shared_ptr<Entity>> & getGrid() const;
+        std::shared_ptr<Entity> getGridElement(int x, int y) const;
         void setGridElement(int startX, int startY, int endX, int endY);
 
         int getRenderX() const;

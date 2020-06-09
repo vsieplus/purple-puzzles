@@ -1,7 +1,10 @@
 // Implementation for map class
 
 #include "memswap.hpp"
+
 #include "entities/player.hpp"
+#include "entities/diamond.hpp"
+
 #include "level/level.hpp"
 #include "level/map.hpp"
 
@@ -14,6 +17,10 @@ const std::string Map::NAME_PROP = "name";
 
 const std::string Map::PLAYER_ENAME = "player";
 const std::string Map::RECEPTOR_ENAME = "receptor";
+const std::string Map::BOOST_ENAME = "boost";
+const std::string Map::EXIT_ENAME = "exit";
+const std::string Map::DIAMOND_ENAME = "diamond";
+const std::string Map::PORTAL_ENAME = "portal";
 
 // constructors
 Map::Map() {}
@@ -189,9 +196,18 @@ void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID,
     if(entityName == PLAYER_ENAME) {
         newEntity = std::make_shared<Player>(screenX, screenY, gridX, gridY, 
             entitySprite);
+    } else if(entityName == DIAMOND_ENAME) {
+        newEntity = std::make_shared<Diamond>(screenX, screenY, gridX, gridY, 
+            entitySprite, tileSpritesheet->getPropertyValue<int>(tileID, PARITY_PROP));
     } else if(entityName == RECEPTOR_ENAME) {
         ///
-    } /// ...
+    } else if(entityName == BOOST_ENAME) {
+
+    } else if(entityName == PORTAL_ENAME) {
+
+    } else if(entityName == EXIT_ENAME) {
+
+    }
 
     if(newEntity.get()) {
         entityGrid[xyToIndex(gridX, gridY)] = newEntity;
@@ -231,8 +247,8 @@ void Map::flipTile(int tileX, int tileY, int entityParity, Level * level) {
     }
 }
 
-const std::unordered_map<int, std::shared_ptr<Entity>> & Map::getGrid() const {
-    return entityGrid;
+std::shared_ptr<Entity> Map::getGridElement(int x, int y) const {
+    return entityGrid.at(xyToIndex(x,y));
 }
 
 void Map::setGridElement(int startX, int startY, int endX, int endY) {

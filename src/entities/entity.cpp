@@ -17,14 +17,37 @@ bool Entity::checkCollision(const Map & map, int destGridX, int destGridY) {
     if(!map.inBounds(destGridX, destGridY)) return true;
 
     // check collision with dest position. Return true if non-null entity
-    bool entityAtNewPos = 
-        map.getGrid().at(map.xyToIndex(destGridX, destGridY)) != nullptr;
+    bool entityAtNewPos = map.getGridElement(destGridX, destGridY) != nullptr;
 
     return entityAtNewPos;
 }
 
 void Entity::render(SDL_Renderer * renderer) const {
     entitySprite->render(renderer, renderArea);
+}
+
+// return the coordinates for the specified direction, relative to the entity
+std::pair<int, int> Entity::getCoords(Direction direction) {
+    switch(direction) {
+        case DIR_UP:
+            return std::pair<int, int> (gridX, gridY - 1);
+            break;
+        case DIR_DOWN:
+            return std::pair<int, int> (gridX, gridY + 1);
+            break;
+        case DIR_LEFT:
+            return std::pair<int, int> (gridX - 1, gridY);
+            break;
+        case DIR_RIGHT:
+            return std::pair<int, int> (gridX + 1, gridY);
+            break;
+        case DIR_NONE:
+            return std::pair<int, int> (gridX, gridY);
+            break;
+        default:
+            return std::pair<int, int> (gridX, gridY);
+            break;
+    }
 }
 
 int Entity::getScreenX() const {

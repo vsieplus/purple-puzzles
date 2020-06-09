@@ -7,6 +7,17 @@ Movable::Movable(int screenX, int screenY, int gridX, int gridY, int velocity,
     startY(screenY), endX(screenX), endY(screenY), velocity(velocity),
     movableParity(movableParity) {}
 
+void Movable::update(Level * level, float delta) {
+    // Update entity position for movement if currently moving
+    if(moving) {
+        move(level, delta);
+    } else if(moveDir != DIR_NONE) {
+        // try to initialize movement if moveDir is not DIR_NONE
+        initMovement(moveDir, level);
+        moveDir = DIR_NONE;
+    }
+}
+
 // Helper function for initMovement
 void Movable::initMovement(int direction, Level * level) {
     switch(direction) {
@@ -104,6 +115,15 @@ std::pair<int,int> Movable::lerp(int startX, int startY, int endX,
     int newY = startY + t * yChange;
 
     return std::make_pair(newX, newY);
+}
+
+// set an entity's move/buffered direction if not already set
+void Movable::setMoveDir(Direction direction) {
+    if(moveDir == DIR_NONE) {
+        moveDir = direction;
+    } else if(bufferedDir == DIR_NONE) {
+        bufferedDir = direction;
+    }
 }
 
 float Movable::getMoveProg() const {

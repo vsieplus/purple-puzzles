@@ -6,14 +6,6 @@
 #include "entities/entity.hpp"
 #include "level/tile.hpp"
 
-enum Direction {
-    DIR_NONE,
-    DIR_UP,
-    DIR_DOWN,
-    DIR_LEFT,
-    DIR_RIGHT
-};
-
 class Movable : public Entity {
     protected:
         // Movement progress + tracking
@@ -39,6 +31,8 @@ class Movable : public Entity {
         Movable(int screenX, int screenY, int gridX, int gridY, int velocity,
             std::shared_ptr<Sprite> entitySprite, int movableParity);
 
+        virtual void update(Level * level, float delta) override;    
+
         // initialize movement from a direction
         void initMovement(int direction, Level * level);
         void initMovement(int xPosChange, int yPosChange, int xGridChange, 
@@ -50,6 +44,7 @@ class Movable : public Entity {
         static std::pair<int,int> lerp(int startX, int startY, int endX,
             int endY, float t);
 
+        void setMoveDir(Direction direction);
         float getMoveProg() const;
 };
 

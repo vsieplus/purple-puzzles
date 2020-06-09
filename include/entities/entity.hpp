@@ -7,11 +7,20 @@
 
 #include <string>
 #include <memory>
+#include <utility>
 
 #include "utils/sprite.hpp"
 
 class Level;
 class Map;
+
+enum Direction {
+    DIR_NONE,
+    DIR_UP,
+    DIR_DOWN,
+    DIR_LEFT,
+    DIR_RIGHT
+};
 
 class Entity {
     protected:
@@ -39,6 +48,8 @@ class Entity {
         int getScreenY() const;
         int getGridX() const;
         int getGridY() const;
+
+        std::pair<int, int> getCoords(Direction direction);
 };
 
 #endif // ENTITY_HPP

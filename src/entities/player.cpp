@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "entities/player.hpp"
+#include "entities/diamond.hpp"
 #include "level/level.hpp"
 
 Player::Player(int screenX, int screenY, int gridX, int gridY, 
@@ -18,15 +19,14 @@ void Player::handleEvents(const Uint8 * keyStates, Level * level) {
 }
 
 void Player::update(Level * level, float delta) {
-    // Actually update player position for movement if currently moving
-    if(moving) {
-        move(level, delta);
-    } else if(moveDir != DIR_NONE) {
-        // initialize movement if moveDir is not DIR_NONE
-        initMovement(moveDir, level);
-        moveDir = DIR_NONE;
+    // try pushing diamond
+    if(pushDir != DIR_NONE) {
+        pushDiamond(level);
     }
-    
+
+    // update player movement
+    Movable::update(level, delta);
+
     // Update player parity
     //tileParity = level->getMap().getTileParity(gridX, gridY);
 }
@@ -37,7 +37,7 @@ void Player::render(SDL_Renderer* renderer) const {
     // render other player effects
 }
 
-void Player::checkMovement(const Uint8* keyStates, Level * level) {
+void Player::checkMovement(const Uint8 * keyStates, Level * level) {
     Direction newDir = DIR_NONE;
 
     // Check for key inputs
@@ -57,4 +57,26 @@ void Player::checkMovement(const Uint8* keyStates, Level * level) {
     } else {
         moveDir = newDir;
     }
+
+    // update push-dir
+    pushDir = newDir;
+}
+
+void Player::pushDiamond(Level * level) {
+    std::pair<int, int> pushCoords = getCoords(pushDir);
+
+    // check if place trying to push is inbounds
+    if(level->getMap().inBounds(pushCoords.first, pushCoords.second)) {
+        // check if entity at the coordinate is a diamond
+        auto diamond = std::dynamic_pointer_cast<Diamond>(
+            level->getMap().getGridElement(pushCoords.first, pushCoords.second));
+
+        if(diamond.get()) {
+            // set the move direction of the diamond
+            diamond->setMoveDir(pushDir);
+        }
+    }
+
+    // reset pushDir
+    pushDir = DIR_NONE;
 }
