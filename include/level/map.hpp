@@ -84,8 +84,21 @@ class Map {
         // Get parity of tile at the specified grid location
         int getTileParity(int x, int y) const;
 
-        std::shared_ptr<Entity> getGridElement(int x, int y) const;
-        void setGridElement(int startX, int startY, int endX, int endY);
+        // check for a particular entity shared_ptr at the given tile
+        template <class T>
+        std::shared_ptr<T> getGridElement(int x, int y) const {
+            std::shared_ptr<T> gridElement;
+            if(inBounds(x, y)) {
+                gridElement = std::dynamic_pointer_cast<T>(
+                    entityGrid.at(xyToIndex(x, y)));
+            }
+
+            return gridElement;
+        }
+
+        // functions for modifying grid elements
+        void moveGridElement(int startX, int startY, int endX, int endY);
+        void removeGridElement(int x, int y);
 
         int getRenderX() const;
         int getRenderY() const;

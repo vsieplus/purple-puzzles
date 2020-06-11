@@ -17,7 +17,8 @@ bool Entity::checkCollision(const Map & map, int destGridX, int destGridY) {
     if(!map.inBounds(destGridX, destGridY)) return true;
 
     // check collision with dest position. Return true if non-null entity
-    bool entityAtNewPos = map.getGridElement(destGridX, destGridY) != nullptr;
+    bool entityAtNewPos = 
+        map.getGridElement<Entity>(destGridX, destGridY) != nullptr;
 
     return entityAtNewPos;
 }

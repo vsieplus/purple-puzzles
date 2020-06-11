@@ -75,7 +75,7 @@ void Movable::initMovement(int xPosChange, int yPosChange, int xGridChange,
     gridY = newGridY; 
 
     // Update pos. of ptr in the level grid
-    level->setGridElement(oldGridX, oldGridY, gridX, gridY);
+    level->moveGridElement(oldGridX, oldGridY, gridX, gridY);
 }
 
 // Move the player
@@ -94,7 +94,7 @@ void Movable::move(Level * level, float delta) {
         renderArea.x = screenX;
         renderArea.y = screenY;
     } else {
-        // Check if a move is buffered
+        // When current move is finished check if a move is buffered
         if(bufferedDir != DIR_NONE) {
             initMovement(bufferedDir, level);
             bufferedDir = DIR_NONE;

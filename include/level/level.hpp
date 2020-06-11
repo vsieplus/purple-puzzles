@@ -43,8 +43,8 @@ class Level {
         int getPixelWidth() const;
         int getPixelHeight() const;
 
-        const Map & getMap() const;
-        void setGridElement(int startX, int startY, int endX, int endY);
+        Map & getMap();
+        void moveGridElement(int startX, int startY, int endX, int endY);
 };
 
 #endif // LEVEL_HPP

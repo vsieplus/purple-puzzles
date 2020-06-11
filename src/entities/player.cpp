@@ -65,16 +65,13 @@ void Player::checkMovement(const Uint8 * keyStates, Level * level) {
 void Player::pushDiamond(Level * level) {
     std::pair<int, int> pushCoords = getCoords(pushDir);
 
-    // check if place trying to push is inbounds
-    if(level->getMap().inBounds(pushCoords.first, pushCoords.second)) {
-        // check if entity at the coordinate is a diamond
-        auto diamond = std::dynamic_pointer_cast<Diamond>(
-            level->getMap().getGridElement(pushCoords.first, pushCoords.second));
+    // check if entity at the coordinate is a diamond
+    auto diamond = level->getMap().getGridElement<Diamond>(pushCoords.first,
+        pushCoords.second);
 
-        if(diamond.get()) {
-            // set the move direction of the diamond
-            diamond->setMoveDir(pushDir);
-        }
+    if(diamond.get()) {
+        // set the move direction of the diamond
+        diamond->setMoveDir(pushDir);
     }
 
     // reset pushDir

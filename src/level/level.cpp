@@ -57,13 +57,13 @@ int Level::getPixelHeight() const {
     return pixelHeight;
 }
 
-const Map & Level::getMap() const {
+Map & Level::getMap() {
     return map;
 }
 
 // Move a grid element from start x,y to end
-void Level::setGridElement(int startX, int startY, int endX, int endY) {
+void Level::moveGridElement(int startX, int startY, int endX, int endY) {
     if(map.inBounds(startX, startY) && map.inBounds(endX, endY)) {
-        map.setGridElement(startX, startY, endX, endY);
+        map.moveGridElement(startX, startY, endX, endY);
     }
 }

@@ -6,7 +6,6 @@
 #include <utility>
 #include <SDL.h>
 
-#include "utils/texture.hpp"
 #include "entities/movable.hpp"
 
 class Player : public Movable {

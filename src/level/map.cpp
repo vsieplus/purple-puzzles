@@ -4,6 +4,7 @@
 
 #include "entities/player.hpp"
 #include "entities/diamond.hpp"
+#include "entities/receptor.hpp"
 
 #include "level/level.hpp"
 #include "level/map.hpp"
@@ -200,7 +201,8 @@ void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID,
         newEntity = std::make_shared<Diamond>(screenX, screenY, gridX, gridY, 
             entitySprite, tileSpritesheet->getPropertyValue<int>(tileID, PARITY_PROP));
     } else if(entityName == RECEPTOR_ENAME) {
-        ///
+        newEntity = std::make_shared<Receptor>(screenX, screenY, gridX, gridY, 
+            entitySprite);
     } else if(entityName == BOOST_ENAME) {
 
     } else if(entityName == PORTAL_ENAME) {
@@ -247,17 +249,25 @@ void Map::flipTile(int tileX, int tileY, int entityParity, Level * level) {
     }
 }
 
-std::shared_ptr<Entity> Map::getGridElement(int x, int y) const {
-    return entityGrid.at(xyToIndex(x,y));
+void Map::moveGridElement(int startX, int startY, int endX, int endY) {
+    if(inBounds(startX, startY) && inBounds(endX, endY)) {
+        entityGrid[xyToIndex(endX, endY)] = 
+            std::move(entityGrid[xyToIndex(startX, startY)]);
+    }
 }
 
-void Map::setGridElement(int startX, int startY, int endX, int endY) {
-    entityGrid[xyToIndex(endX, endY)] = 
-        std::move(entityGrid[xyToIndex(startX, startY)]);
+void Map::removeGridElement(int x, int y) {
+    if(inBounds(x,y)) {
+        entityGrid.at(xyToIndex(x,y)).reset();
+    }
 }
 
 int Map::getTileParity(int x, int y) const {
-    return mapTiles.at(x + y * mapWidth).getTileParity();
+    if(inBounds(x, y)) {
+        return mapTiles.at(x + y * mapWidth).getTileParity();
+    }
+    
+    return PARITY_NONE;
 }
 
 int Map::xyToIndex(int x, int y) const {

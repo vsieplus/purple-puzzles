@@ -15,8 +15,8 @@ class Movable : public Entity {
 
         int startX, startY, endX, endY;   // Start and end positions for movement
 
-        Direction moveDir = DIR_NONE;     // direction of player's move
-        Direction bufferedDir = DIR_NONE; // direction of player's buffered move
+        Direction moveDir = DIR_NONE;     // direction of entity's move
+        Direction bufferedDir = DIR_NONE; // direction of entity's buffered move
         int bufferedX = 0;                // buffered movement position
         int bufferedY = 0;
 
