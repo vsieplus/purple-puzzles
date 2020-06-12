@@ -5,6 +5,8 @@
 #include "entities/diamond.hpp"
 #include "entities/receptor.hpp"
 
+const std::string Diamond::DIAMOND_SHAPE = "diamond";
+
 Diamond::Diamond(int screenX, int screenY, int gridX, int gridY, int parity,
     std::shared_ptr<Sprite> entitySprite) : Movable(screenX,
     screenY, gridX, gridY, DIAMOND_VELOCITY, parity, entitySprite) {
@@ -50,7 +52,8 @@ void Diamond::checkReceptor(Level * level, Direction direction) {
     auto receptor = level->getMap().getGridElement<Receptor>(pushCoords.first,
         pushCoords.second);
 
-    if(receptor.get() && !receptor->isCompleted()) {
+    // check that receptor is not yet completed + has the correct shape
+    if(receptor.get() && !receptor->isCompleted() && receptor->getShape() == DIAMOND_SHAPE) {
         merging = true;
         receptor->setCompleted(true);
 

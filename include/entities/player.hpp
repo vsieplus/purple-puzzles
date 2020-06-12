@@ -15,6 +15,8 @@ class Player : public Movable {
         Direction pushDir = DIR_NONE;
 
     public:
+        const static std::string PLAYER_SHAPE;
+
         Player(int screenX, int screenY, int gridX, int gridY, int parity,
             std::shared_ptr<Sprite> entitySprite);
 
@@ -28,6 +30,9 @@ class Player : public Movable {
 
         // try to push a diamond
         void pushDiamond(Level * level);
+
+        // check for exit/determine if level is complete
+        void checkExit(Level * level, Direction direction);
 };
 
 #endif // PLAYER_HPP

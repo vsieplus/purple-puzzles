@@ -121,7 +121,7 @@
   </tile>
   <tile id="16">
    <properties>
-    <property name="name" value="boost"/>
+    <property name="name" value="receptor"/>
     <property name="parity" type="int" value="2"/>
     <property name="shape" value="player"/>
    </properties>
@@ -173,7 +173,7 @@
   </tile>
   <tile id="24">
    <properties>
-    <property name="name" value="boost"/>
+    <property name="name" value="receptor"/>
     <property name="parity" type="int" value="1"/>
     <property name="shape" value="player"/>
    </properties>
@@ -231,7 +231,7 @@
  </layer>
  <layer id="4" name="entities" width="20" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBj+wA+IHdHEPEnQH4TGDyDDDej200vvSADo8UMIgMLTHY+8Gwnm0Ar4MpDur5EAAAuyA/0=
+   eJxjYBj+wA+IHdHEPEnQH4TGDyDDDSD7A8nQB9NLK0CumwYTQI8fQgAUnu545N1IMIdWwJeBdH8NJKA0LNDjAzmPIYcDAB7cBck=
   </data>
  </layer>
 </map>

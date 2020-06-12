@@ -47,7 +47,8 @@ class Map {
     public:
         // strings used to interface with tiledmap properties/labels
         const static std::string BG_LAYER_NAME, ENTITY_LAYER_NAME;
-        const static std::string PARITY_PROP, NAME_PROP, DIR_PROP, POWER_PROP;
+        const static std::string PARITY_PROP, NAME_PROP, DIR_PROP, POWER_PROP,
+            SHAPE_PROP;
 
         const static std::string PLAYER_ENAME, RECEPTOR_ENAME, DIAMOND_ENAME,
             BOOST_ENAME, PORTAL_ENAME, EXIT_ENAME;

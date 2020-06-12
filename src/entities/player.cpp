@@ -3,8 +3,11 @@
 #include <stdlib.h>
 
 #include "entities/player.hpp"
+#include "entities/receptor.hpp"
 #include "entities/diamond.hpp"
 #include "level/level.hpp"
+
+const std::string Player::PLAYER_SHAPE = "player";
 
 Player::Player(int screenX, int screenY, int gridX, int gridY, int parity,
     std::shared_ptr<Sprite> entitySprite) :
@@ -77,4 +80,15 @@ void Player::pushDiamond(Level * level) {
 
     // reset pushDir
     pushDir = DIR_NONE;
+}
+
+// check for exit/determine if level is complete
+void Player::checkExit(Level * level, Direction direction) {
+    auto coords = getCoords(direction);
+    auto exit = level->getMap().getGridElement<Receptor>(coords.first, coords.second);
+
+    // if receptor is of player shape, proceed to check if game over
+    if(exit.get() && exit->getShape() == PLAYER_SHAPE) {
+
+    }
 }

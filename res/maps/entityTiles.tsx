@@ -107,7 +107,7 @@
  </tile>
  <tile id="16">
   <properties>
-   <property name="name" value="boost"/>
+   <property name="name" value="receptor"/>
    <property name="parity" type="int" value="2"/>
    <property name="shape" value="player"/>
   </properties>
@@ -159,7 +159,7 @@
  </tile>
  <tile id="24">
   <properties>
-   <property name="name" value="boost"/>
+   <property name="name" value="receptor"/>
    <property name="parity" type="int" value="1"/>
    <property name="shape" value="player"/>
   </properties>

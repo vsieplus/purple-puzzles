@@ -17,6 +17,8 @@ class Diamond : public Movable {
         std::shared_ptr<Receptor> dReceptor;
 
     public:
+        const static std::string DIAMOND_SHAPE;
+
         Diamond(int screenX, int screenY, int gridX, int gridY, int parity,
             std::shared_ptr<Sprite> entitySprite);
 

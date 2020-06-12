@@ -18,6 +18,7 @@ const std::string Map::PARITY_PROP = "parity";
 const std::string Map::NAME_PROP = "name";
 const std::string Map::DIR_PROP = "direction";
 const std::string Map::POWER_PROP = "power";
+const std::string Map::SHAPE_PROP = "shape";
 
 const std::string Map::PLAYER_ENAME = "player";
 const std::string Map::RECEPTOR_ENAME = "receptor";
@@ -32,7 +33,7 @@ Map::Map(std::string tiledMapPath, SDL_Renderer * renderer, Level * level,
     loadMap(tiledMapPath, renderer, level, game);
 }
 
-// handle events
+// handle events (top left -> down right)
 void Map::handleEvents(Level * level, const Uint8 * keyStates) {
     for(int y = 0; y < mapHeight; y++) {
         for(int x = 0; x < mapWidth; x++) {
@@ -203,8 +204,10 @@ void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID,
         newEntity = std::make_shared<Diamond>(screenX, screenY, gridX, gridY, 
             parity, entitySprite);
     } else if(entityName == RECEPTOR_ENAME) {
+        auto shape = spritesheet->getPropertyValue<std::string>(tileID, SHAPE_PROP);
+
         newEntity = std::make_shared<Receptor>(screenX, screenY, gridX, gridY, 
-            parity, entitySprite);
+            parity, entitySprite, shape);
     } else if(entityName == BOOST_ENAME) {
         // get direction/power properties for boost
         int power = spritesheet->getPropertyValue<int>(tileID, POWER_PROP);

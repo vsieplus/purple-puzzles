@@ -3,8 +3,8 @@
 #include "entities/receptor.hpp"
 
 Receptor::Receptor(int screenX, int screenY, int gridX, int gridY, int parity,
-    std::shared_ptr<Sprite> entitySprite) : Entity(screenX, screenY, gridX,
-    gridY, parity, entitySprite) {}
+    std::shared_ptr<Sprite> entitySprite, std::string shape) : Entity(screenX, 
+    screenY, gridX, gridY, parity, entitySprite), shape(shape) {}
 
 
 void Receptor::handleEvents(const Uint8 * keyStates, Level * level) {
@@ -29,4 +29,8 @@ void Receptor::setCompleted(bool completed) {
 
 bool Receptor::isCompleted() const {
     return completed;
+}
+
+std::string Receptor::getShape() const {
+    return shape;
 }
