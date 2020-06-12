@@ -12,8 +12,9 @@ Player::Player(int screenX, int screenY, int gridX, int gridY,
         PARITY_PURPLE) {}
 
 void Player::handleEvents(const Uint8 * keyStates, Level * level) {
-    // Check if player wants to start moving or  buffer a move
-    if(!moving || (moveProg > MOVEMENT_BUFFER && bufferedDir == DIR_NONE)) {
+    // Check if player wants to start moving or buffer a move, when not boosted
+    if((!moving || (moveProg > MOVEMENT_BUFFER && bufferedDir == DIR_NONE)) &&
+        boostPower == 0) {
         checkMovement(keyStates, level);
     }
 }
@@ -32,7 +33,7 @@ void Player::update(Level * level, float delta) {
 }
 
 void Player::render(SDL_Renderer* renderer) const {
-    Entity::render(renderer);
+    Movable::render(renderer);
     
     // render other player effects
 }

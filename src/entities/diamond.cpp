@@ -36,7 +36,7 @@ void Diamond::render(SDL_Renderer* renderer) const {
         dReceptor->render(renderer);
     }
     
-    Entity::render(renderer);
+    Movable::render(renderer);
 }
 
 void Diamond::checkReceptor(Level * level) {

@@ -5,6 +5,7 @@
 #include "entities/player.hpp"
 #include "entities/diamond.hpp"
 #include "entities/receptor.hpp"
+#include "entities/boost.hpp"
 
 #include "level/level.hpp"
 #include "level/map.hpp"
@@ -15,6 +16,8 @@ const std::string Map::ENTITY_LAYER_NAME = "entities";
 
 const std::string Map::PARITY_PROP = "parity";
 const std::string Map::NAME_PROP = "name";
+const std::string Map::DIR_PROP = "direction";
+const std::string Map::POWER_PROP = "power";
 
 const std::string Map::PLAYER_ENAME = "player";
 const std::string Map::RECEPTOR_ENAME = "receptor";
@@ -169,28 +172,28 @@ void Map::addTiles(const tmx::TileLayer * tileLayer, Level * level,
 
 // add a given bg tile
 void Map::addBGTile(int screenX, int screenY, int tileID, 
-    const std::shared_ptr<SpriteSheet> & tileSpritesheet) {
+    const std::shared_ptr<SpriteSheet> & spritesheet) {
     
     // Get parity of the BG Tile from spritesheet properties
-    int tileParity = tileSpritesheet->getPropertyValue<int>(tileID, PARITY_PROP);
+    int tileParity = spritesheet->getPropertyValue<int>(tileID, PARITY_PROP);
     
     // add to parityTileIDs if not yet complete
     if(parityTileSprites.size() < 2) {
-        parityTileSprites.emplace(tileParity, tileSpritesheet->getSprite(tileID));
+        parityTileSprites.emplace(tileParity, spritesheet->getSprite(tileID));
     }
     
     // Add new tile to mapTiles
     mapTiles.emplace_back(screenX, screenY, tileWidth, tileHeight, tileParity,
-        tileSpritesheet->getSprite(tileID));
+        spritesheet->getSprite(tileID));
 }
 
 void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID, 
-    const std::shared_ptr<SpriteSheet> & tileSpritesheet) {
+    const std::shared_ptr<SpriteSheet> & spritesheet) {
 
-    auto entitySprite = tileSpritesheet->getSprite(tileID);
+    auto entitySprite = spritesheet->getSprite(tileID);
 
     // Get name of entity to determine what entity to create
-    auto entityName = tileSpritesheet->getPropertyValue<std::string>(tileID, NAME_PROP);
+    auto entityName = spritesheet->getPropertyValue<std::string>(tileID, NAME_PROP);
     
     std::shared_ptr<Entity> newEntity;
 
@@ -199,12 +202,17 @@ void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID,
             entitySprite);
     } else if(entityName == DIAMOND_ENAME) {
         newEntity = std::make_shared<Diamond>(screenX, screenY, gridX, gridY, 
-            entitySprite, tileSpritesheet->getPropertyValue<int>(tileID, PARITY_PROP));
+            entitySprite, spritesheet->getPropertyValue<int>(tileID, PARITY_PROP));
     } else if(entityName == RECEPTOR_ENAME) {
         newEntity = std::make_shared<Receptor>(screenX, screenY, gridX, gridY, 
             entitySprite);
     } else if(entityName == BOOST_ENAME) {
+        // get direction/power properties for boost
+        int power = spritesheet->getPropertyValue<int>(tileID, POWER_PROP);
+        int direction = spritesheet->getPropertyValue<int>(tileID, DIR_PROP);
 
+        newEntity = std::make_shared<Boost>(screenX, screenY, gridX, gridY,
+            entitySprite, power, direction);
     } else if(entityName == PORTAL_ENAME) {
 
     } else if(entityName == EXIT_ENAME) {

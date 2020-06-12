@@ -8,18 +8,34 @@ Movable::Movable(int screenX, int screenY, int gridX, int gridY, int velocity,
     movableParity(movableParity) {}
 
 void Movable::update(Level * level, float delta) {
+    // update booster if being booster
+    if(boostPower > 0 && booster.get()) {
+        booster->update(level, delta);
+    }
+
     // Update entity position for movement if currently moving
     if(moving) {
         move(level, delta);
     } else if(moveDir != DIR_NONE) {
+        // check for boost
+        checkBoost(level, moveDir);
+        
         // try to initialize movement if moveDir is not DIR_NONE
         initMovement(moveDir, level);
         moveDir = DIR_NONE;
     }
 }
 
+void Movable::render(SDL_Renderer* renderer) const {
+    if(boostPower > 0 && booster.get()) {
+        booster->render(renderer);
+    }
+
+    Entity::render(renderer);
+}
+
 // Helper function for initMovement
-void Movable::initMovement(int direction, Level * level) {
+void Movable::initMovement(Direction direction, Level * level) {
     switch(direction) {
         case DIR_UP:
             initMovement(0, -entitySprite->getHeight(), 0, -1, direction, level);
@@ -32,7 +48,9 @@ void Movable::initMovement(int direction, Level * level) {
             break;
         case DIR_RIGHT:
             initMovement(entitySprite->getWidth(), 0, 1, 0, direction, level);
-            break;                        
+            break;
+        case DIR_NONE:
+            break;                    
     }
 }
 
@@ -96,11 +114,52 @@ void Movable::move(Level * level, float delta) {
     } else {
         // When current move is finished check if a move is buffered
         if(bufferedDir != DIR_NONE) {
+            checkBoost(level, bufferedDir);
             initMovement(bufferedDir, level);
+
             bufferedDir = DIR_NONE;
+        } else if(boostDir != DIR_NONE) {
+            // if currently using boost status, decrease by 1 each time
+            if(boostPower > 0) {
+                boostPower--;
+                
+                initMovement(boostDir, level);
+                checkBoost(level, boostDir);
+            } else {
+                // otherwise reset boost dir./booster
+                booster.reset();
+                boostDir = DIR_NONE;
+            }
         } else {
             moving = false;
         }
+    }
+}
+
+// check for a boost in the specified direction, and interact accordingly
+void Movable::checkBoost(Level * level, Direction direction) {
+    // check coordinate in direction of move
+    auto checkCoords = getCoords(direction);
+
+    auto boost = level->getMap().getGridElement<Boost>(checkCoords.first,
+        checkCoords.second);
+    
+    // if there is a boost in the tile we want to move to, activate it
+    if(boost.get()) {
+        // remove booster from map/store
+        booster = boost;
+        level->getMap().removeGridElement(boost->getGridX(), boost->getGridY());
+
+        boost->setActivated(true);
+
+        // if currently boosted, finish last boost
+        if(boostPower > 0) { 
+            initMovement(boostDir, level);    
+        }
+
+        // store boost power and direction, overwriting any existing boosts
+        boostPower = boost->getPower();
+        boostDir = boost->getDirection();
     }
 }
 

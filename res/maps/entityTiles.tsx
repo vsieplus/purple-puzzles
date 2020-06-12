@@ -34,7 +34,7 @@
    <property name="direction" type="int" value="4"/>
    <property name="name" value="boost"/>
    <property name="parity" type="int" value="1"/>
-   <property name="power" type="int" value="2"/>
+   <property name="power" type="int" value="20"/>
   </properties>
  </tile>
  <tile id="7">
@@ -42,7 +42,7 @@
    <property name="direction" type="int" value="2"/>
    <property name="name" value="boost"/>
    <property name="parity" type="int" value="1"/>
-   <property name="power" type="int" value="2"/>
+   <property name="power" type="int" value="20"/>
   </properties>
  </tile>
  <tile id="8">
@@ -71,7 +71,7 @@
  </tile>
  <tile id="12">
   <properties>
-   <property name="direction" value="4"/>
+   <property name="direction" type="int" value="4"/>
    <property name="name" value="boost"/>
    <property name="parity" type="int" value="1"/>
    <property name="power" type="int" value="1"/>
@@ -90,7 +90,7 @@
    <property name="direction" type="int" value="1"/>
    <property name="name" value="boost"/>
    <property name="parity" type="int" value="1"/>
-   <property name="power" type="int" value="2"/>
+   <property name="power" type="int" value="20"/>
   </properties>
  </tile>
  <tile id="15">
@@ -98,7 +98,7 @@
    <property name="direction" type="int" value="3"/>
    <property name="name" value="boost"/>
    <property name="parity" type="int" value="1"/>
-   <property name="power" type="int" value="2"/>
+   <property name="power" type="int" value="20"/>
   </properties>
  </tile>
  <tile id="16">
@@ -140,7 +140,7 @@
    <property name="direction" type="int" value="4"/>
    <property name="name" value="boost"/>
    <property name="parity" type="int" value="2"/>
-   <property name="power" type="int" value="2"/>
+   <property name="power" type="int" value="20"/>
   </properties>
  </tile>
  <tile id="23">
@@ -148,7 +148,7 @@
    <property name="direction" type="int" value="2"/>
    <property name="name" value="boost"/>
    <property name="parity" type="int" value="2"/>
-   <property name="power" type="int" value="2"/>
+   <property name="power" type="int" value="20"/>
   </properties>
  </tile>
  <tile id="24">
@@ -190,7 +190,7 @@
    <property name="direction" type="int" value="1"/>
    <property name="name" value="boost"/>
    <property name="parity" type="int" value="2"/>
-   <property name="power" type="int" value="2"/>
+   <property name="power" type="int" value="20"/>
   </properties>
  </tile>
  <tile id="31">
@@ -198,7 +198,7 @@
    <property name="direction" type="int" value="3"/>
    <property name="name" value="boost"/>
    <property name="parity" type="int" value="2"/>
-   <property name="power" type="int" value="2"/>
+   <property name="power" type="int" value="20"/>
   </properties>
  </tile>
 </tileset>
