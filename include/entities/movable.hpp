@@ -39,7 +39,6 @@ class Movable : public Entity {
 
         std::string movableShape;
 
-
     public:
         Movable(int screenX, int screenY, int gridX, int gridY, int velocity,
             int parity, std::shared_ptr<Sprite> entitySprite, 
@@ -58,7 +57,7 @@ class Movable : public Entity {
 
         // check for a boost entity
         bool checkBoost(Level * level, Direction direction);
-        bool checkReceptor(Level * level, Direction direction);
+        void checkReceptor(Level * level, Direction direction);
 
         static std::pair<int,int> lerp(int startX, int startY, int endX,
             int endY, float t);

@@ -55,6 +55,9 @@ void Level::checkComplete() {
     // check if each tile parity matches purple parity
     for(int y = 0; y < gridHeight; y++) {
         for(int x = 0; x < gridWidth; x++) {
+            // skip checking the exit receptor tile
+            if(map.xyToIndex(x, y) == map.getExitIndex()) continue;
+
             // if some tile isn't flipped, level has not been succesfully completed
             if(getTileParity(x, y) != PARITY_PURPLE) {
                 return;

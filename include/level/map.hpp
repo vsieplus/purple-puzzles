@@ -32,6 +32,8 @@ class Map {
 
         int renderX, renderY;            // x,y on the screen to render map
 
+        int exitIndex;                   // index of the exit tile
+
         // A vector holding the background tiles for the map
         std::vector<Tile> mapTiles;
 
@@ -101,6 +103,7 @@ class Map {
         void moveGridElement(int startX, int startY, int endX, int endY);
         void removeGridElement(int x, int y);
 
+        int getExitIndex() const;
         int getRenderX() const;
         int getRenderY() const;
 

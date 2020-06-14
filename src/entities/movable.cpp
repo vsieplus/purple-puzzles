@@ -27,7 +27,9 @@ void Movable::update(Level * level, float delta) {
             initMovement(moveDir, level);
             moveDir = DIR_NONE;
         }
-    } else if(merging) {
+    } 
+    
+    if(merging) {
         // if merging, update receptor, and then do 'merge' animation
         mReceptor->update(level, delta);
     }
@@ -105,6 +107,9 @@ void Movable::initMovement(int xPosChange, int yPosChange, int xGridChange,
 
     // Update pos. of ptr in the level grid
     level->moveGridElement(oldGridX, oldGridY, gridX, gridY);
+
+    // if merging with receptor, flip new tile (that entity just moved to)
+    if(merging) level->flipMapTiles(gridX, gridY, parity);
 }
 
 // Move the player
@@ -131,7 +136,7 @@ void Movable::move(Level * level, float delta) {
             // if there is, avoid boosting 2x in that direction
             if(!checkBoost(level, moveDir)) {
                 initMovement(moveDir, level);
-                boostPower--;            
+                boostPower--;
             }
         } else {
             moveDir = DIR_NONE;
@@ -174,7 +179,7 @@ bool Movable::checkBoost(Level * level, Direction direction) {
 
 
 // handle interaction between a movable entity/its receptor
-bool Movable::checkReceptor(Level * level, Direction direction) {
+void Movable::checkReceptor(Level * level, Direction direction) {
     std::pair<int, int> coords = getCoords(direction);
 
     // check for receptor at tile we're going to check
@@ -191,11 +196,7 @@ bool Movable::checkReceptor(Level * level, Direction direction) {
 
         // stop movement after next move if boosting
         boostPower = boostPower > 0 ? 1 : 0;
-        
-        return true;
     }
-
-    return false;
 }
 
 // Linear interpolation from current position to <endX, endY>

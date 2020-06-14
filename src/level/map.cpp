@@ -58,6 +58,8 @@ void Map::update(Level * level, float delta) {
             if(entityGrid.at(currIdx)) {
                 entityGrid.at(currIdx)->update(level, delta);
             }
+
+            // if level has been compl
         }
     }
 }
@@ -208,6 +210,9 @@ void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID,
 
         newEntity = std::make_shared<Receptor>(screenX, screenY, gridX, gridY, 
             parity, entitySprite, shape);
+
+        // receptor with "player" shape is the exit portal, store index
+        if(shape == Player::PLAYER_SHAPE) exitIndex = xyToIndex(gridX, gridY);
     } else if(entityName == BOOST_ENAME) {
         // get direction/power properties for boost
         int power = spritesheet->getPropertyValue<int>(tileID, POWER_PROP);
@@ -288,6 +293,9 @@ std::pair<int, int> Map::indexToXY(int index) const {
     return std::make_pair(x,y);
 }
 
+int Map::getExitIndex() const {
+    return exitIndex;
+}
 
 int Map::getRenderX() const {
     return renderX;

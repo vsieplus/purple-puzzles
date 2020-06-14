@@ -22,14 +22,20 @@ void Player::handleEvents(const Uint8 * keyStates, Level * level) {
 }
 
 void Player::update(Level * level, float delta) {
-    // check for entity interaction if player tried to move
-    if(moveDir != DIR_NONE || bufferedDir != DIR_NONE) {
+    // check for entity interaction if player tried to move + isn't boosted
+    if((moveDir != DIR_NONE || bufferedDir != DIR_NONE) && boostPower == 0) {
         pushDiamond(level);
 
-        // if player not moving + merges w/receptor, check if level is complete
-        if(!moving && checkReceptor(level, moveDir)) {
-            level->checkComplete();
+        if(!moving) {
+            // otherwise check for a receptor in move direction
+            checkReceptor(level, moveDir);
+        } else {
+            // check receptor in bufferedDir if currently moving
+            checkReceptor(level, bufferedDir);
         }
+    } else if(merging) {
+        // if player not moving + is merging, check if level is complete
+        if(!level->isCompleted()) level->checkComplete();
     }
 
     // update player movement

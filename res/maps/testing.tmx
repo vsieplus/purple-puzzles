@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.5" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="3">
+<map version="1.2" tiledversion="1.3.5" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="3">
  <tileset firstgid="1" name="bgTiles" tilewidth="32" tileheight="32" tilecount="64" columns="8">
   <image source="../spritesheets/levelSpritesheet.png" width="256" height="256"/>
   <tile id="0">
@@ -226,12 +226,12 @@
  </tileset>
  <layer id="1" name="background" width="20" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYmBgYBoAzEiiWmyYEvMGyi+0CBtC+og1Dz1sKfUXvviihpnUDPPBHMcDZR4hTM/wh2EAMssCNA==
+   eJxjZGBgYByBmAkLprb52OyjpnnUdt9gCk9SzCPGLmzm4cP0TIujmHgMABp9AVA=
   </data>
  </layer>
  <layer id="4" name="entities" width="20" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBj+wA+IHdHEPEnQH4TGDyDDDSD7A8nQB9NLK0CumwYTQI8fQgAUnu545N1IMIdWwJeBdH8NJKA0LNDjAzmPIYcDAB7cBck=
+   eJxjYBiZwHMA7AwcADtHAggiUb0jELvjkXejwC2jgLYAABXsAbs=
   </data>
  </layer>
 </map>
