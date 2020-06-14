@@ -31,7 +31,7 @@ void Player::update(Level * level, float delta) {
     Movable::update(level, delta);
 
     // Update player parity
-    //tileParity = level->getMap().getTileParity(gridX, gridY);
+    //tileParity = level->getTileParity(gridX, gridY);
 }
 
 void Player::render(SDL_Renderer* renderer) const {
@@ -69,7 +69,7 @@ void Player::pushDiamond(Level * level) {
     std::pair<int, int> pushCoords = getCoords(pushDir);
 
     // check if entity at the coordinate is a diamond
-    auto diamond = level->getMap().getGridElement<Diamond>(pushCoords.first,
+    auto diamond = level->getGridElement<Diamond>(pushCoords.first,
         pushCoords.second);
 
     // set move direction of diamond if not already merging w/receptor
@@ -85,7 +85,7 @@ void Player::pushDiamond(Level * level) {
 // check for exit/determine if level is complete
 void Player::checkExit(Level * level, Direction direction) {
     auto coords = getCoords(direction);
-    auto exit = level->getMap().getGridElement<Receptor>(coords.first, coords.second);
+    auto exit = level->getGridElement<Receptor>(coords.first, coords.second);
 
     // if receptor is of player shape, proceed to check if game over
     if(exit.get() && exit->getShape() == PLAYER_SHAPE) {

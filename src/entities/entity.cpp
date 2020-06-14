@@ -2,6 +2,7 @@
 
 #include "entities/entity.hpp"
 #include "level/map.hpp"
+#include "level/level.hpp"
 
 Entity::Entity(int screenX, int screenY, int gridX, int gridY, int parity, 
     std::shared_ptr<Sprite> entitySprite) : 
@@ -19,13 +20,13 @@ Entity::Entity(int screenX, int screenY, int parity,
  * 
  * @return true if there is a collision (including with the boundary)
  */
-bool Entity::checkCollision(const Map & map, int destGridX, int destGridY) {
+bool Entity::checkCollision(Level * level, int destGridX, int destGridY) {
     // Check if new position is out of bounds, treat as collision (w/wall)
-    if(!map.inBounds(destGridX, destGridY)) return true;
+    if(!level->inBounds(destGridX, destGridY)) return true;
 
     // check collision with dest position. Return true if non-null entity
     bool entityAtNewPos = 
-        map.getGridElement<Entity>(destGridX, destGridY) != nullptr;
+        level->getGridElement<Entity>(destGridX, destGridY) != nullptr;
 
     return entityAtNewPos;
 }

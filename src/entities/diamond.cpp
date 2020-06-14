@@ -49,7 +49,7 @@ void Diamond::checkReceptor(Level * level, Direction direction) {
     std::pair<int, int> pushCoords = getCoords(direction);
 
     // check for receptor at tile we're going to check
-    auto receptor = level->getMap().getGridElement<Receptor>(pushCoords.first,
+    auto receptor = level->getGridElement<Receptor>(pushCoords.first,
         pushCoords.second);
 
     // check that receptor is not yet completed + has the correct shape
@@ -59,7 +59,7 @@ void Diamond::checkReceptor(Level * level, Direction direction) {
 
         // remove receptor from grid and track receptor from this diamond
         dReceptor = receptor;
-        level->getMap().removeGridElement(receptor->getGridX(), receptor->getGridY());
+        level->removeGridElement(receptor->getGridX(), receptor->getGridY());
 
         // stop movement after next move
         boostPower = 1;

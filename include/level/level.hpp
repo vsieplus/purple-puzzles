@@ -43,7 +43,14 @@ class Level {
         int getPixelWidth() const;
         int getPixelHeight() const;
 
-        Map & getMap();
+        template <class T>
+        std::shared_ptr<T> getGridElement(int x, int y) const {
+            return map.getGridElement<T>(x, y);
+        }
+
+        bool inBounds(int x, int y) const;
+        Parity getTileParity(int x, int y) const;
+        void removeGridElement(int x, int y);
         void moveGridElement(int startX, int startY, int endX, int endY);
 };
 

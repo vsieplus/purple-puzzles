@@ -68,8 +68,8 @@ void Movable::initMovement(int xPosChange, int yPosChange, int xGridChange,
     int newGridY = gridY + yGridChange;
 
     // Check for collisions or invalid tile movement (same tile Parity)
-    if(checkCollision((level->getMap()), newGridX, newGridY) || 
-        parity == level->getMap().getTileParity(newGridX, newGridY)) {
+    if(checkCollision(level, newGridX, newGridY) || parity == 
+       level->getTileParity(newGridX, newGridY)) {
         return;
     }
 
@@ -141,16 +141,15 @@ void Movable::move(Level * level, float delta) {
 // check for a boost in the specified direction, and interact accordingly
 bool Movable::checkBoost(Level * level, Direction direction) {
     // check coordinate in direction of move
-    auto checkCoords = getCoords(direction);
+    auto coords = getCoords(direction);
 
-    auto boost = level->getMap().getGridElement<Boost>(checkCoords.first,
-        checkCoords.second);
+    auto boost = level->getGridElement<Boost>(coords.first, coords.second);
     
     // if there is a boost in the tile we want to move to, activate it
     if(boost.get()) {
         // remove booster from map/store
         booster = boost;
-        level->getMap().removeGridElement(boost->getGridX(), boost->getGridY());
+        level->removeGridElement(boost->getGridX(), boost->getGridY());
 
         boost->setActivated(true);
 

@@ -57,13 +57,19 @@ int Level::getPixelHeight() const {
     return pixelHeight;
 }
 
-Map & Level::getMap() {
-    return map;
+bool Level::inBounds(int x, int y) const {
+    return map.inBounds(x,y);
+}
+
+Parity Level::getTileParity(int x, int y) const {
+    return map.getTileParity(x, y);
 }
 
 // Move a grid element from start x,y to end
 void Level::moveGridElement(int startX, int startY, int endX, int endY) {
-    if(map.inBounds(startX, startY) && map.inBounds(endX, endY)) {
-        map.moveGridElement(startX, startY, endX, endY);
-    }
+    map.moveGridElement(startX, startY, endX, endY);
+}
+
+void Level::removeGridElement(int x, int y) {
+    map.removeGridElement(x, y);
 }
