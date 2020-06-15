@@ -59,12 +59,28 @@ std::pair<int, int> Entity::getCoords(Direction direction) {
     }
 }
 
+void Entity::setScreenX(int x) {
+    renderArea.x = x;
+}
+
+void Entity::setScreenY(int y) {
+    renderArea.y = y;
+}
+
 int Entity::getScreenX() const {
     return renderArea.x;
 }
 
 int Entity::getScreenY() const {
     return renderArea.y;
+}
+
+void Entity::setGridX(int x) {
+    gridX = x;
+}
+
+void Entity::setGridY(int y) {
+    gridY = y;
 }
 
 int Entity::getGridX() const {

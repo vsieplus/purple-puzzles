@@ -57,6 +57,11 @@ class Entity {
 
         static bool checkCollision(Level * level, int destGridX, int destGridY);
 
+        void setScreenX(int x);
+        void setScreenY(int y);
+        void setGridX(int x);
+        void setGridY(int y);
+
         int getScreenX() const;
         int getScreenY() const;
         int getGridX() const;

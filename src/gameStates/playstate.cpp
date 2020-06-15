@@ -19,21 +19,41 @@ void PlayState::exitState() {
 }
 
 void PlayState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
-    // Check for level reset
-    if(keyStates[SDL_SCANCODE_SPACE]) {
-        //enterState(game);
-        // level.reset();
-    }
+    // Handle user selecting advance option after completing a level
+    if(level.isCompleted()) {
 
-    level.handleEvents(keyStates);
+    } else {
+        // Check for level reset
+        if(keyStates[SDL_SCANCODE_SPACE]) {
+            //enterState(game);
+            // level.reset();
+        } else if(keyStates[SDL_SCANCODE_ESCAPE]) {
+            // Check for pause
+            paused = true;
+        }
+
+        level.handleEvents(keyStates);
+    }
 }
 
 void PlayState::update(MemSwap * game, float delta) {
-    level.update(delta);
+    if(paused) {
+        game->setNextState(GAME_STATE_PAUSE);
+    } else {
+        level.update(delta);
 
-    // check if level is succesfully completed, prepare to display message
-    if(level.isCompleted()) {
-        game->setNextState(GAME_STATE_SCORE);
+        // check if level is succesfully completed
+        levelComplete = level.isCompleted();
+        if(levelComplete) {
+            // prepare to display msg to user
+
+            // check if player ready to advance to next level or return to menu
+            if(advanceLevel) {
+                
+            } else if (goToMenu) {
+                game->setNextState(GAME_STATE_MENU);
+            }
+        }
     }
 }
 
@@ -43,4 +63,17 @@ void PlayState::render(SDL_Renderer * renderer) const {
     bgTexture->render(0, 0, renderer);
 
     level.render(renderer);
+
+    // render msg over level if level is completed
+    if(levelComplete) {
+
+    }
+}
+
+void PlayState::setPaused(bool paused) {
+    this->paused = paused;
+}
+
+bool PlayState::isPaused() const {
+    return paused;
 }

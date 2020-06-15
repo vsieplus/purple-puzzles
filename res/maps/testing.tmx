@@ -226,12 +226,12 @@
  </tileset>
  <layer id="1" name="background" width="20" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYByBmAkLprb52OyjpnnUdt9gCk9SzCPGLmzm4cP0TIujmHgMABp9AVA=
+   eJxjZGBgYBximAmKCakhxgwmKplHSD0xdpBqHqVhSG3zSAlPappHjF3YzMOHKXH7KKYdBgAp0QFU
   </data>
  </layer>
  <layer id="4" name="entities" width="20" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYBiZwHMA7AwcADtHAggiUb0jELvjkXejwC2jgLYAABXsAbs=
+   eJxjYBh6IJgKajyp4RASQeAA2DkSQBCJ6h2B2B2PvBsFbhkFtAUAn8YCYQ==
   </data>
  </layer>
 </map>

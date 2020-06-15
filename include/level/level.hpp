@@ -41,7 +41,10 @@ class Level {
 
         void flipMapTiles(int movedFromX, int movedFromY, int entityParity);
         void removeGridElement(int x, int y);
+        void placeGridElement(std::shared_ptr<Entity> entity, int x, int y);
         void moveGridElement(int startX, int startY, int endX, int endY);
+
+        void placePortals();
 
         // check for level completion
         void checkComplete();

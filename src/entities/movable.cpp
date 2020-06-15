@@ -96,17 +96,11 @@ void Movable::initMovement(int xPosChange, int yPosChange, int xGridChange,
     moving = true;
     
     // Update player position
-    endX += xPosChange;
-    endY += yPosChange;
-
-    int oldGridX = gridX;
-    int oldGridY = gridY;
-    
-    gridX = newGridX;
-    gridY = newGridY; 
+    endX = startX + xPosChange;
+    endY = startY + yPosChange;
 
     // Update pos. of ptr in the level grid
-    level->moveGridElement(oldGridX, oldGridY, gridX, gridY);
+    level->moveGridElement(gridX, gridY, newGridX, newGridY);
 
     // if merging with receptor, flip new tile (that entity just moved to)
     if(merging) level->flipMapTiles(gridX, gridY, parity);
@@ -149,10 +143,7 @@ void Movable::move(Level * level, float delta) {
 
 // check for a boost in the specified direction, and interact accordingly
 bool Movable::checkBoost(Level * level, Direction direction) {
-    // check coordinate in direction of move
-    auto coords = getCoords(direction);
-
-    auto boost = level->getGridElement<Boost>(coords.first, coords.second);
+    auto boost = getEntity<Boost>(level, direction);
     
     // if there is a boost in the tile we want to move to, activate it
     if(boost.get()) {
@@ -179,11 +170,8 @@ bool Movable::checkBoost(Level * level, Direction direction) {
 
 
 // handle interaction between a movable entity/its receptor
-void Movable::checkReceptor(Level * level, Direction direction) {
-    std::pair<int, int> coords = getCoords(direction);
-
-    // check for receptor at tile we're going to check
-    auto receptor = level->getGridElement<Receptor>(coords.first, coords.second);
+void Movable::checkReceptor(Level * level) {
+    auto receptor = getEntity<Receptor>(level, currCheckDir());
 
     // check that receptor is not yet completed + has the correct shape
     if(receptor.get() && !receptor->isCompleted() && receptor->getShape() == movableShape) {
@@ -221,10 +209,19 @@ void Movable::setMoveDir(Direction direction) {
     }
 }
 
+Direction Movable::currCheckDir() const {
+    Direction currCheckDir = (moving && boostPower == 0) ? bufferedDir : moveDir;
+    return currCheckDir;
+}
+
 float Movable::getMoveProg() const {
     return moveProg; 
 }
 
 bool Movable::isMerging() const {
     return merging;
+}
+
+bool Movable::isMoving() const {
+    return moving;
 }

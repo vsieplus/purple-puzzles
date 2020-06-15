@@ -18,7 +18,7 @@ void Diamond::handleEvents(const Uint8 * keyStates, Level * level) {
 
 void Diamond::update(Level * level, float delta) {
     if(moveDir != DIR_NONE) {
-        checkReceptor(level, moveDir);
+        checkReceptor(level);
     }
 
     // normal movement

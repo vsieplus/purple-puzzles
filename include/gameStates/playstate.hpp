@@ -10,7 +10,7 @@
 #include "level/level.hpp"
 #include "utils/timer.hpp"
 
-// Singleton class for the Play State
+// Class for the Play State
 class PlayState : public GameState {
     private:
         Timer timer;
@@ -20,6 +20,14 @@ class PlayState : public GameState {
         std::shared_ptr<Texture> bgTexture;
 
         const std::string BG_ID = "play_bg";
+
+        // after a level is completed, handle user's choice
+        bool levelComplete = false;
+        bool advanceLevel = false;
+        bool goToMenu = true;
+
+        // check if paused
+        bool paused = false;
 
     public:
         PlayState();
@@ -31,7 +39,8 @@ class PlayState : public GameState {
         void update(MemSwap * game, float delta) override;
         void render(SDL_Renderer * renderer) const override;
 
-        void pause();
+        void setPaused(bool paused);
+        bool isPaused() const;
 };
 
 #endif // PLAYSTATE_HPP

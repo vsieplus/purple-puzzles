@@ -2,7 +2,7 @@
 
 #include "memswap.hpp"
 #include "level/level.hpp"
-#include "entities/player.hpp"
+#include "entities/portal.hpp"
 
 Level::Level() {}
 
@@ -16,8 +16,10 @@ void Level::handleEvents(const Uint8 * keyStates) {
 
 // Update loop
 void Level::update(float delta) {
-    // Update the map
-    map.update(this, delta);
+    if(!completed) {
+        // Update the map if not completed
+        map.update(this, delta);
+    }
 }
 
 void Level::render(SDL_Renderer * renderer) const {
@@ -46,8 +48,17 @@ void Level::moveGridElement(int startX, int startY, int endX, int endY) {
     map.moveGridElement(startX, startY, endX, endY);
 }
 
+void Level::placeGridElement(std::shared_ptr<Entity> entity, int x, int y) {
+    map.placeGridElement(entity, x, y);
+}
+
 void Level::removeGridElement(int x, int y) {
     map.removeGridElement(x, y);
+}
+
+// place portals back in grid
+void Level::placePortals() {
+    map.placePortals();
 }
 
 // check if the level is complete
@@ -55,8 +66,10 @@ void Level::checkComplete() {
     // check if each tile parity matches purple parity
     for(int y = 0; y < gridHeight; y++) {
         for(int x = 0; x < gridWidth; x++) {
-            // skip checking the exit receptor tile
-            if(map.xyToIndex(x, y) == map.getExitIndex()) continue;
+            // skip tiles with portals
+            if(map.hasPortals() && map.getGridElement<Portal>(x, y).get()) {
+                continue;
+            }
 
             // if some tile isn't flipped, level has not been succesfully completed
             if(getTileParity(x, y) != PARITY_PURPLE) {

@@ -17,6 +17,7 @@
 #include <tmxlite/TileLayer.hpp>
 
 #include "entities/entity.hpp"
+#include "entities/portal.hpp"
 #include "level/tile.hpp"
 #include "utils/spritesheet.hpp"
 #include "utils/sprite.hpp"
@@ -32,7 +33,7 @@ class Map {
 
         int renderX, renderY;            // x,y on the screen to render map
 
-        int exitIndex;                   // index of the exit tile
+        bool usesPortals;
 
         // A vector holding the background tiles for the map
         std::vector<Tile> mapTiles;
@@ -45,6 +46,9 @@ class Map {
 
         // store tile sprites for parity tiles (key: parity, val: sprite ptr)
         std::unordered_map<int, std::shared_ptr<Sprite>> parityTileSprites;
+
+        // track the portals in the map
+        std::vector<std::shared_ptr<Portal>> mapPortals;
 
     public:
         // strings used to interface with tiledmap properties/labels
@@ -101,11 +105,14 @@ class Map {
 
         // functions for modifying grid elements
         void moveGridElement(int startX, int startY, int endX, int endY);
+        void placeGridElement(std::shared_ptr<Entity> entity, int x, int y);
         void removeGridElement(int x, int y);
 
-        int getExitIndex() const;
+        void placePortals();
+
         int getRenderX() const;
         int getRenderY() const;
+        bool hasPortals() const;
 
         // functions to convert between x,y indices to map key
         int xyToIndex(int x, int y) const;

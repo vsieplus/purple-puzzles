@@ -6,7 +6,12 @@
 #include "entities/entity.hpp"
 #include "entities/boost.hpp"
 #include "entities/receptor.hpp"
+#include "level/level.hpp"
 #include "level/tile.hpp"
+/* 
+// make 'T' dependent on 'Level'
+template<typename T, typename>
+struct dependentTemplate {typedef T type} */
 
 class Movable : public Entity {
     protected:
@@ -18,9 +23,6 @@ class Movable : public Entity {
 
         Direction moveDir = DIR_NONE;     // direction of entity's move
         Direction bufferedDir = DIR_NONE; // direction of entity's buffered move
-        
-        int bufferedX = 0;                // buffered movement position
-        int bufferedY = 0;
 
         int velocity;                     // Pixels moved per sec.
 
@@ -39,14 +41,6 @@ class Movable : public Entity {
 
         std::string movableShape;
 
-    public:
-        Movable(int screenX, int screenY, int gridX, int gridY, int velocity,
-            int parity, std::shared_ptr<Sprite> entitySprite, 
-            std::string movableShape);
-
-        virtual void update(Level * level, float delta) override;
-        void render(SDL_Renderer* renderer) const override;  
-
         // initialize movement from a direction
         void initMovement(Direction direction, Level * level);
         void initMovement(int xPosChange, int yPosChange, int xGridChange, 
@@ -57,14 +51,31 @@ class Movable : public Entity {
 
         // check for a boost entity
         bool checkBoost(Level * level, Direction direction);
-        void checkReceptor(Level * level, Direction direction);
+        void checkReceptor(Level * level);
+
+    public:
+        Movable(int screenX, int screenY, int gridX, int gridY, int velocity,
+            int parity, std::shared_ptr<Sprite> entitySprite, 
+            std::string movableShape);
+
+        virtual void update(Level * level, float delta) override;
+        void render(SDL_Renderer* renderer) const override;  
 
         static std::pair<int,int> lerp(int startX, int startY, int endX,
             int endY, float t);
 
+        Direction currCheckDir() const;
+
+        template <class T>
+        std::shared_ptr<T> getEntity(Level * level, Direction direction) {
+            std::pair<int, int> coords = getCoords(direction);
+            return level->getGridElement<T>(coords.first, coords.second);
+        }
+
         void setMoveDir(Direction direction);
         float getMoveProg() const;
         bool isMerging() const;
+        bool isMoving() const;
 };
 
 #endif // MOVABLE_HPP

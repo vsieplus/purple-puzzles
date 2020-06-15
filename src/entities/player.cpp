@@ -14,9 +14,10 @@ Player::Player(int screenX, int screenY, int gridX, int gridY, int parity,
     gridY, PLAYER_VELOCITY, parity, entitySprite, PLAYER_SHAPE) {}
 
 void Player::handleEvents(const Uint8 * keyStates, Level * level) {
-    // Check if player wants to start moving or buffer a move, when not boosted
+    // Check if player wants to start moving or buffer a move, when not boosted,
+    // merging, or teleporting
     if((!moving || (moveProg > MOVEMENT_BUFFER && bufferedDir == DIR_NONE)) &&
-        boostPower == 0) {
+        boostPower == 0 && !merging && !teleporting) {
         checkMovement(keyStates, level);
     }
 }
@@ -25,14 +26,8 @@ void Player::update(Level * level, float delta) {
     // check for entity interaction if player tried to move + isn't boosted
     if((moveDir != DIR_NONE || bufferedDir != DIR_NONE) && boostPower == 0) {
         pushDiamond(level);
-
-        if(!moving) {
-            // otherwise check for a receptor in move direction
-            checkReceptor(level, moveDir);
-        } else {
-            // check receptor in bufferedDir if currently moving
-            checkReceptor(level, bufferedDir);
-        }
+        checkReceptor(level);
+        checkPortal(level);
     } else if(merging) {
         // if player not moving + is merging, check if level is complete
         if(!level->isCompleted()) level->checkComplete();
@@ -74,17 +69,35 @@ void Player::checkMovement(const Uint8 * keyStates, Level * level) {
 }
 
 void Player::pushDiamond(Level * level) {
-    Direction pushDir = moving ? bufferedDir : moveDir;
+    Direction pushDir = currCheckDir();
+    auto diamond = getEntity<Diamond>(level, pushDir);
 
-    std::pair<int, int> pushCoords = getCoords(pushDir);
-
-    // check if entity at the coordinate is a diamond
-    auto diamond = level->getGridElement<Diamond>(pushCoords.first,
-        pushCoords.second);
-
-    // set move direction of diamond if not already merging w/receptor
+    // set move direction of diamond if not already merging/merged w/receptor
     if(diamond.get() && !diamond->isMerging()) {
         // set the move direction of the diamond
         diamond->setMoveDir(pushDir);
     }
+}
+
+void Player::checkPortal(Level * level) {
+    auto portal = getEntity<Portal>(level, currCheckDir());
+
+    // check if portal is there, if so, activate teleport status
+    if(portal.get()) {
+        teleporting = true;
+
+        portal->setActivated(true);
+
+        // set portal's player, remove portals from grid temporarily
+        portal->setPlayer(level->getGridElement<Player>(gridX, gridY));
+        portal->removePortals(level);
+    }
+}
+
+bool Player::isTeleporting() const {
+    return teleporting;
+}
+
+void Player::setTeleporting(bool teleporting) {
+    this->teleporting = teleporting;
 }

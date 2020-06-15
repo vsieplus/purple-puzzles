@@ -6,6 +6,7 @@
 #include "entities/diamond.hpp"
 #include "entities/receptor.hpp"
 #include "entities/boost.hpp"
+#include "entities/portal.hpp"
 
 #include "level/level.hpp"
 #include "level/map.hpp"
@@ -50,6 +51,13 @@ void Map::update(Level * level, float delta) {
     for(Tile tile: mapTiles) {
         tile.update(level, delta);
     }
+
+    // if level has portals and they're removed, update manually
+    if(!mapPortals.empty() && mapPortals.back()->isRemoved()) {
+        for(auto portal: mapPortals) {
+            portal->update(level, delta);
+        }
+    }
     
     // Update the entities
     for(int y = 0; y < mapHeight; y++) {
@@ -68,6 +76,13 @@ void Map::render(SDL_Renderer * renderer) const {
     // Render the background tiles
     for(Tile tile: mapTiles) {
         tile.render(renderer);
+    }
+
+    // render portals manually if tmp. removed
+    if(!mapPortals.empty() && mapPortals.back()->isRemoved()) {
+        for(auto portal: mapPortals) {
+            portal->render(renderer);
+        }
     }
     
     // Render the entities in the grid
@@ -210,9 +225,6 @@ void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID,
 
         newEntity = std::make_shared<Receptor>(screenX, screenY, gridX, gridY, 
             parity, entitySprite, shape);
-
-        // receptor with "player" shape is the exit portal, store index
-        if(shape == Player::PLAYER_SHAPE) exitIndex = xyToIndex(gridX, gridY);
     } else if(entityName == BOOST_ENAME) {
         // get direction/power properties for boost
         int power = spritesheet->getPropertyValue<int>(tileID, POWER_PROP);
@@ -220,8 +232,20 @@ void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID,
 
         newEntity = std::make_shared<Boost>(screenX, screenY, gridX, gridY,
             parity, entitySprite, power, direction);
-    } else if(entityName == PORTAL_ENAME) {
+    } else if(entityName == PORTAL_ENAME && mapPortals.size() < 2) {
+        usesPortals = true;
 
+        newEntity = std::make_shared<Portal>(screenX, screenY, gridX, gridY, 
+            parity, entitySprite);
+
+        std::shared_ptr<Portal> newPortal = std::dynamic_pointer_cast<Portal>(newEntity);
+
+        if(mapPortals.size() == 1) {
+            mapPortals.back()->setOtherPortal(newPortal);
+            newPortal->setOtherPortal(mapPortals.back());
+        }
+
+        mapPortals.push_back(newPortal);
     }
 
     if(newEntity.get()) {
@@ -244,12 +268,22 @@ bool Map::inBounds(int x, int y) const {
     return (x >= 0 && x <= mapWidth - 1) && (y >= 0 && y <= mapHeight - 1);
 }
 
-
 // Update bg tile when the specified movement occurs at the specified pos. by
 // an entity with the given parity
 void Map::flipTile(int tileX, int tileY, int entityParity, Level * level) {
     // Check if in bounds
     if(inBounds(tileX, tileY)) {
+        int idx = xyToIndex(tileX, tileY);
+
+        // skip if a portal is on this tile/is curr. removed
+        if(!mapPortals.empty() && mapPortals.back()->isRemoved()) {
+            for(auto portal: mapPortals) {
+                if(idx == xyToIndex(portal->getGridX(), portal->getGridY())) {
+                    return;
+                }
+            }
+        }
+
         Tile & currTile = mapTiles.at(xyToIndex(tileX, tileY));
 
         // skip if tile is parity-neutral/has already been flipped
@@ -264,14 +298,30 @@ void Map::flipTile(int tileX, int tileY, int entityParity, Level * level) {
 
 void Map::moveGridElement(int startX, int startY, int endX, int endY) {
     if(inBounds(startX, startY) && inBounds(endX, endY)) {
-        entityGrid[xyToIndex(endX, endY)] = 
-            std::move(entityGrid[xyToIndex(startX, startY)]);
+        auto eIdx = xyToIndex(endX, endY);
+        entityGrid[eIdx] = std::move(entityGrid[xyToIndex(startX, startY)]);
+
+        entityGrid[eIdx]->setGridX(endX);
+        entityGrid[eIdx]->setGridY(endY);
+    }
+}
+
+void Map::placeGridElement(std::shared_ptr<Entity> entity, int x, int y) {
+    if(inBounds(x,y)) {
+        entityGrid[xyToIndex(x,y)] = entity;
     }
 }
 
 void Map::removeGridElement(int x, int y) {
     if(inBounds(x,y)) {
         entityGrid.at(xyToIndex(x,y)).reset();
+    }
+}
+
+// place portals in grid
+void Map::placePortals() {
+    for(auto portal: mapPortals) {
+        placeGridElement(portal, portal->getGridX(), portal->getGridY());
     }
 }
 
@@ -293,8 +343,8 @@ std::pair<int, int> Map::indexToXY(int index) const {
     return std::make_pair(x,y);
 }
 
-int Map::getExitIndex() const {
-    return exitIndex;
+bool Map::hasPortals() const {
+    return usesPortals;
 }
 
 int Map::getRenderX() const {
