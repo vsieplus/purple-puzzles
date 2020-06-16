@@ -33,8 +33,12 @@ class SpriteSheet {
         void loadTileProperties(const tmx::Tileset::Tile & tile);
 
     public:
+        SpriteSheet(std::string texturePath, SDL_Renderer * renderer);
         SpriteSheet(std::string mapPath, std::string tilesetName, SDL_Renderer * renderer);
 
+        // functions to load a spritesheet, either directly from a file, or
+        // via tiledmap interface + tmx loading
+        void loadSpritesheet(std::string texturePath, SDL_Renderer * renderer);
         void loadSpritesheet(std::string mapPath, std::string tilesetName, 
             SDL_Renderer * renderer);
 

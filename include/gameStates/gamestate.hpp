@@ -11,11 +11,10 @@
 
 enum GameStateID {
     GAME_STATE_NULL,    // NULL placeholder
-    GAME_STATE_SPLASH,  // load res
+    GAME_STATE_SPLASH,  // load resources/splash screen
     GAME_STATE_MENU,    // menu
     GAME_STATE_PLAY,    // play state
     GAME_STATE_PAUSE,   // pause state
-    GAME_STATE_SCORE,   // post-game/score state
     GAME_STATE_EXIT,    // when user wants to exit the game
 };
 
@@ -35,7 +34,8 @@ class GameState {
 
         virtual ~GameState() {};
 
-        /// Event handling method for the game state
+        /// Event handling method for the game state, event polling/keyStates
+        virtual void handleEvents(MemSwap * game, const SDL_Event & e) = 0;
         virtual void handleEvents(MemSwap * game, const Uint8 * keyStates) = 0;
 
         /// Update method for the particular game state 

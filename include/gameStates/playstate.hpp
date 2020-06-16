@@ -8,12 +8,10 @@
 
 #include "gameStates/gamestate.hpp"
 #include "level/level.hpp"
-#include "utils/timer.hpp"
 
 // Class for the Play State
 class PlayState : public GameState {
     private:
-        Timer timer;
         Level level;
 
         // Texture to show in the background
@@ -24,9 +22,9 @@ class PlayState : public GameState {
         // after a level is completed, handle user's choice
         bool levelComplete = false;
         bool advanceLevel = false;
-        bool goToMenu = true;
+        bool goToMenu = false;
 
-        // check if paused
+        // track if paused
         bool paused = false;
 
     public:
@@ -35,6 +33,7 @@ class PlayState : public GameState {
         void enterState(MemSwap * game) override;
         void exitState() override;
 
+        void handleEvents(MemSwap * game, const SDL_Event & e) override;
         void handleEvents(MemSwap * game, const Uint8 * keyStates) override;
         void update(MemSwap * game, float delta) override;
         void render(SDL_Renderer * renderer) const override;

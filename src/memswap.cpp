@@ -10,6 +10,11 @@
  */
 
  #include "memswap.hpp"
+ 
+#include "gameStates/splashstate.hpp"
+#include "gameStates/menustate.hpp"
+#include "gameStates/playstate.hpp"
+#include "gameStates/pausestate.hpp"
 
 MemSwap::MemSwap() : currTime(SDL_GetPerformanceCounter()), gameStates(), 
     resourceManager(RES_PATHS_FILE, init()) {
@@ -17,6 +22,11 @@ MemSwap::MemSwap() : currTime(SDL_GetPerformanceCounter()), gameStates(),
     if(!initLibs()) {
         printf("Failed to initialize SDL libraries");
     }
+
+    // set window icon
+    SDL_Surface * icon = IMG_Load(resourceManager.getResPath(ICON_ID).c_str());
+    SDL_SetWindowIcon(window, icon);
+    SDL_FreeSurface(icon);
 
     // Start game in splash state to load res/
     setNextState(GAME_STATE_SPLASH);
@@ -80,12 +90,15 @@ bool MemSwap::initLibs() {
 
 /// Handle game events
 void MemSwap::handleEvents() {
-    // Handle window events
-    handleWindowEvents();
+    if(nextState != GAME_STATE_EXIT && !minimized && !gameStates.empty()) {
+        // normal polled events
+        while(SDL_PollEvent(&e)) {
+            handleWindowEvents();
+            gameStates.back()->handleEvents(this, e);
+        }
 
-    // Handle game events
-    if(nextState != GAME_STATE_EXIT || minimized) {
-        if(!gameStates.empty()) {
+        // Handle game events - use keyStates additionally for play state
+        if(currState == GAME_STATE_PLAY) {
             const Uint8 * keyStates = SDL_GetKeyboardState(NULL);
             gameStates.back()->handleEvents(this, keyStates);
         }
@@ -93,36 +106,34 @@ void MemSwap::handleEvents() {
 }
 
 void MemSwap::handleWindowEvents() {
-    while(SDL_PollEvent(&e)) {        
-        if(e.type == SDL_QUIT) {
-            setNextState(GAME_STATE_EXIT);
-        }
+    if(e.type == SDL_QUIT) {
+        setNextState(GAME_STATE_EXIT);
+    }
 
-        // Check for resizing/minimization
-        if(e.type == SDL_WINDOWEVENT) {
-            switch(e.window.event) {
-                case SDL_WINDOWEVENT_MINIMIZED:
-                    minimized = true;
-                    break;
-                case SDL_WINDOWEVENT_RESTORED:
-                    minimized = false;
-                    break;
-                case SDL_WINDOWEVENT_SIZE_CHANGED:
-                    screenWidth = e.window.data1;
-                    screenHeight = e.window.data2;
-                    break;
-            }
+    // Check for resizing/minimization
+    if(e.type == SDL_WINDOWEVENT) {
+        switch(e.window.event) {
+            case SDL_WINDOWEVENT_MINIMIZED:
+                minimized = true;
+                break;
+            case SDL_WINDOWEVENT_RESTORED:
+                minimized = false;
+                break;
+            case SDL_WINDOWEVENT_SIZE_CHANGED:
+                screenWidth = e.window.data1;
+                screenHeight = e.window.data2;
+                break;
         }
+    }
 
-        // If user presses F11, toggle fullscreen
-        if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_F11) {
-            if(fullscreen) {
-                fullscreen = false;
-                SDL_SetWindowFullscreen(window, SDL_FALSE);
-            } else {
-                fullscreen = true;
-                SDL_SetWindowFullscreen(window, SDL_TRUE);
-            }
+    // If user presses F11, toggle fullscreen
+    if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_F11) {
+        if(fullscreen) {
+            fullscreen = false;
+            SDL_SetWindowFullscreen(window, SDL_FALSE);
+        } else {
+            fullscreen = true;
+            SDL_SetWindowFullscreen(window, SDL_TRUE);
         }
     }
 }
@@ -187,26 +198,27 @@ void MemSwap::changeState() {
                 nextGameState = std::make_unique<MenuState>(this);
                 break;
             case GAME_STATE_PLAY:
-                nextGameState = std::make_unique<PlayState>();
-                break;
-            case GAME_STATE_SCORE:
-                nextGameState = std::make_unique<ScoreState>(this);
+                // only make new state if currently not in pause state 
+                if(currState != GAME_STATE_PAUSE) {
+                    nextGameState = std::make_unique<PlayState>();
+                }
+
                 break;
             case GAME_STATE_PAUSE:
-                nextGameState = std::make_unique<PauseState>();
+                nextGameState = std::make_unique<PauseState>(this);
                 break;
         }
 
-        // Push the next game state
-        pushGameState(nextGameState);
+        // Push the next game state if new
+        if(nextGameState.get()) pushGameState(nextGameState);
 
+        if(!gameStates.empty()) gameStates.back()->enterState(this);
         currState = nextState;
     }
 }
 
 /// Add a game state to the stack (enter a game state)
 void MemSwap::pushGameState(std::unique_ptr<GameState> & state) {
-    state->enterState(this);
     gameStates.push_back(std::move(state));
 }
 
@@ -255,4 +267,8 @@ int MemSwap::getScreenHeight() const {
 
 ResManager & MemSwap::getResManager() {
     return resourceManager;
+}
+
+SDL_Color MemSwap::getOutlineColor() const {
+    return outlineColor;
 }

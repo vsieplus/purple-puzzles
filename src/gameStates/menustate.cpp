@@ -25,6 +25,10 @@ void MenuState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
     
 }
 
+void MenuState::handleEvents(MemSwap * game, const SDL_Event & e) {
+    
+}
+
 void MenuState::update(MemSwap * game, float delta) {
 }
 

@@ -9,14 +9,20 @@ void PlayState::enterState(MemSwap * game) {
     // retrieve bg texture
     bgTexture = game->getResManager().getTexture(BG_ID);
 
-    // load level
-    std::string levelPath = game->getResManager().getResPath("testing"); 
-    level = Level(levelPath, game->getRenderer(), game);
+    // load level (if not paused)
+    if(!paused) {
+        std::string levelPath = game->getResManager().getResPath("testing"); 
+        level = Level(levelPath, game->getRenderer(), game);
+    } else {
+        paused = false;
+    }
 }
 
 void PlayState::exitState() {
 
 }
+
+void PlayState::handleEvents(MemSwap * game, const SDL_Event & e) {}
 
 void PlayState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
     // Handle user selecting advance option after completing a level

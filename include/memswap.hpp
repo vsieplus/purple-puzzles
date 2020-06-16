@@ -13,11 +13,6 @@
 #include <SDL_mixer.h>
 
 #include "gameStates/gamestate.hpp"
-#include "gameStates/splashstate.hpp"
-#include "gameStates/menustate.hpp"
-#include "gameStates/playstate.hpp"
-#include "gameStates/scorestate.hpp"
-#include "gameStates/pausestate.hpp"
 
 #include "utils/resmanager.hpp"
 
@@ -40,8 +35,9 @@ class MemSwap {
         const int NUM_CHANNELS = 2;
         const int SAMPLE_SIZE = 2048;
 
-        const std::string GAME_TITLE = "Memory Swap";
+        const std::string GAME_TITLE = "ReverShade";
         const std::string RES_PATHS_FILE = "res/res_paths.json";
+        const std::string ICON_ID = "window_icon";
 
         bool playing = true;
 
@@ -51,6 +47,9 @@ class MemSwap {
         SDL_Window * window;
         SDL_Renderer * renderer;
         SDL_Event e;
+
+        // outline color (for gui elements)
+        SDL_Color outlineColor = {0x83, 0x86, 0xF5, 0xFF};
 
         // Stack for tracking the game states
         std::vector<std::unique_ptr<GameState>> gameStates;
@@ -92,6 +91,7 @@ class MemSwap {
         int getGameStateID() const;
         SDL_Event getEvent() const;
         SDL_Renderer * getRenderer() const;
+        SDL_Color getOutlineColor() const;
 
         int getScreenWidth() const;
         int getScreenHeight() const;

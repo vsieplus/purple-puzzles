@@ -2,13 +2,22 @@
 
 #include "utils/spritesheet.hpp"
 
+SpriteSheet::SpriteSheet(std::string texturePath, SDL_Renderer * renderer) {
+    loadSpritesheet(texturePath, renderer);
+}
+
 SpriteSheet::SpriteSheet(std::string mapPath, std::string tilesetName, 
     SDL_Renderer * renderer) : spritesheetTexture(new Texture()) {
     
     loadSpritesheet(mapPath, tilesetName, renderer);
 }
-    
 
+// load directly from texture
+void SpriteSheet::loadSpritesheet(std::string texturePath, SDL_Renderer * renderer) {
+
+}
+    
+// load a spritesheet from a tiledmap
 void SpriteSheet::loadSpritesheet(std::string mapPath, std::string tilesetName, 
     SDL_Renderer * renderer) {
 
@@ -96,7 +105,7 @@ void SpriteSheet::loadTileProperties(const tmx::Tileset::Tile & tile) {
     }
 }
 
-// get the clip in this spritesheet for the given tile (as SDL_Rect) 
+// get the clip in this spritesheet for the given tile (as SDL_Rect wrapper Sprite obj.) 
 std::shared_ptr<Sprite> SpriteSheet::getSprite(int tileID) {
     return sprites.at(tileID);
 }
