@@ -22,9 +22,8 @@ void PlayState::exitState() {
 
 }
 
-void PlayState::handleEvents(MemSwap * game, const SDL_Event & e) {}
-
-void PlayState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
+void PlayState::handleEvents(MemSwap * game, const SDL_Event & e) {
+    const Uint8 * keyStates = SDL_GetKeyboardState(NULL);
     // Handle user selecting advance option after completing a level
     if(level.isCompleted()) {
 

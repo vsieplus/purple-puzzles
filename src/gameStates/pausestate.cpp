@@ -67,8 +67,6 @@ void PauseState::handleEvents(MemSwap * game, const SDL_Event & e) {
     }
 }
 
-void PauseState::handleEvents(MemSwap * game, const Uint8 * keyStates) {}
-
 void PauseState::changeCurrButton(bool left) {
     buttons.at(currButton).setFocus(false);
     if(left) {

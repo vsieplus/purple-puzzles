@@ -5,7 +5,7 @@
 
 #include "gameStates/gamestate.hpp"
 
-// Singleton class for the Menu State
+// class for the Menu State
 class MenuState : public GameState {
     public:
         MenuState(MemSwap * game);
@@ -14,7 +14,6 @@ class MenuState : public GameState {
         void exitState() override;
 
         void handleEvents(MemSwap * game, const SDL_Event & e) override;
-        void handleEvents(MemSwap * game, const Uint8 * keyStates) override;
         void update(MemSwap * game, float delta) override;
         void render(SDL_Renderer * renderer) const override;
 };

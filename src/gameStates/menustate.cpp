@@ -21,10 +21,6 @@ void MenuState::exitState() {
 
 }
 
-void MenuState::handleEvents(MemSwap * game, const Uint8 * keyStates) {
-    
-}
-
 void MenuState::handleEvents(MemSwap * game, const SDL_Event & e) {
     
 }

@@ -34,9 +34,8 @@ class GameState {
 
         virtual ~GameState() {};
 
-        /// Event handling method for the game state, event polling/keyStates
+        /// Event handling method for the game state, event polling
         virtual void handleEvents(MemSwap * game, const SDL_Event & e) = 0;
-        virtual void handleEvents(MemSwap * game, const Uint8 * keyStates) = 0;
 
         /// Update method for the particular game state 
         virtual void update(MemSwap * game, float delta) = 0;

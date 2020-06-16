@@ -93,14 +93,17 @@ void MemSwap::handleEvents() {
     if(nextState != GAME_STATE_EXIT && !minimized && !gameStates.empty()) {
         // normal polled events
         while(SDL_PollEvent(&e)) {
-            handleWindowEvents();
-            gameStates.back()->handleEvents(this, e);
+            handleWindowEvents();            
+            
+            // no polled events for play state
+            if(currState != GAME_STATE_PLAY) {
+                gameStates.back()->handleEvents(this, e);
+            }
         }
 
-        // Handle game events - use keyStates additionally for play state
+        // keyState events for play state
         if(currState == GAME_STATE_PLAY) {
-            const Uint8 * keyStates = SDL_GetKeyboardState(NULL);
-            gameStates.back()->handleEvents(this, keyStates);
+            gameStates.back()->handleEvents(this, e);
         }
     }   
 }

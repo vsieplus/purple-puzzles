@@ -34,7 +34,6 @@ class PlayState : public GameState {
         void exitState() override;
 
         void handleEvents(MemSwap * game, const SDL_Event & e) override;
-        void handleEvents(MemSwap * game, const Uint8 * keyStates) override;
         void update(MemSwap * game, float delta) override;
         void render(SDL_Renderer * renderer) const override;
 
