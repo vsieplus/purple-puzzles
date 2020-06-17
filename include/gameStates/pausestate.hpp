@@ -12,17 +12,15 @@
 
 // enum for tracking buttons
 enum ButtonID {
-    RESUME_ID,
-    MENU_ID,
-    LVLSELECT_ID
+    RESUME_BTN,
+    MENU_BTN,
+    LVLSELECT_BTN
 };
 
 // class for the Pause State
 class PauseState : public GameState {
     public:
         PauseState(MemSwap * game);
-
-        void addButtons(MemSwap * game);
 
         void enterState(MemSwap * game) override;
         void exitState() override;
@@ -31,24 +29,26 @@ class PauseState : public GameState {
         void update(MemSwap * game, float delta) override;
         void render(SDL_Renderer * renderer) const override;
 
-        void changeCurrButton(bool left);
-
     private:
         // Texture to show in the background
         std::shared_ptr<Texture> bgTexture;
 
         const std::string BG_ID = "pause_bg";
+        const std::string BUTTON_ID = "menu_menu_btn";
+        const std::string FONT_ID = "mainFont";
 
-        const std::vector<std::string> BUTTON_IDS = {"pause_resume_btn",
-            "pause_menu_btn", "pause_lvlselect_btn"};
+        // Button labels
+        const std::vector<std::string> BUTTON_LABELS = {"Resume",
+            "Menu", "Level Select"};
 
         // vector of buttons on the pause screen
         std::vector<Button> buttons;
 
         // track current button in focus
-        int currButton = RESUME_ID;
+        int currButton = RESUME_BTN;
 
-        const int BUTTON_WIDTH = 128;
+        void addButtons(MemSwap * game);
+        void changeCurrButton(bool left);
 };
 
 #endif // PAUSESTATE_HPP

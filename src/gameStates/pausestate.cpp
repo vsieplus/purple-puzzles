@@ -20,23 +20,24 @@ PauseState::PauseState(MemSwap * game) : GameState(GAME_STATE_PAUSE) {
 }
 
 void PauseState::addButtons(MemSwap * game) {
+    auto emptyButton = game->getResManager().getTexture(BUTTON_ID);
+
     // load buttons
-    int buttonY = game->getScreenHeight() * 2 / 5;
+    int buttonY = game->getScreenHeight() / 2 - emptyButton->getHeight() / 2;
 
     // calc horiz. button spacing
-    int interButtonSpace = (game->getScreenWidth() - 
-        (BUTTON_IDS.size() * BUTTON_WIDTH)) / (BUTTON_IDS.size() + 1);
-
-    int i = 1;
+    int interButtonSpace = (game->getScreenWidth() - (BUTTON_LABELS.size() * 
+        emptyButton->getWidth())) / (BUTTON_LABELS.size() + 1);
 
     // resume, menu, + lvl select
-    for(std::string buttonID: BUTTON_IDS) {
-        buttons.emplace_back(i * interButtonSpace + (i - 1) * BUTTON_WIDTH, buttonY, false,
-            game->getResManager().getTexture(buttonID), game->getOutlineColor());
-        i++;
+    for(unsigned int i = 0; i < BUTTON_LABELS.size() ; i++) {
+        buttons.emplace_back((i + 1) * interButtonSpace + i * emptyButton->getWidth(), 
+        buttonY, false, emptyButton, game->getOutlineColor(), BUTTON_LABELS.at(i),
+        game->getResManager().getFont(FONT_ID));
+        
     }
     
-    buttons.at(RESUME_ID).setFocus(true);
+    buttons.at(RESUME_BTN).setFocus(true);
 }
 
 
@@ -45,7 +46,7 @@ void PauseState::enterState(MemSwap * game) {
 }
 
 void PauseState::exitState() {
-
+    
 }
 
 void PauseState::handleEvents(MemSwap * game, const SDL_Event & e) {
@@ -54,15 +55,10 @@ void PauseState::handleEvents(MemSwap * game, const SDL_Event & e) {
 
     // check if user switch between buttons (press A/D key to cycle through)
     if(e.type == SDL_KEYDOWN) {
-        switch(e.key.keysym.sym) {
-            case SDLK_a:
-                changeCurrButton(true);
-                break;
-            case SDLK_d:
-                changeCurrButton(false);
-                break;
-            default:
-                break;
+        if(e.key.keysym.sym == SDLK_a) {
+            changeCurrButton(true);
+        } else if(e.key.keysym.sym == SDLK_d) {
+            changeCurrButton(false);
         }
     }
 }
@@ -70,24 +66,26 @@ void PauseState::handleEvents(MemSwap * game, const SDL_Event & e) {
 void PauseState::changeCurrButton(bool left) {
     buttons.at(currButton).setFocus(false);
     if(left) {
-        currButton = currButton == RESUME_ID ? LVLSELECT_ID : currButton - 1;
+        currButton = currButton == RESUME_BTN ? LVLSELECT_BTN : currButton - 1;
     } else {
-        currButton = currButton == LVLSELECT_ID ? RESUME_ID : currButton + 1;
+        currButton = currButton == LVLSELECT_BTN ? RESUME_BTN : currButton + 1;
     }
     buttons.at(currButton).setFocus(true);
 }
 
 void PauseState::update(MemSwap * game, float delta) {
+    buttons.at(currButton).update();
+
     // check if the current button has been activated
     if(buttons.at(currButton).isActivated()) {
         switch(currButton) {
-            case RESUME_ID:
+            case RESUME_BTN:
                 game->setNextState(GAME_STATE_PLAY);
                 break;
-            case MENU_ID:
+            case MENU_BTN:
                 game->setNextState(GAME_STATE_MENU);
                 break;
-            case LVLSELECT_ID:
+            case LVLSELECT_BTN:
                 game->setNextState(GAME_STATE_MENU);
                 // setMenuPos(... lvl select)
                 break;
