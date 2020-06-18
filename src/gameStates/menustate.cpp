@@ -152,8 +152,8 @@ void MenuState::changeCurrButton(const SDL_Event & e) {
 
     // .first = buttons per row, .second = buttons per column
     auto layout = BTN_LAYOUTS.at(currScreen);
-    int & rowBtns = layout.first;
-    int & colBtns = layout.second;
+    int & rowBtns = layout.second;          // buttons per row = # cols
+    int & colBtns = layout.first;           // buttons per col = # rows
     int totalBtns = rowBtns * colBtns;
 
     int nextID = -1;
@@ -207,8 +207,7 @@ void MenuState::changeCurrButton(const SDL_Event & e) {
             break;                                         
     }
 
-    currButton = &(stateButtons.at(currScreen).at(currButtonID));
-    currButton->setFocus(true);
+    updateCurrButton();
 }
 
 void MenuState::update(MemSwap * game, float delta) {
@@ -240,6 +239,8 @@ void MenuState::update(MemSwap * game, float delta) {
 
 // handle button activations for each screen
 void MenuState::activateMain() {
+    currButton->setFocus(false);
+
     switch(currButtonID) {
         case MainButton::MAIN_LVLS:
             currScreen = MenuScreen::MENU_LVLS;
@@ -256,6 +257,8 @@ void MenuState::activateMain() {
     }
 
     currButtonID = 0;
+
+    updateCurrButton();
 }
 
 void MenuState::activateLvlSelect() {
@@ -272,6 +275,12 @@ void MenuState::activateConfig() {
 
 void MenuState::activateCredits() {
 
+}
+
+// call this whenever currScreen/currButtonID changes
+void MenuState::updateCurrButton() {
+    currButton = &(stateButtons.at(currScreen).at(currButtonID));
+    currButton->setFocus(true);
 }
 
 /// Render function for the game state
@@ -332,7 +341,7 @@ std::vector<Button> MenuState::getSpacedButtons (
             buttons.emplace_back(buttonAreaX + (j * buttonWidth) + ((j + 1) *
                 interHSpace), buttonAreaY + (i * buttonHeight) + ((i + 1) *
                 interVSpace), CLICKABLE, buttonTexture, buttonFont,
-                outlineColor, textColor, buttonLabels.at((i * 2) + j));
+                outlineColor, textColor, buttonLabels.at((i * cols) + j));
         }
     }
 
@@ -354,4 +363,4 @@ void MenuState::addTitleLabel(std::vector<Label> & labels, std::string label,
 
     labels.emplace_back(titleX, titleY, labelSprite, menuFont, label,
         game->getTitleColor());
-} 
+}

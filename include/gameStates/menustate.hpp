@@ -112,6 +112,7 @@ class MenuState : public GameState {
         void addCreditsGUI(MemSwap * game);
 
         void changeCurrButton(const SDL_Event & e);
+        void updateCurrButton();
 
         // handle button activations for each screen
         void activateMain();
