@@ -84,7 +84,7 @@ void MenuState::addLvlSelectGUI(MemSwap * game) {
     auto lvlButton = game->getResManager().getTexture(LVL_BUTTON_ID);
 
     // get level buttons
-    std::vector<Button> levelSelectButtons = getSpacedButtons(LVLS_LABELS, 
+    std::vector<Button> levelSelectButtons = getSpacedButtons(game->getLevelLabels(), 
         lvlButton, menuFont, buttonAreaX, buttonAreaY, buttonAreaXEnd, buttonAreaYEnd,
         game->getOutlineColor(), game->getButtonTextColor(), MenuScreen::MENU_LVLS);
 
@@ -114,10 +114,10 @@ void MenuState::addStatsGUI(MemSwap * game) {
 
     // Buttons: reset data, back
     
-    // start placing buttons in the bottom 1/3 of the stats board
+    // start placing buttons in the bottom 2/3 of the stats board
     int buttonAreaX = statsLabels.back().getScreenX();
     int buttonAreaY = statsLabels.back().getScreenY() + 
-        statsLabels.back().getHeight() * 1 / 3;
+        statsLabels.back().getHeight() * 2 / 3;
    
     int buttonAreaXEnd = statsLabels.back().getScreenX() + statsLabels.back().getWidth();
     int buttonAreaYEnd = statsLabels.back().getScreenY() + statsLabels.back().getHeight();
@@ -178,13 +178,13 @@ void MenuState::addBackButton(std::vector<Button> & buttons, MemSwap * game) {
     
     int lastX, lastY;
 
-    // (bottom right of previous buttons, or bottom right if none)
-    if(buttons.empty()) {
-        lastX = game->getScreenWidth() * 5 / 6 - backButton->getWidth() / 2;
-        lastY = game->getScreenHeight() * 5 / 6 - backButton->getHeight() / 2;
-    } else {
+    // (bottom right of previous buttons for lvlSelect, or bottom right if none)
+    if(buttons.size() == game->getLevelLabels().size()) {
         lastX = buttons.back().getScreenX() + buttons.back().getWidth() * 8 / 7;
         lastY = buttons.back().getScreenY() + buttons.back().getHeight() * 8 / 7;
+    } else {
+        lastX = game->getScreenWidth() * 5 / 6 - backButton->getWidth() / 2;
+        lastY = game->getScreenHeight() * 5 / 6 - backButton->getHeight() / 2;
     }
 
     buttons.emplace_back(lastX, lastY, CLICKABLE, backButton, game->getOutlineColor());
@@ -334,7 +334,7 @@ void MenuState::update(MemSwap * game, float delta) {
         // if on the back button (for non-main screens), reset to main
         if(checkOnBackButton()) {
             currScreen = MenuScreen::MENU_MAIN;
-            currButtonID = 0;
+            currButtonID = lastMainScreen;
             updateCurrButton();
         } else {
             // otherwise look for other corresponding activations
@@ -346,13 +346,10 @@ void MenuState::update(MemSwap * game, float delta) {
                     activateLvlSelect(game);
                     break;
                 case MenuScreen::MENU_STATS:
-                    activateStats();
+                    activateStats(game);
                     break;
-                case MenuScreen::MENU_HTP:
-                    activateHTP();
-                    break;
-                case MenuScreen::MENU_CREDITS:
-                    activateCredits();
+                // no activations for HTP/credits screen
+                default:
                     break;
             }
         }
@@ -379,6 +376,7 @@ void MenuState::activateMain(MemSwap * game) {
             break;
     }
 
+    lastMainScreen = currButtonID;
     currButtonID = 0;
 
     updateCurrButton();
@@ -392,16 +390,12 @@ void MenuState::activateLvlSelect(MemSwap * game) {
     game->setCurrLevelID(levelID);
 }
 
-void MenuState::activateStats() {
+void MenuState::activateStats(MemSwap * game) {
+    // reset player data
+    game->resetPlayerData();
 
-}
-
-void MenuState::activateHTP() {
-
-}
-
-void MenuState::activateCredits() {
-
+    // update stats string
+    stateLabels.at(MenuScreen::MENU_STATS).back().setText(game->getStatsString());
 }
 
 // call this whenever currScreen/currButtonID changes

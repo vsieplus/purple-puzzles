@@ -43,6 +43,16 @@ class MenuState : public GameState {
             MAIN_CREDITS,
         };
 
+        // track curr screen and button focus
+        MenuScreen currScreen = MENU_MAIN;
+        Button * currButton = nullptr;
+        
+        // id for current button focus
+        int currButtonID = MAIN_LVLS;
+        
+        // store last main menu screen to restore focus on "back"
+        int lastMainScreen = MAIN_LVLS;
+
         const int BG_PAD = 40;
 
         const bool CLICKABLE = false;
@@ -68,12 +78,6 @@ class MenuState : public GameState {
             "Stats",        // -> user stats/data
             "How To Play",  // -> how to play
             "Credits",      // -> credits
-        };
-
-        const std::vector<std::string> LVLS_LABELS = {
-            "1-1", "1-2", "1-3", "1-4", "1-5", "1-6", "1-7", "1-8", "1-9", "1-X",
-            "2-1", "2-2", "2-3", "2-4", "2-5", "2-6", "2-7", "2-8", "2-9", "2-X",
-            "3-1", "3-2", "3-3", "3-4", "3-5", "3-6", "3-7", "3-8", "3-9", "3-X"
         };
 
         const std::vector<std::string> STATS_LABELS = {"Reset Data"};
@@ -106,11 +110,6 @@ class MenuState : public GameState {
                 {MenuScreen::MENU_CREDITS, std::make_pair(0, 0)},
             };
 
-        // track curr screen and button focus
-        MenuScreen currScreen = MENU_MAIN;
-        int currButtonID = MAIN_LVLS;
-        Button * currButton = nullptr;
-
         // load buttons for each menu screen 
         void addMainGUI(MemSwap * game);
         void addLvlSelectGUI(MemSwap * game);
@@ -133,9 +132,7 @@ class MenuState : public GameState {
         // handle button activations for each screen
         void activateMain(MemSwap * game);
         void activateLvlSelect(MemSwap * game);
-        void activateStats();
-        void activateHTP();
-        void activateCredits();
+        void activateStats(MemSwap * game);
 
         bool checkOnBackButton() const;
 
