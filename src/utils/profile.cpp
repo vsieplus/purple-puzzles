@@ -1,16 +1,13 @@
 #include "utils/profile.hpp"
 #include "memswap.hpp"
 
-// default constructor to create a new profile
-Profile::Profile(const std::vector<std::string> & levelIDs) {
-    initLevelsCompleted(levelIDs);
+// default constructor to create a new default profile
+Profile::Profile() {
+    initLevelsCompleted();
 }
 
-void Profile::initLevelsCompleted(const std::vector<std::string> & levelIDs) {
-    // initialize levelsCompleted map all false, except the first
-    for(unsigned int i = 0; i < levelIDs.size(); i++) {
-        levelsCompleted[levelIDs.at(i)] = i == 0;
-    }
+void Profile::initLevelsCompleted() {
+    levelsCompleted.fill(false);
 }
 
 // only call these periodically (when level complete/stats activated/exit/etc.)
@@ -23,14 +20,14 @@ void Profile::addTilesFlipped(int tiles) {
 }
 
 /// check if a given level has been completed
-bool Profile::levelIsComplete(std::string levelID) const {
-    return levelsCompleted.at(levelID);
+bool Profile::levelIsComplete(int levelNum) const {
+    return levelsCompleted.at(levelNum);
 }
 
 // call at the end of each level if applicable
-void Profile::setLevelComplete(std::string levelID) {
-    if(!levelsCompleted.at(levelID)) {
-        levelsCompleted[levelID] = true;
+void Profile::setLevelComplete(int levelNum) {
+    if(!levelsCompleted.at(levelNum)) {
+        levelsCompleted[levelNum] = true;
         numLevelsCompleted++;
     }
 }
@@ -43,14 +40,14 @@ void Profile::addLevelReset() {
     levelResets++;
 }
 
-void Profile::resetProfile(const std::vector<std::string> & levelIDs) {
+void Profile::resetProfile() {
     playTime = 0;
     perfectPlays = 0;
     tilesFlipped = 0;
     levelResets = 0;
     numLevelsCompleted = 0;
 
-    initLevelsCompleted(levelIDs);
+    initLevelsCompleted();
 }
 
 // construct stats string 你好

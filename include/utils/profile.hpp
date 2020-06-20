@@ -4,31 +4,30 @@
 #define PROFILE_HPP
 
 #include <string>
-#include <vector>
-#include <unordered_map>
+#include <array>
 
 #include <SDL.h>
 
 class Profile {
     public:
         // default constructor to create a new profile
-        Profile(const std::vector<std::string> & levelIDs);
+        Profile();
 
-        void initLevelsCompleted(const std::vector<std::string> & levelIDs);
+        void initLevelsCompleted();
 
         // only call these periodically (when level complete/stats activated/exit/etc.)
         void addPlayTime(int seconds);
         void addTilesFlipped(int tiles);
 
         // call/within at the end of each level if applicable
-        void setLevelComplete(std::string levelID);
+        void setLevelComplete(int levelNum);
         void addPerfectPlay();
         void addLevelReset();
 
         // reset all data -> default
-        void resetProfile(const std::vector<std::string> & levelIDs);
+        void resetProfile();
 
-        bool levelIsComplete(std::string levelID) const;
+        bool levelIsComplete(int levelNum) const;
         std::string getStatsString() const;
 
     private:
@@ -42,10 +41,9 @@ class Profile {
         int levelResets = 0;          // total level resets
         int numLevelsCompleted = 0;
 
-        // map of booleans indicating level completeness
-        // key: levelID, val: true == level is completed
-        std::unordered_map<std::string, bool> levelsCompleted;
-
+        // bool array indicating level completeness
+        // in order of level number (1 -> 30)
+        std::array<bool, NUM_LEVELS> levelsCompleted;
 };
 
 #endif // PROFILE_HPP
