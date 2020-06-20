@@ -39,8 +39,8 @@ void Profile::addPerfectPlay() {
     perfectPlays++;
 }
 
-void Profile::addLevelReset() {
-    levelResets++;
+void Profile::addLevelResets(int resets) {
+    levelResets += resets;
 }
 
 void Profile::resetProfile() {

@@ -15,14 +15,14 @@ class Profile {
 
         void initLevelsCompleted();
 
-        // only call these periodically (when level complete/stats activated/exit/etc.)
+        // update upon switching on/off play state
         void addPlayTime(int seconds);
-        void addTilesFlipped(int tiles);
 
-        // call/within at the end of each level if applicable
+        // call at the end of each level if applicable
         void setLevelComplete(int levelNum);
+        void addLevelResets(int resets);
+        void addTilesFlipped(int tiles);
         void addPerfectPlay();
-        void addLevelReset();
 
         // reset all data -> default
         void resetProfile();
