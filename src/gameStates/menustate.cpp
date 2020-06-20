@@ -180,8 +180,8 @@ void MenuState::addBackButton(std::vector<Button> & buttons, MemSwap * game) {
 
     // (bottom right of previous buttons, or bottom right if none)
     if(buttons.empty()) {
-        lastX = game->getScreenWidth() * 4 / 5 - backButton->getWidth() / 2;
-        lastY = game->getScreenHeight() * 4 / 5 - backButton->getHeight() / 2;
+        lastX = game->getScreenWidth() * 5 / 6 - backButton->getWidth() / 2;
+        lastY = game->getScreenHeight() * 5 / 6 - backButton->getHeight() / 2;
     } else {
         lastX = buttons.back().getScreenX() + buttons.back().getWidth() * 8 / 7;
         lastY = buttons.back().getScreenY() + buttons.back().getHeight() * 8 / 7;
