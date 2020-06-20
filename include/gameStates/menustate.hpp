@@ -117,6 +117,8 @@ class MenuState : public GameState {
         void addHTPGUI(MemSwap * game);
         void addCreditsGUI(MemSwap * game);
 
+        void updateLevelSelectButtons(MemSwap * game);
+
         void addBackButton(std::vector<Button> & buttons, MemSwap * game);
 
          // add a label to the given label vector

@@ -36,6 +36,9 @@ void MenuState::enterState(MemSwap * game) {
         currScreen = (MenuScreen) game->getCurrMenuScreen();
         currButtonID = 0;
         updateCurrButton();
+
+        // update level select buttons based on player progress
+        updateLevelSelectButtons(game);
     } else {
         returning = true;
     }
@@ -91,6 +94,9 @@ void MenuState::addLvlSelectGUI(MemSwap * game) {
     addBackButton(levelSelectButtons, game);
     stateButtons.emplace(MenuScreen::MENU_LVLS, levelSelectButtons);
 
+    // set locked graphic for locked levels
+    updateLevelSelectButtons(game);
+
     // labels
     std::vector<Label> lvlsLabels;
 
@@ -98,6 +104,29 @@ void MenuState::addLvlSelectGUI(MemSwap * game) {
     addTitleLabel(lvlsLabels, LVL_SELECT_TITLE, true, game);
 
     stateLabels.emplace(MenuScreen::MENU_LVLS, lvlsLabels);
+}
+
+
+// set levels not yet unlocked to display the 'locked' graphic temporarily
+void MenuState::updateLevelSelectButtons(MemSwap * game) {
+    auto & lsButtons = stateButtons.at(MenuScreen::MENU_LVLS);
+
+    auto lockedGraphic = game->getResManager().getTexture(LVL_LOCKED_ID);
+
+    for(auto & levelID: game->getLevelLabels()) {
+        unsigned int IDIndex = game->indexOfLevelID(levelID);
+
+        // (no need to check the last two buttons (last level/back button))
+        if(IDIndex >= lsButtons.size() - 2) continue;
+
+        // if current is completed, set the next one unlocked
+        if(game->levelIsCompleted(levelID)) {
+            lsButtons.at(IDIndex + 1).removeGraphic();
+        } else {
+            // otherwise add a 'locked' graphic to the button
+            lsButtons.at(IDIndex + 1).setGraphic(lockedGraphic);
+        }
+    }
 }
 
 void MenuState::addStatsGUI(MemSwap * game) {
@@ -385,9 +414,12 @@ void MenuState::activateMain(MemSwap * game) {
 void MenuState::activateLvlSelect(MemSwap * game) {
     auto levelID = currButton->getText();
 
-    // move to play state + set correct level id
-    game->setNextState(GAME_STATE_PLAY);
-    game->setCurrLevelID(levelID);
+    // the level will be unlocked if its 'locked' graphic doesn't exist
+    if(!currButton->checkHasGraphic()) {
+        // move to play state + set correct level id
+        game->setNextState(GAME_STATE_PLAY);
+        game->setCurrLevelID(levelID);
+    }
 }
 
 void MenuState::activateStats(MemSwap * game) {
