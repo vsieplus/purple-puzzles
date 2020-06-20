@@ -5,10 +5,11 @@ Label::Label(int screenX, int screenY, std::shared_ptr<Texture> labelSprite) :
 
 Label::Label(int screenX, int screenY, std::shared_ptr<Texture> labelSprite,
     std::shared_ptr<BitmapFont> labelFont, std::string labelText,  SDL_Color textColor,
-    TextAlignment textAlignment) : 
+    TextAlignment horizTextAlignment, TextAlignment vertTextAlignment) : 
     labelSprite(labelSprite), labelText(labelText), labelFont(labelFont), 
     textColor(textColor),
-    textAlignment(textAlignment),
+    horizTextAlignment(horizTextAlignment),
+    vertTextAlignment(vertTextAlignment),
     screenX(screenX), screenY(screenY),
     textX(initTextX()),
     textY(initTextY()),
@@ -19,7 +20,7 @@ int Label::initTextX() const {
 
     // center/left/right align text
     if(labelFont.get()) {
-        switch(textAlignment) {
+        switch(horizTextAlignment) {
             case TextAlignment::ALIGN_LEFT:
                 x = screenX + labelSprite->getWidth() / 12;
                 break;
@@ -40,13 +41,13 @@ int Label::initTextY() const {
     int y = 0;
 
     if(labelFont.get()) {
-        switch(textAlignment) {
-            case TextAlignment::ALIGN_CENTER:
-                y = screenY + labelSprite->getHeight() / 2 -
+        switch(vertTextAlignment) {
+            case ALIGN_CENTER:
+                y = screenY + labelSprite->getHeight() / 2 - 
                     labelFont->getTextHeight(labelText) / 2;
                 break;
-            case TextAlignment::ALIGN_LEFT:
-            case TextAlignment::ALIGN_RIGHT:
+            case ALIGN_LEFT:
+            case ALIGN_RIGHT:
                 y = screenY + (TEXT_PAD);
                 break;
         }

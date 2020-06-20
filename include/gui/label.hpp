@@ -21,7 +21,8 @@ class Label {
         // with text
         Label(int screenX, int screenY, std::shared_ptr<Texture> labelSprite,
             std::shared_ptr<BitmapFont> labelFont, std::string label, 
-            SDL_Color textColor, TextAlignment textAlignment = ALIGN_CENTER);
+            SDL_Color textColor, TextAlignment textAlignment = ALIGN_CENTER,
+            TextAlignment vertTextAlignment = ALIGN_CENTER);
 
         void render(SDL_Renderer * renderer) const;
 
@@ -45,10 +46,11 @@ class Label {
 
         SDL_Color textColor;
 
-        TextAlignment textAlignment;
+        TextAlignment horizTextAlignment;
+        TextAlignment vertTextAlignment;
 
         // pad for text from label border
-        const int TEXT_PAD = 20;
+        const static int TEXT_PAD = 20;
 
         // coords of the texture
         int screenX, screenY;
