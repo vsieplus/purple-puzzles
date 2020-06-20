@@ -21,17 +21,16 @@ int Label::initTextX() const {
     if(labelFont.get()) {
         switch(textAlignment) {
             case TextAlignment::ALIGN_LEFT:
-                x = screenX + labelSprite->getWidth() / 4;
+                x = screenX + labelSprite->getWidth() / 12;
                 break;
             case TextAlignment::ALIGN_CENTER:
-                x = screenX + labelSprite->getWidth() / 2;
+                x = screenX + labelSprite->getWidth() / 2 -
+                    labelFont->getTextWidth(labelText) / 2;
                 break;
             case TextAlignment::ALIGN_RIGHT:
-                x = screenX + labelSprite->getWidth() * 3 / 4;
+                x = screenX + labelSprite->getWidth() * 2 / 4;
                 break;
         }
-
-        x -= labelFont->getTextWidth(labelText) / 2;
     }
 
     return x;
