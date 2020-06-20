@@ -58,7 +58,9 @@ int Label::initTextY() const {
 void Label::render(SDL_Renderer * renderer) const {
     labelSprite->render(screenX, screenY, renderer);
 
-    if(hasText) {
+    if(hasGraphic) {
+        graphicSprite->render(screenX, screenY, renderer);
+    } else if(hasText) {
         labelFont->setFontColor(textColor);
         labelFont->renderText(renderer, labelText, textX, textY);
     }
@@ -87,4 +89,18 @@ int Label::getWidth() const {
 
 int Label::getHeight() const {
     return labelSprite->getHeight();
+}
+
+bool Label::checkHasGraphic() const {
+    return hasGraphic;
+}
+
+void Label::removeGraphic() {
+    graphicSprite.reset();
+    hasGraphic = false;
+}
+
+void Label::setGraphic(std::shared_ptr<Texture> graphicSprite) {
+    this->graphicSprite = graphicSprite;
+    hasGraphic = true;
 }

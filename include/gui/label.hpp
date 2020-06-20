@@ -32,8 +32,14 @@ class Label {
         int getWidth() const;
         int getHeight() const;
 
+        bool checkHasGraphic() const;
+
+        void removeGraphic();
+        void setGraphic(std::shared_ptr<Texture> graphicSprite);
+
     protected:
         std::shared_ptr<Texture> labelSprite;
+        std::shared_ptr<Texture> graphicSprite;
         std::string labelText;
         std::shared_ptr<BitmapFont> labelFont;
 
@@ -51,6 +57,8 @@ class Label {
         int textX, textY;
 
         bool hasText;
+
+        bool hasGraphic = false;
 
         int initTextX() const;
         int initTextY() const;
