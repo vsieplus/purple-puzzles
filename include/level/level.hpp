@@ -30,6 +30,9 @@ class Level {
         // if level has been completed by the player
         bool completed = false;
 
+        // track perfect play (no resets)
+        bool perfect = true;
+
         std::string mapPath;
 
     public:
@@ -58,6 +61,7 @@ class Level {
         void checkComplete();
 
         bool isCompleted() const;
+        bool isPerfect() const;
 
         int getGridWidth() const;
         int getGridHeight() const;

@@ -87,10 +87,15 @@ void Level::reset(MemSwap * game) {
     map.loadMap(mapPath, game->getRenderer(), this, game);
 
     tilesFlipped = 0;
+    perfect = false;
 }
 
 bool Level::isCompleted() const {
     return completed;
+}
+
+bool Level::isPerfect() const {
+    return perfect;
 }
 
 int Level::getGridWidth() const { 

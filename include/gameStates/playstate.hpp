@@ -37,6 +37,8 @@ class PlayState : public GameState {
         // helper function to load levels
         void loadLevel(MemSwap * game);
 
+        void updateStats(MemSwap * game);
+
         void handleEvents(MemSwap * game, const SDL_Event & e) override;
         void update(MemSwap * game, float delta) override;
         void render(SDL_Renderer * renderer) const override;

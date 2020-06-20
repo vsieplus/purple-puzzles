@@ -35,7 +35,7 @@ void PlayState::handleEvents(MemSwap * game, const SDL_Event & e) {
     } else {
         // Check for level reset (cannot reset on default position)
         if(level.getTilesFlipped() != 0 && keyStates[SDL_SCANCODE_R]) {
-            // update stats
+            // store stats
             currTilesFlipped += level.getTilesFlipped();
             currNumResets++;
 
@@ -51,18 +51,19 @@ void PlayState::handleEvents(MemSwap * game, const SDL_Event & e) {
 
 void PlayState::updateStats(MemSwap * game) {
     // update profile data after each level complete
-    if(currNumResets != 0 || currTilesFlipped != 0) {
+    if(currNumResets != 0 || currTilesFlipped + level.getTilesFlipped() != 0) {
         game->updatePlayerStats(currNumResets, currTilesFlipped + 
-            level.getTilesFlipped());
+            level.getTilesFlipped(), levelComplete, level.isPerfect());
         currNumResets = 0;
         currTilesFlipped = 0;
+        level.setTilesFlipped(0);
     }
 }
  
 void PlayState::update(MemSwap * game, float delta) {
     // if paused update stats and set pause state
     if(game->isPaused()) {
-        updateStats();
+        updateStats(game);
         game->setNextState(GAME_STATE_PAUSE);
     } else {
         level.update(delta);
@@ -70,7 +71,7 @@ void PlayState::update(MemSwap * game, float delta) {
         // check if level is succesfully completed
         levelComplete = level.isCompleted();
         if(levelComplete) {
-            updateStats();
+            updateStats(game);
 
             // check if player ready to advance to next level or return to menu
             if(advanceLevel) {
