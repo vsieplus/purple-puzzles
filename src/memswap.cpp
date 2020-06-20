@@ -297,9 +297,7 @@ void MemSwap::updatePlayTime() {
 void MemSwap::updatePlayerStats(int resets, int flipped, bool completed, bool perfect) {
     if(completed) {
         // set level complete (get idx of ID in LVLS_LABELS)
-        auto it = std::find(LVLS_LABELS.begin(), LVLS_LABELS.end(), currLevelID);
-        int IDIndex = std::distance(LVLS_LABELS.begin(), it);
-        playerProfile.setLevelComplete(IDIndex);
+        playerProfile.setLevelComplete(indexOfLevelID(currLevelID));
 
         // add perfect play
         if(perfect) {
@@ -316,6 +314,13 @@ void MemSwap::updatePlayerStats(int resets, int flipped, bool completed, bool pe
 }
 
 void MemSwap::quit() {
+    // if exiting on play state, update time/player stats
+    if(currState == GAME_STATE_PLAY) {
+        updatePlayTime();
+        auto playState = dynamic_cast<PlayState *>(gameStates.at(GAME_STATE_PLAY).get());
+        playState->updateStats(this);
+    }
+
     // save player data on exit
     saveProfile();
 
@@ -326,6 +331,15 @@ void MemSwap::quit() {
 	Mix_Quit();
 	IMG_Quit();
 	SDL_Quit();
+}
+
+int MemSwap::indexOfLevelID(std::string ID) const {
+    auto it = std::find(LVLS_LABELS.begin(), LVLS_LABELS.end(), ID);
+    return std::distance(LVLS_LABELS.begin(), it);
+}
+
+bool MemSwap::levelIsCompleted(std::string levelID) const {
+    return playerProfile.levelIsComplete(indexOfLevelID(levelID));
 }
 
 bool MemSwap::isPlaying() const { 
@@ -387,8 +401,7 @@ std::vector<std::string> MemSwap::getLevelLabels() const {
 
 // tries to advance to next level, returns false if unable to
 bool MemSwap::advanceLevel() {
-    auto it = std::find(LVLS_LABELS.begin(), LVLS_LABELS.end(), currLevelID);
-    unsigned int currIndex = std::distance(LVLS_LABELS.begin(), it);
+    auto currIndex = (unsigned int) indexOfLevelID(currLevelID);
     
     if(currIndex < LVLS_LABELS.size() - 1) {
         currLevelID = LVLS_LABELS.at(currIndex + 1);

@@ -126,6 +126,9 @@ class MemSwap {
 
         void quit();
 
+        int indexOfLevelID(std::string ID) const;
+        bool levelIsCompleted(std::string levelID) const;
+
         bool isPlaying() const;
         GameStateID getGameStateID() const;
         SDL_Event getEvent() const;
