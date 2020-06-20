@@ -7,7 +7,7 @@
 Level::Level() {}
 
 Level::Level(std::string tiledMapPath, SDL_Renderer * renderer, MemSwap * game) 
-    : map(tiledMapPath, renderer, this, game) {}
+    : map(tiledMapPath, renderer, this, game), mapPath(tiledMapPath) {}
 
 // Event loop (down right)
 void Level::handleEvents(const Uint8 * keyStates) {
@@ -81,6 +81,14 @@ void Level::checkComplete() {
     completed = true;
 }
 
+void Level::reset(MemSwap * game) {
+    // clear and reload the map tiles/entities
+    map.clear();
+    map.loadMap(mapPath, game->getRenderer(), this, game);
+
+    tilesFlipped = 0;
+}
+
 bool Level::isCompleted() const {
     return completed;
 }
@@ -99,6 +107,14 @@ int Level::getPixelWidth() const {
 
 int Level::getPixelHeight() const { 
     return pixelHeight;
+}
+
+void Level::addTileFlipped() {
+    tilesFlipped++;
+}
+
+int Level::getTilesFlipped() const {
+    return tilesFlipped;
 }
 
 bool Level::inBounds(int x, int y) const {

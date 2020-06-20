@@ -96,6 +96,14 @@ void Map::render(SDL_Renderer * renderer) const {
     }    
 }
 
+
+// clear the map
+void Map::clear() {
+    mapTiles.clear();
+    entityGrid.clear();
+    mapPortals.clear();
+}
+
 // Load the map for the given level
 void Map::loadMap(std::string tiledMapPath, SDL_Renderer * renderer,
     Level * level, MemSwap * game) {
@@ -292,6 +300,9 @@ void Map::flipTile(int tileX, int tileY, int entityParity, Level * level) {
         // Flip if parity differs from player's
         if(entityParity != currTile.getParity()) {
             currTile.flip(parityTileSprites.at(entityParity));
+
+            // add a flipped tile to the level count
+            level->addTileFlipped();
         }
     }
 }

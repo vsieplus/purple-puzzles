@@ -67,6 +67,9 @@ class Map {
         void update(Level * level, float delta);
         void render(SDL_Renderer * renderer) const;
 
+        // reset/clear the map
+        void clear();
+
         // Load map for the level
         void loadMap(std::string tiledMapPath, SDL_Renderer * renderer, 
             Level * level, MemSwap * game);

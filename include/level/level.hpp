@@ -21,11 +21,16 @@ class Level {
         // Width/height in pixels
         int pixelWidth, pixelHeight;
 
+        // how many tiles have been flipped in this map
+        int tilesFlipped = 0;
+
         // The map representation of the background
         Map map;
 
         // if level has been completed by the player
         bool completed = false;
+
+        std::string mapPath;
 
     public:
         Level();
@@ -44,6 +49,9 @@ class Level {
         void placeGridElement(std::shared_ptr<Entity> entity, int x, int y);
         void moveGridElement(int startX, int startY, int endX, int endY);
 
+        // level reset
+        void reset(MemSwap * game);
+
         void placePortals();
 
         // check for level completion
@@ -55,6 +63,9 @@ class Level {
         int getGridHeight() const;
         int getPixelWidth() const;
         int getPixelHeight() const;
+
+        void addTileFlipped();
+        int getTilesFlipped() const;
 
         template <class T>
         std::shared_ptr<T> getGridElement(int x, int y) const {
