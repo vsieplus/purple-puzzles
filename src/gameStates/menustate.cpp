@@ -148,7 +148,7 @@ void MenuState::addStatsGUI(MemSwap * game) {
 
     // stats board as a label
     addTextBoard(statsLabels, game->getStatsString(), game, 
-        Label::TextAlignment::ALIGN_LEFT, Label::TextAlignment::ALIGN_TOP);
+        Label::TextAlignment::ALIGN_TOP);
 
     stateLabels.emplace(MenuScreen::MENU_STATS, statsLabels);
 
@@ -206,7 +206,7 @@ void MenuState::addCreditsGUI(MemSwap * game) {
     // title label + text board for credits
     addTitleLabel(creditsLabels, CREDITS_TITLE, false, game);
     addTextBoard(creditsLabels, game->getCreditsString(), game,
-        Label::TextAlignment::ALIGN_LEFT);
+        Label::TextAlignment::ALIGN_TOP);
 
     stateLabels.emplace(MenuScreen::MENU_CREDITS, creditsLabels);
 }
@@ -249,13 +249,14 @@ void MenuState::addTitleLabel(std::vector<Label> & labels, std::string label,
 
 // add a text board to the label vector (default alignment = center)
 void MenuState::addTextBoard(std::vector<Label> & labels, std::string label, 
-    MemSwap * game, Label::TextAlignment alignment) {
+    MemSwap * game, Label::TextAlignment vAlignment) {
     
     auto textBoard = game->getResManager().getTexture(MENU_TEXT_BOARD_ID);
     int boardX = game->getScreenWidth() / 2 - textBoard->getWidth() / 2;
     int boardY = labels.back().getScreenY() + labels.back().getHeight() + BG_PAD / 4;
     labels.emplace_back(boardX, boardY, textBoard, menuFont, label,
-        game->getButtonTextColor(), alignment);
+        game->getButtonTextColor(), Label::TextAlignment::ALIGN_LEFT,
+        vAlignment);
 }
 
 void MenuState::handleEvents(MemSwap * game, const SDL_Event & e) {

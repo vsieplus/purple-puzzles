@@ -133,7 +133,7 @@ class MenuState : public GameState {
             bool longLabel, MemSwap * game) const;
 
         void addTextBoard(std::vector<Label> & labels, std::string label, 
-            MemSwap * game, Label::TextAlignment alignment);
+            MemSwap * game, Label::TextAlignment vAlignment);
 
         void changeCurrButton(const SDL_Event & e);
         void updateCurrButton();
