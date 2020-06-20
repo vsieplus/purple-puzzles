@@ -13,6 +13,8 @@ class Label {
             ALIGN_LEFT,         // left align
             ALIGN_CENTER,       // center text
             ALIGN_RIGHT,        // right align
+            ALIGN_TOP,          // vertical (top)
+            ALIGN_BOTTOM
         };
 
         // without text

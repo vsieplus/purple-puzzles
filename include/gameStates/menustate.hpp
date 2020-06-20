@@ -31,9 +31,20 @@ class MenuState : public GameState {
             MENU_MAIN,        // main menu
             MENU_LVLS,        // level select
             MENU_STATS,       // player stats/data
-            MENU_HTP,      // options/settings
+            MENU_HTP,         // how to play
             MENU_CREDITS,     // credits
+            PLAY_POSTGAME     // postgame menu during play state
         };
+        
+
+        // construct and return vector of spaced buttons
+        static std::vector<Button> getSpacedButtons(
+            const std::vector<std::string> & buttonLabels,
+            std::shared_ptr<Texture> buttonTexture,
+            std::shared_ptr<BitmapFont> buttonFont,
+            int buttonAreaX, int buttonAreaY, int buttonAreaXEnd, int buttonAreaYEnd, 
+            SDL_Color outlineColor, SDL_Color textColor,
+            MenuScreen screen);
     
     private:
         enum MainButton {
@@ -53,24 +64,27 @@ class MenuState : public GameState {
         // store last main menu screen to restore focus on "back"
         int lastMainScreen = MAIN_LVLS;
 
-        const int BG_PAD = 40;
-
-        const bool CLICKABLE = false;
+        const static int BG_PAD = 40;
 
         // if returning to the menu state, or first time entering
         bool returning = false;
 
+        // menu type
+        inline const static bool CLICKABLE = false;
+
         // ID's for gui resources
-        const std::string FONT_ID = "mainFont";
-        const std::string BG_ID = "play_menu_bg";
-        const std::string MENU_BUTTON_ID = "menu_menu_btn";
-        const std::string LVL_BUTTON_ID = "menu_lvl_btn";
-        const std::string LVL_LOCKED_ID = "menu_lvl_locked";
-        const std::string BACK_BUTTON_ID = "menu_back_btn";
-        const std::string MENU_LABEL_LONG_ID = "menu_label_long";
-        const std::string MENU_LABEL_SHORT_ID = "menu_label_short";
-        const std::string MENU_TEXT_BOARD_ID = "menu_text_board";
-        const std::string MENU_HTP_BOARD_ID = "menu_htp_board";
+        
+        inline const static std::string FONT_ID = "mainFont";
+        inline const static std::string BG_ID = "play_menu_bg";
+        inline const static std::string MENU_BUTTON_ID = "menu_menu_btn";
+        inline const static std::string LVL_BUTTON_ID = "menu_lvl_btn";
+        inline const static std::string LVL_LOCKED_ID = "menu_lvl_locked";
+        inline const static std::string BACK_BUTTON_ID = "menu_back_btn";
+        inline const static std::string MENU_LABEL_LONG_ID = "menu_label_long";
+        inline const static std::string MENU_LABEL_SHORT_ID = "menu_label_short";
+        inline const static std::string MENU_TEXT_BOARD_ID = "menu_text_board";
+        inline const static std::string MENU_HTP_BOARD_ID = "menu_htp_board";
+        
 
         // button labels
         const std::vector<std::string> MAIN_LABELS = {
@@ -83,10 +97,10 @@ class MenuState : public GameState {
         const std::vector<std::string> STATS_LABELS = {"Reset Data"};
 
         // titles/labels for menu screens
-        const std::string LVL_SELECT_TITLE = "Level Select";
-        const std::string STATS_TITLE = "Player Stats";
-        const std::string HTP_TITLE = "How To Play";
-        const std::string CREDITS_TITLE = "Credits";
+        inline const static std::string LVL_SELECT_TITLE = "Level Select";
+        inline const static std::string STATS_TITLE = "Player Stats";
+        inline const static std::string HTP_TITLE = "How To Play";
+        inline const static std::string CREDITS_TITLE = "Credits";
 
         // bg texture
         std::shared_ptr<Texture> bgTexture;
@@ -101,14 +115,7 @@ class MenuState : public GameState {
 
         // store button layouts, for general button focus changing [not including back-button]
         // key: screen enum value, val: Pair of (rows, columns) [of buttons]
-        const std::unordered_map<MenuScreen, std::pair<int, int>> BTN_LAYOUTS =
-            {
-                {MenuScreen::MENU_MAIN, std::make_pair(2, 2)},
-                {MenuScreen::MENU_LVLS, std::make_pair(3, 10)},
-                {MenuScreen::MENU_STATS, std::make_pair(1, 1)},
-                {MenuScreen::MENU_HTP, std::make_pair(0, 0)},
-                {MenuScreen::MENU_CREDITS, std::make_pair(0, 0)},
-            };
+        const static std::unordered_map<MenuScreen, std::pair<int, int>> BTN_LAYOUTS;
 
         // load buttons for each menu screen 
         void addMainGUI(MemSwap * game);
@@ -137,15 +144,6 @@ class MenuState : public GameState {
         void activateStats(MemSwap * game);
 
         bool checkOnBackButton() const;
-
-        // construct and return vector of spaced buttons
-        std::vector<Button> getSpacedButtons(
-            const std::vector<std::string> & buttonLabels,
-            const std::shared_ptr<Texture> & buttonTexture, 
-            const std::shared_ptr<BitmapFont> & buttonFont,
-            int buttonAreaX, int buttonAreaY, int buttonAreaXEnd, int buttonAreaYEnd, 
-            SDL_Color outlineColor, SDL_Color textColor,
-            MenuScreen screen) const;
 
         // automatically compute space to evenly space buttons/gui elems in a specified area
         static int calculateInterHSpace(int buttonsPerRow, int buttonWidth,

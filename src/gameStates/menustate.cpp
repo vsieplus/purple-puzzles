@@ -13,6 +13,17 @@
 
 #include "gameStates/menustate.hpp"
 
+const std::unordered_map<MenuState::MenuScreen, std::pair<int, int>> MenuState::BTN_LAYOUTS =
+{
+    {MenuState::MenuScreen::MENU_MAIN, std::make_pair(2, 2)},
+    {MenuState::MenuScreen::MENU_LVLS, std::make_pair(3, 10)},
+    {MenuState::MenuScreen::MENU_STATS, std::make_pair(1, 1)},
+    {MenuState::MenuScreen::MENU_HTP, std::make_pair(0, 0)},
+    {MenuState::MenuScreen::MENU_CREDITS, std::make_pair(0, 0)},
+    {MenuState::MenuScreen::PLAY_POSTGAME, std::make_pair(1, 3)}
+};
+
+
 MenuState::MenuState(MemSwap * game) : GameState(GAME_STATE_MENU) {
     // retrieve resources
     bgTexture = game->getResManager().getTexture(BG_ID);
@@ -137,7 +148,7 @@ void MenuState::addStatsGUI(MemSwap * game) {
 
     // stats board as a label
     addTextBoard(statsLabels, game->getStatsString(), game, 
-        Label::TextAlignment::ALIGN_LEFT);
+        Label::TextAlignment::ALIGN_LEFT, Label::TextAlignment::ALIGN_TOP);
 
     stateLabels.emplace(MenuScreen::MENU_STATS, statsLabels);
 
@@ -251,7 +262,7 @@ void MenuState::handleEvents(MemSwap * game, const SDL_Event & e) {
     currButton->handleEvents(e);
 
     // handle switching button focus (except for credit screen [only back btn])
-    if(currScreen != MenuScreen::MENU_CREDITS &&  e.type == SDL_KEYDOWN) {
+    if(currScreen != MenuScreen::MENU_CREDITS && e.type == SDL_KEYDOWN) {
         changeCurrButton(e);
     }
 }
@@ -466,13 +477,14 @@ int MenuState::calculateInterVSpace(int buttonsPerCol, int buttonHeight,
     return ((endY - startY) - (buttonsPerCol * buttonHeight)) / (buttonsPerCol + 1);
 }
 
+// get evenly spaced buttons and return a vector containing them
 std::vector<Button> MenuState::getSpacedButtons (
     const std::vector<std::string> & buttonLabels,
-    const std::shared_ptr<Texture> & buttonTexture, 
-    const std::shared_ptr<BitmapFont> & buttonFont,
+    std::shared_ptr<Texture> buttonTexture,
+    std::shared_ptr<BitmapFont> buttonFont,
     int buttonAreaX, int buttonAreaY, int buttonAreaXEnd, int buttonAreaYEnd, 
     SDL_Color outlineColor, SDL_Color textColor,
-    MenuScreen screen) const {
+    MenuScreen screen) {
 
     // compute inter-button spacings
     auto dims = BTN_LAYOUTS.at(screen);
@@ -489,7 +501,7 @@ std::vector<Button> MenuState::getSpacedButtons (
     int buttonWidth = buttonTexture->getWidth();
     int buttonHeight = buttonTexture->getHeight();
 
-    // add each of the four buttons
+    // add each of the buttons with the appropriate spacing
     for(int i = 0; i < rows; i++) {
         for(int j = 0; j < cols; j++) {
             buttons.emplace_back(buttonAreaX + (j * buttonWidth) + ((j + 1) *

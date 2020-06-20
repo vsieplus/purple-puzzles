@@ -46,9 +46,11 @@ int Label::initTextY() const {
                 y = screenY + labelSprite->getHeight() / 2 - 
                     labelFont->getTextHeight(labelText) / 2;
                 break;
-            case ALIGN_LEFT:
+            case ALIGN_TOP:
+                y = screenY + TEXT_PAD;
+                break;
             case ALIGN_RIGHT:
-                y = screenY + (TEXT_PAD);
+                y = screenY + labelSprite->getHeight() - TEXT_PAD;
                 break;
         }
     }
