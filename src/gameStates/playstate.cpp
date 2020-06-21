@@ -64,8 +64,6 @@ void PlayState::handleEvents(MemSwap * game, const SDL_Event & e) {
 
         level.handleEvents(keyStates);
     } else {
-        printf("hi :(");
-
         // Handle user selecting advance option after completing a level
         postGameButtons.at(currButton).handleEvents(e);
 
@@ -102,10 +100,6 @@ void PlayState::update(MemSwap * game, float delta) {
         updateStats(game);
         game->setNextState(GAME_STATE_PAUSE);
     } else if(levelComplete) {
-        printf("lvl complete update\n");
-        printf("curr button: %d\n", currButton);
-        printf("posgamebuttons size: %d\n", postGameButtons.size());
-
         // update curr button/check if it has been activated
         postGameButtons.at(currButton).update();
         if(postGameButtons.at(currButton).isActivated()) {
@@ -115,11 +109,11 @@ void PlayState::update(MemSwap * game, float delta) {
     } else {
         level.update(delta);
 
-        // check if level is succesfully completed
+        // check if level is succesfully completed and animation has finished
         levelComplete = level.isCompleted();
 
         // update stats 1x
-        if(levelComplete) {
+        if(levelComplete /*&& level.playerIsMoving()*/) {
             postGameButtons.front().setFocus(true);
             updateStats(game);
         }
