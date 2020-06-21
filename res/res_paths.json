@@ -2,6 +2,7 @@
     "images":{
         "splash_bg": "splash/bg.png",
         "play_menu_bg": "misc/bg.png",
+        "play_postgame_board": "menu/postgameBoard.png",
         "menu_menu_btn" : "menu/menuButton.png",
         "menu_lvl_btn" : "menu/levelButton.png",
         "menu_lvl_locked": "menu/levelLocked.png",

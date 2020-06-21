@@ -29,7 +29,7 @@ class PlayState : public GameState {
 
         inline const static std::string FONT_ID = "mainFont";
         inline const static std::string BUTTON_ID = "menu_menu_btn";
-        inline const static std::string POSTGAME_BOARD_ID = "menu_text_board";
+        inline const static std::string POSTGAME_BOARD_ID = "play_postgame_board";
 
         inline const static std::string POSTGAME_TEXT = "Level Complete!";
 
