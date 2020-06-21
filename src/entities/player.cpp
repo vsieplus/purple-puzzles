@@ -30,7 +30,7 @@ void Player::update(Level * level, float delta) {
         checkPortal(level);
     } else if(merging) {
         // if player not moving + is merging, check if level is complete
-        if(!level->isCompleted()) level->checkComplete();
+        if(!moving && !level->isCompleted()) level->checkComplete();
     }
 
     // update player movement
