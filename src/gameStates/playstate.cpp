@@ -1,13 +1,9 @@
 // implementation for Play state
-
-#include <stdio.h>
-
 #include "memswap.hpp"
 #include "gameStates/menustate.hpp"
 #include "gameStates/playstate.hpp"
 
-PlayState::PlayState(MemSwap * game) : GameState(GAME_STATE_PLAY), 
-    bgTexture(game->getResManager().getTexture(BG_ID)),
+PlayState::PlayState(MemSwap * game) : GameState(GAME_STATE_PLAY),
     postGameBoard(game->getScreenWidth() / 2 - 
         (game->getResManager().getTexture(POSTGAME_BOARD_ID)->getWidth() / 2),
         game->getScreenHeight() / 2 - 
@@ -38,7 +34,6 @@ void PlayState::enterState(MemSwap * game) {
 // load the curr. level
 void PlayState::loadLevel(MemSwap * game) {
     std::string levelPath = game->getResManager().getResPath(game->getCurrLevelID());
-    printf("loading level path: %s\n", levelPath.c_str());
     level = Level(levelPath, game->getRenderer(), game);
     levelComplete = false;
 }
@@ -144,9 +139,6 @@ void PlayState::handlePGActivation(MemSwap * game) {
 
 /// Render function for the game state
 void PlayState::render(SDL_Renderer * renderer) const {
-    // Render background
-    bgTexture->render(0, 0, renderer);
-
     level.render(renderer);
 
     // render postgame board over level if level is completed

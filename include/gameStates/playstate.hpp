@@ -17,9 +17,6 @@ class PlayState : public GameState {
     private:
         Level level;
 
-        // Texture to show in the background
-        std::shared_ptr<Texture> bgTexture;
-
         // for post-level completion menu (popup window)
         Label postGameBoard;
 
@@ -30,7 +27,6 @@ class PlayState : public GameState {
             "Next Level", "Main Menu", "Level Select"
         };
 
-        inline const static std::string BG_ID = "play_menu_bg";
         inline const static std::string FONT_ID = "mainFont";
         inline const static std::string BUTTON_ID = "menu_menu_btn";
         inline const static std::string POSTGAME_BOARD_ID = "menu_text_board";

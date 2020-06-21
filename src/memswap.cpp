@@ -416,7 +416,6 @@ bool MemSwap::advanceLevel() {
 
 void MemSwap::setCurrLevelID(std::string levelID) {
     currLevelID = levelID;
-    printf("Setting currLevelID: %s\n", currLevelID.c_str());
 }
 
 void MemSwap::setCurrMenuScreen(int screenID) {
