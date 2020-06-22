@@ -7,14 +7,12 @@ Movable::Movable(int screenX, int screenY, int gridX, int gridY, int velocity,
     startY(screenY), endX(screenX), endY(screenY), velocity(velocity), 
     movableShape(movableShape) {}
 
-void Movable::update(Level * level, float delta) {    
+void Movable::update(Level * level, float delta) {  
     if(moving) {
-        // if boosted, update booster
-        if(booster.get()) {
-            if(boostPower > 0) {
-                booster->update(level, delta);
-            } else {
-                //booster.reset();
+        // if boosted/replacing booster, update booster
+        if(boostPower > 0) {
+            if(!boosters.empty()) {
+                boosters.top()->update(level, delta);
             }
         }
 
@@ -39,8 +37,10 @@ void Movable::render(SDL_Renderer* renderer) const {
     // render receptor first when merging/booster when boosting
     if(merging) {
         mReceptor->render(renderer);
-    } else if(boostPower > 0 && booster.get()) {
-        booster->render(renderer);
+    } else if(boostPower > 0) {
+        if(!boosters.empty()) {
+            boosters.top()->render(renderer);
+        }
     }
 
     Entity::render(renderer);
@@ -71,7 +71,7 @@ void Movable::initMovement(Direction direction, Level * level) {
  *        position. Returns early if unable to
  */
 void Movable::initMovement(int xPosChange, int yPosChange, int xGridChange, 
-    int yGridChange, int direction, Level * level) {
+    int yGridChange, Direction direction, Level * level) {
 
     int newGridX = gridX + xGridChange;
     int newGridY = gridY + yGridChange;
@@ -105,18 +105,28 @@ void Movable::initMovement(int xPosChange, int yPosChange, int xGridChange,
     // if merging with receptor, flip new tile (that entity just moved to)
     if(merging) level->flipMapTiles(gridX, gridY, parity);
 
-    // add move action to track history
-    MoveableAction moveAction;
+    addMoveToHistory(direction);
+}
+
+// add an entity movement to its history
+void Movable::addMoveToHistory(Direction direction) {
+    MovableAction moveAction;
+
+    bool boosted = boostPower > 0;
+
+    // add a normal move or boosted move to the stack
     switch(direction) {
-        case DIR_UP:    moveAction = MoveableAction::MOVE_UP;
+        case DIR_UP:    moveAction = boosted ? BOOST_UP : MOVE_UP;
                         break;
-        case DIR_DOWN:  moveAction = MoveableAction::MOVE_DOWN;
+        case DIR_DOWN:  moveAction = boosted ? BOOST_DOWN : MOVE_DOWN;
                         break;
-        case DIR_LEFT:  moveAction = MoveableAction::MOVE_LEFT;
+        case DIR_LEFT:  moveAction = boosted ? BOOST_LEFT : MOVE_LEFT;
                         break;
-        case DIR_RIGHT: moveAction = MoveableAction::MOVE_RIGHT;
-                        break;                                                                        
+        case DIR_RIGHT: moveAction = boosted ? BOOST_RIGHT : MOVE_RIGHT;
+                        break;
+        default:        break;                                                                   
     }
+
     actionHistory.push(moveAction);
 }
 
@@ -134,23 +144,24 @@ void Movable::move(Level * level, float delta) {
         renderArea.y = abs(newPos.second - startY) < abs(endY - startY) ? newPos.second : endY;
     } else {
         // When current move is finished check if a move is buffered/boosting
-        if(bufferedDir != DIR_NONE) {
-            checkBoost(level, bufferedDir);
-            initMovement(bufferedDir, level);
-
-            bufferedDir = DIR_NONE;
-        } else if(boostPower > 0) {
+        if(boostPower > 0) {
             // Check for another boost at next tile when already boosted
             // if there is, avoid boosting 2x in that direction
             if(!checkBoost(level, moveDir)) {
                 initMovement(moveDir, level);
                 boostPower--;
             }
+        } else if(bufferedDir != DIR_NONE) {
+            // check for boost in the buffered direction, if there is one there
+            // avoid intializing movement 2x
+            if(!checkBoost(level, bufferedDir)) {
+                initMovement(bufferedDir, level);
+            }
+
+            bufferedDir = DIR_NONE;
         } else {
             moveDir = DIR_NONE;
             moving = false;
-
-            if(booster.get()) booster.reset();
         }
     }
 }
@@ -162,14 +173,14 @@ bool Movable::checkBoost(Level * level, Direction direction) {
     // if there is a boost in the tile we want to move to, activate it
     if(boost.get()) {
         // remove booster from map/store
-        booster = boost;
+        boosters.push(boost);
         level->removeGridElement(boost->getGridX(), boost->getGridY());
 
         boost->setActivated(true);
 
-        // if currently boosted/set to move, finish move
-        if(boostPower > 0 || moveDir != DIR_NONE) { 
-            initMovement(moveDir, level);    
+        // if currently boosted/set to move, finish move (to the boost tile)
+        if(boostPower > 0 || moveDir != DIR_NONE || bufferedDir != DIR_NONE) { 
+            initMovement(direction, level);    
         }
 
         // store boost power and direction, overwriting any existing boosts
@@ -198,16 +209,25 @@ void Movable::checkReceptor(Level * level) {
 
         // stop movement after next move if boosting
         boostPower = boostPower > 0 ? 1 : 0;
+
+        // add merge to action history
+        actionHistory.push(MERGE);
     }
 }
 
 // undo the last action taken by this entity
 void Movable::undoAction(Level * level) {
     if(!actionHistory.empty()) {
-        MoveableAction lastAction = actionHistory.top();
-        actionHistory.pop();
+        // reset any movement/boosting
+        moving = false;
+        boostPower = 0;
+        moveDir = DIR_NONE;
+        bufferedDir = DIR_NONE;
 
+        MovableAction lastAction = actionHistory.top();
+        
         switch(lastAction) {
+            // single movements
             case MOVE_LEFT:     undoMovement(DIR_LEFT, level);
                                 break;
             case MOVE_RIGHT:    undoMovement(DIR_RIGHT, level);
@@ -216,12 +236,27 @@ void Movable::undoAction(Level * level) {
                                 break;
             case MOVE_UP:       undoMovement(DIR_UP, level);
                                 break;
+            // for boosted moves, undo 1 move, then recurse if applicable (^)
+            case BOOST_LEFT:    undoBoost(DIR_LEFT, level, lastAction);
+                                break;
+            case BOOST_RIGHT:   undoBoost(DIR_RIGHT, level, lastAction);
+                                break;
+            case BOOST_DOWN:    undoBoost(DIR_DOWN, level, lastAction);
+                                break;
+            case BOOST_UP:      undoBoost(DIR_UP, level, lastAction);
+                                break;
+            case MERGE:         undoMerge(level);
+                                break;
+            default:            break;
         }
     }
 }
 
-// undoes a move made in the specified direction
+// undoes a move made originally in the specified direction
 void Movable::undoMovement(Direction direction, Level * level) {
+    // pop the movement/boost from the action history
+    actionHistory.pop();
+
     std::pair<int, int> origCoords;
 
     switch(direction) {
@@ -244,6 +279,58 @@ void Movable::undoMovement(Direction direction, Level * level) {
     setScreenY(origCoords.second * entitySprite->getHeight());
 
     level->moveGridElement(gridX, gridY, origCoords.first, origCoords.second);
+}
+
+// undo a boosted move
+void Movable::undoBoost(Direction direction, Level * level, MovableAction lastAction) {
+    // undo movement and pop the BOOST_... move
+    undoMovement(direction, level);
+    
+    // check if after the undo the last boost's coords match our current, if so replace
+    if(!boosters.empty()) {
+        std::shared_ptr<Boost> lastBoost = boosters.top();
+
+        // undo the move onto the booster, then transfer ownership back to the map
+        if(lastBoost->getGridX() == gridX && lastBoost->getGridY() == gridY) {
+            boosters.pop();
+            
+            undoAction(level);
+            lastAction = actionHistory.top();
+
+            // we have moved off the grid location, so we may now replace the boost here
+            level->placeGridElement(lastBoost, lastBoost->getGridX(), lastBoost->getGridY());
+        }
+    }
+
+    // check if the next top element is a boost
+    bool topIsBoost = !actionHistory.empty() && (actionHistory.top() == BOOST_LEFT
+        || actionHistory.top() == BOOST_RIGHT || actionHistory.top() == BOOST_DOWN
+        || actionHistory.top() == BOOST_UP);
+
+    bool lastBoost = !topIsBoost && (lastAction == BOOST_DOWN || lastAction == BOOST_UP
+        || lastAction == BOOST_LEFT || lastAction == BOOST_RIGHT);
+
+    // recurse for boosts if top is another boost or the last move onto a booster
+    if(topIsBoost || lastBoost) {
+        undoAction(level);
+    }
+}
+
+
+// undo merge with receptor, and movement onto the receptor + ownership
+void Movable::undoMerge(Level * level) {
+    actionHistory.pop();
+
+    // first undo the movement onto the receptor, which is the next action
+    undoAction(level);
+
+    // then undo the merge
+    merging = false;
+    mReceptor->setCompleted(false);
+
+    level->flipMapTiles(mReceptor->getGridX(), mReceptor->getGridY(), PARITY_GRAY);
+    level->placeGridElement(mReceptor, mReceptor->getGridX(), mReceptor->getGridY());
+    mReceptor.reset();
 }
 
 // Linear interpolation from current position to <endX, endY>
