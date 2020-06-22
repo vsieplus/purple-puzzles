@@ -69,7 +69,7 @@ std::string Profile::getStatsString() const {
     stats += playTimeString;
     stats += NEWLINE_CHAR;
     stats += "Tiles Flipped: " + std::to_string(tilesFlipped) + NEWLINE_CHAR;
-    stats += "Perfect Plays (no reset): " + std::to_string(perfectPlays) + NEWLINE_CHAR;
+    stats += "Perfect Plays (no reset/undo): " + std::to_string(perfectPlays) + NEWLINE_CHAR;
     stats += "Level Resets: " + std::to_string(levelResets) + NEWLINE_CHAR;
     stats += "Levels Completed: " + std::to_string(numLevelsCompleted) + 
         "/30" + NEWLINE_CHAR;
