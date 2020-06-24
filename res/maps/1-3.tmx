@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.5" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.2" tiledversion="1.3.5" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
  <tileset firstgid="1" name="entityTiles" tilewidth="32" tileheight="32" tilecount="64" columns="8">
   <image source="../spritesheets/entitySpritesheet.png" width="256" height="256"/>
   <tile id="0">
@@ -231,7 +231,7 @@
  </layer>
  <layer id="2" name="entities" width="20" height="15">
   <data encoding="base64" compression="zlib">
-   eJzjZBi5QJBC/RxUcQXlYLC4Y7AAViqbx0Zl80YB+QAAs2gANg==
+   eJzjZBi5QJBC/RxUcQXlgG+gHTDIAOtAO2AU0AwAALuoADY=
   </data>
  </layer>
 </map>
