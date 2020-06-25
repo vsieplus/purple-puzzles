@@ -16,6 +16,7 @@ void Player::handleEvents(const Uint8 * keyStates, Level * level) {
     // check for move undo ('u')
     if(keyStates[SDL_SCANCODE_U] && undoBuffer == 0) {
         undoBuffer = UNDO_BUFFER_CAP;
+        movesUndone++;
     } else if((!moving || (moveProg > MOVEMENT_BUFFER && bufferedDir == DIR_NONE)) &&
         boostPower == 0 && !merging && !teleporting) {
 
@@ -153,6 +154,11 @@ bool Player::isTeleporting() const {
 void Player::setTeleporting(bool teleporting) {
     this->teleporting = teleporting;
 }
+
+int Player::getMovesUndone() const {
+    return movesUndone;
+}
+
 
 void Player::setLastPortal(std::shared_ptr<Portal> lastPortal) {
     this->lastPortal = lastPortal;

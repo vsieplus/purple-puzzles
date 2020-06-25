@@ -10,7 +10,7 @@ Profile::Profile() {
 }
 
 void Profile::initLevelsCompleted() {
-    levelsCompleted.fill(false);
+    levelsCompleted.fill(true);
 }
 
 // only call these periodically (when level complete/stats activated/exit/etc.)
@@ -43,6 +43,10 @@ void Profile::addLevelResets(int resets) {
     levelResets += resets;
 }
 
+void Profile::addMovesUndone(int movesUndone) {
+    this->movesUndone += movesUndone;
+}
+
 void Profile::resetProfile() {
     playTime = 0;
     perfectPlays = 0;
@@ -68,10 +72,11 @@ std::string Profile::getStatsString() const {
     stats += "Play Time: ";
     stats += playTimeString;
     stats += NEWLINE_CHAR;
-    stats += "Tiles Flipped: " + std::to_string(tilesFlipped) + NEWLINE_CHAR;
-    stats += "Perfect Plays (no reset/undo): " + std::to_string(perfectPlays) + NEWLINE_CHAR;
-    stats += "Level Resets: " + std::to_string(levelResets) + NEWLINE_CHAR;
-    stats += "Levels Completed: " + std::to_string(numLevelsCompleted) + 
+    stats += "Tiles flipped: " + std::to_string(tilesFlipped) + NEWLINE_CHAR;
+    stats += "Perfect plays (no reset/undo): " + std::to_string(perfectPlays) + NEWLINE_CHAR;
+    stats += "Level resets: " + std::to_string(levelResets) + NEWLINE_CHAR;
+    stats += "Moves undone: " + std::to_string(movesUndone) + NEWLINE_CHAR;
+    stats += "Levels completed: " + std::to_string(numLevelsCompleted) + 
         "/30" + NEWLINE_CHAR;
 
     return stats;

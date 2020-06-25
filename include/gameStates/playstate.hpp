@@ -42,8 +42,9 @@ class PlayState : public GameState {
 
         unsigned int currButton = BUTTON_NEXT;
 
-        // track resets for the play state
+        // track stats for the current play state
         int currNumResets = 0;
+        int currMovesUndone = 0;
         int currTilesFlipped = 0;
 
         // after a level is completed

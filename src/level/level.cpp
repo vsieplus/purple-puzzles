@@ -39,8 +39,8 @@ void Level::updateSize(const tmx::Map & map, int tileWidth, int tileHeight) {
 }
 
 // flip tiles in the map for the specified movement
-void Level::flipMapTiles(int movedFromX, int movedFromY, int entityParity) {
-    map.flipTile(movedFromX, movedFromY, entityParity, this);
+void Level::flipMapTiles(int movedFromX, int movedFromY, int entityParity, bool undo) {
+    map.flipTile(movedFromX, movedFromY, entityParity, this, undo);
 }
 
 // Move a grid element from start x,y to end
@@ -128,6 +128,10 @@ int Level::getTilesFlipped() const {
 
 void Level::setTilesFlipped(int tiles) {
     tilesFlipped = tiles;
+}
+
+int Level::getMovesUndone() const {
+    return map.getMovesUndone();
 }
 
 bool Level::inBounds(int x, int y) const {

@@ -297,7 +297,8 @@ void MemSwap::updatePlayTime() {
 
 // update player game-related stats - call at the end of each level from playstate
 // or when exit play state->pause/menu
-void MemSwap::updatePlayerStats(int resets, int flipped, bool completed, bool perfect) {
+void MemSwap::updatePlayerStats(int resets, int flipped, int movesUndone, 
+    bool completed, bool perfect) {
     if(completed) {
         // set level complete (get idx of ID in LVLS_LABELS)
         playerProfile.setLevelComplete(indexOfLevelID(currLevelID));
@@ -310,6 +311,7 @@ void MemSwap::updatePlayerStats(int resets, int flipped, bool completed, bool pe
 
     // add resets/tiles flipped
     playerProfile.addLevelResets(resets);
+    playerProfile.addMovesUndone(movesUndone);
     playerProfile.addTilesFlipped(flipped);
 
     // save

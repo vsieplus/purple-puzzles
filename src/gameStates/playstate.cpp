@@ -47,8 +47,9 @@ void PlayState::handleEvents(MemSwap * game, const SDL_Event & e) {
 
         // Check for level reset (cannot reset on default position)
         if(level.getTilesFlipped() != 0 && keyStates[SDL_SCANCODE_R]) {
-            // store stats
+            // store stats before resetting
             currTilesFlipped += level.getTilesFlipped();
+            currMovesUndone += level.getMovesUndone();
             currNumResets++;
 
             level.reset(game);
@@ -80,12 +81,17 @@ void PlayState::handleEvents(MemSwap * game, const SDL_Event & e) {
 
 void PlayState::updateStats(MemSwap * game) {
     // update profile data after each level complete
-    if(currNumResets != 0 || currTilesFlipped + level.getTilesFlipped() != 0) {
-        game->updatePlayerStats(currNumResets, currTilesFlipped + 
-            level.getTilesFlipped(), levelComplete, level.isPerfect());
+    currTilesFlipped += level.getTilesFlipped();
+    level.setTilesFlipped(0);
+
+    currMovesUndone += level.getMovesUndone();
+
+    if(currNumResets > 0 || currTilesFlipped > 0 || currMovesUndone > 0) {
+        game->updatePlayerStats(currNumResets, currTilesFlipped,
+            currMovesUndone, levelComplete, level.isPerfect());
         currNumResets = 0;
         currTilesFlipped = 0;
-        level.setTilesFlipped(0);
+        currMovesUndone = 0;
     }
 }
  
@@ -108,7 +114,7 @@ void PlayState::update(MemSwap * game, float delta) {
         levelComplete = level.isCompleted();
 
         // update stats 1x
-        if(levelComplete /*&& level.playerIsMoving()*/) {
+        if(levelComplete) {
             postGameButtons.front().setFocus(true);
             updateStats(game);
         }

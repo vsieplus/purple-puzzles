@@ -52,7 +52,7 @@ class Label {
         TextAlignment vertTextAlignment;
 
         // pad for text from label border
-        const static int TEXT_PAD = 20;
+        const static int TEXT_PAD = 15;
 
         // coords of the texture
         int screenX, screenY;

@@ -272,7 +272,7 @@ void Movable::undoMovement(Direction direction, Level * level) {
     }
 
     // undo tile flip
-    level->flipMapTiles(origCoords.first, origCoords.second, PARITY_GRAY);
+    level->flipMapTiles(origCoords.first, origCoords.second, PARITY_GRAY, true);
 
     // reset position
     setScreenX(origCoords.first * entitySprite->getWidth());
@@ -342,7 +342,7 @@ void Movable::undoMerge(Level * level) {
     merging = false;
     mReceptor->setCompleted(false);
 
-    level->flipMapTiles(mReceptor->getGridX(), mReceptor->getGridY(), PARITY_GRAY);
+    level->flipMapTiles(mReceptor->getGridX(), mReceptor->getGridY(), PARITY_GRAY, true);
     level->placeGridElement(mReceptor, mReceptor->getGridX(), mReceptor->getGridY());
     mReceptor.reset();
 }

@@ -18,6 +18,8 @@ class Player : public Movable {
         static const int UNDO_BUFFER_CAP = 10;
         int undoBuffer = 0;
 
+        int movesUndone = 0;
+
         bool teleporting = false;
 
         // maintain stack of pointers to objects pushed by player for undo purposes
@@ -46,6 +48,8 @@ class Player : public Movable {
 
         bool isTeleporting() const;
         void setTeleporting(bool teleporting);
+
+        int getMovesUndone() const;
 
         void pushAction(MovableAction action);
 

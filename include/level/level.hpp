@@ -48,7 +48,7 @@ class Level {
         // grid initialization
         void updateSize(const tmx::Map & map, int tileWidth, int tileHeight);
 
-        void flipMapTiles(int movedFromX, int movedFromY, int entityParity);
+        void flipMapTiles(int movedFromX, int movedFromY, int entityParity, bool undo = false);
         void removeGridElement(int x, int y);
         void placeGridElement(std::shared_ptr<Entity> entity, int x, int y);
         void moveGridElement(int startX, int startY, int endX, int endY);
@@ -74,6 +74,8 @@ class Level {
         void addTileFlipped();
         void setTilesFlipped(int tiles);
         int getTilesFlipped() const;
+
+        int getMovesUndone() const;
 
         template <class T>
         std::shared_ptr<T> getGridElement(int x, int y) const {

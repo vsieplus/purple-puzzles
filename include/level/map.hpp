@@ -92,7 +92,8 @@ class Map {
         bool inBounds(int x, int y) const;
 
         // Update bg tiles when the specified movement occurs
-        void flipTile(int tileX, int tileY, int entityParity, Level * level);
+        void flipTile(int tileX, int tileY, int entityParity, Level * level, 
+            bool undo = false);
 
         // Get parity of tile at the specified grid location
         Parity getTileParity(int x, int y) const;
@@ -125,6 +126,7 @@ class Map {
         std::pair<int, int> indexToXY(int index) const;
 
         std::shared_ptr<Player> getPlayer() const;
+        int getMovesUndone() const;
 };
 
 #endif // MAP_HPP

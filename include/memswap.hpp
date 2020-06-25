@@ -105,8 +105,8 @@ class MemSwap {
         
         void resetPlayerData();
         void updatePlayTime();
-        void updatePlayerStats(int resets, int flipped, bool completed,
-            bool perfect);
+        void updatePlayerStats(int resets, int flipped, int movesUndone, 
+            bool completed, bool perfect);
 
         // Handle events
         void handleEvents();

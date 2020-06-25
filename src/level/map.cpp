@@ -279,7 +279,7 @@ bool Map::inBounds(int x, int y) const {
 
 // Update bg tile when the specified movement occurs at the specified pos. by
 // an entity with the given parity
-void Map::flipTile(int tileX, int tileY, int entityParity, Level * level) {
+void Map::flipTile(int tileX, int tileY, int entityParity, Level * level, bool undo) {
     // Check if in bounds
     if(inBounds(tileX, tileY)) {
         int idx = xyToIndex(tileX, tileY);
@@ -302,8 +302,10 @@ void Map::flipTile(int tileX, int tileY, int entityParity, Level * level) {
         if(entityParity != currTile.getParity()) {
             currTile.flip(parityTileSprites.at(entityParity));
 
-            // add a flipped tile to the level count
-            level->addTileFlipped();
+            // add a flipped tile to the level count (if not an undo flip)
+            if(!undo) {
+                level->addTileFlipped();
+            }
         }
     }
 }
@@ -369,4 +371,8 @@ int Map::getRenderY() const {
 
 std::shared_ptr<Player> Map::getPlayer() const {
     return mapPlayer;
+}
+
+int Map::getMovesUndone() const {
+    return mapPlayer->getMovesUndone();
 }

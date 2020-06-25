@@ -21,6 +21,7 @@ class Profile {
         // call at the end of each level if applicable
         void setLevelComplete(int levelNum);
         void addLevelResets(int resets);
+        void addMovesUndone(int movesUndone);
         void addTilesFlipped(int tiles);
         void addPerfectPlay();
 
@@ -41,6 +42,7 @@ class Profile {
         int perfectPlays = 0;         // levels completed with no resets
         int tilesFlipped = 0;         // total tiles flipped during play
         int levelResets = 0;          // total level resets
+        int movesUndone = 0;          // moves undone
         int numLevelsCompleted = 0;
 
         // bool array indicating level completeness
