@@ -19,6 +19,15 @@ void SplashState::enterState(MemSwap * game) {
     // load splash textures prematurely
     bgTexture.loadTexture(game->getResManager().getResPath(BG_ID), 
         game->getRenderer());
+
+    auto loadingAnimation = std::make_shared<Animation>(game->getResManager().getResPath(
+        LOAD_ANIM_ID), game->getRenderer(), 32, 32, true);
+
+    loadX = game->getScreenWidth() / 2 - loadingAnimation->getFrameWidth() / 2;
+    loadY = game->getScreenHeight() / 2 - loadingAnimation->getFrameHeight() / 2;
+
+    splashAnim.setCurrAnimation(loadingAnimation);
+    splashAnim.start();
 }
 
 void SplashState::exitState() {
@@ -65,7 +74,9 @@ void SplashState::update(MemSwap * game, float delta) {
         } else {
             splashFont->updateText(delta);
         }
-    }     
+    }
+
+    splashAnim.update(delta);
 }
 
 /// Render function for the game state
@@ -73,12 +84,10 @@ void SplashState::render(SDL_Renderer * renderer) const {
     // Render background
     bgTexture.render(0, 0, renderer);
 
-    // Render graphic indicating loading is done, or if still loading
-    if(loadingRes) {
-        
-    } else {
-        if(splashFont.get() && splashFont->isRenderingDynamic()) {
+    splashAnim.render(loadX, loadY, renderer);
+
+    // Render graphic indicating loading is done
+    if(!loadingRes && splashFont.get() && splashFont->isRenderingDynamic()) {
             splashFont->renderText(renderer);
-        }
     }
 }

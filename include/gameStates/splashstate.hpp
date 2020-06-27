@@ -10,6 +10,7 @@
 #include "gameStates/gamestate.hpp"
 #include "utils/texture.hpp"
 #include "utils/bitmapfont.hpp"
+#include "utils/animator.hpp"
 
 // class for the Splash State
 class SplashState : public GameState {
@@ -26,14 +27,19 @@ class SplashState : public GameState {
     private:
         Texture bgTexture;  // BG texture to show while loading resources
 
+        Animator splashAnim;
+
         // font for splash text rendering
         std::shared_ptr<BitmapFont> splashFont; 
     
         const std::string BG_ID = "splash_bg";
+        const std::string LOAD_ANIM_ID = "loading";
         const std::string FONT_ID = "mainFont";
         const std::string ADV_TEXT = "Press Enter to Start...";
 
         int advTextX, advTextY;
+
+        int loadX, loadY;
 
         bool loadingRes = true;     // if we're loading resources
         bool advance = false;       // if the user wants to advance
