@@ -10,7 +10,7 @@ class Animation {
         Animation(std::string animationPath, SDL_Renderer * renderer, 
             int frameWidth, int frameHeight, bool looping = false);
 
-        void render(int x, int y, int frameNum, SDL_Renderer * renderer);
+        void render(int x, int y, int frameNum, SDL_Renderer * renderer) const;
 
         int getMsPerFrame() const;
         int getNumFrames() const;

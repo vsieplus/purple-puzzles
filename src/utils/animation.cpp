@@ -7,7 +7,7 @@ Animation::Animation(std::string animationPath, SDL_Renderer * renderer,
     frameWidth(frameWidth), frameHeight(frameHeight),
     looping(looping) {}
 
-void Animation::render(int x, int y, int frameNum, SDL_Renderer * renderer) {
+void Animation::render(int x, int y, int frameNum, SDL_Renderer * renderer) const {
     animationSpritesheet.getSprite(frameNum)->render(renderer, 
         (struct SDL_Rect) {x, y, frameWidth, frameHeight});
 }

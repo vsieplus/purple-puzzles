@@ -22,7 +22,7 @@ void Animator::update(float delta) {
     }
 }
 
-void Animator::render(int x, int y, SDL_Renderer * renderer) {
+void Animator::render(int x, int y, SDL_Renderer * renderer) const {
     currAnimation->render(x, y, currFrame, renderer);
 }
 
