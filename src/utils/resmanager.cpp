@@ -21,7 +21,7 @@ void ResManager::parseJSON(std::string resourcePathsFile) {
 
     std::unordered_map<std::string, json> resPathMaps = jsonRes;
 
-    // convert the json object to a resource path map
+    // convert the json object to a resource path map, 1 val for each type of res.
     for(auto const & jsonObj: resPathMaps) {
         std::unordered_map<std::string, json> resPathMap = jsonObj.second;
 
@@ -79,7 +79,9 @@ void ResManager::loadNextResource() {
     // get file extension to determine resource type
     std::string resFileExt = getResExt(currResFilepath);
 
-    if(resFileExt == IMAGE_EXT) {
+    if(resFileExt == ANIMATION_EXT) {
+        loadAnimation(currResID, currResFilepath);
+    } else if(resFileExt == IMAGE_EXT) {
         loadTexture(currResID, currResFilepath);
     } else if (resFileExt == MAP_EXT) {
         loadSpritesheet(currResID, currResFilepath);
@@ -94,7 +96,7 @@ void ResManager::loadNextResource() {
 
 // load a standalone texture
 void ResManager::loadTexture(int resourceIDHash, std::string resourcePath) {
-    std::shared_ptr<Texture> texture (new Texture());
+    auto texture = std::make_shared<Texture>();
     texture->loadTexture(resourcePath, renderer);
 
     textures.emplace(resourceIDHash, texture);
@@ -102,9 +104,9 @@ void ResManager::loadTexture(int resourceIDHash, std::string resourcePath) {
 
 // load a spritesheet via tutorial tiledmap (from resourcePath)
 void ResManager::loadSpritesheet(int resourceIDHash, std::string resourcePath) {
-    std::shared_ptr<SpriteSheet> spritesheet(
-        new SpriteSheet(resourcePath, tilesetNames[resourceIDHash], renderer));
-
+    auto spritesheet = std::make_shared<SpriteSheet>(resourcePath, 
+        tilesetNames[resourceIDHash], renderer);
+    
     spritesheets.emplace(resourceIDHash, spritesheet);
 }
 
@@ -122,8 +124,15 @@ void ResManager::loadMusic(int resourceIDHash, std::string resourcePath) {
 
 void ResManager::loadFont(int resourceIDHash, std::string resourcePath) {
     // pass path to font json (config) file
-    std::shared_ptr<BitmapFont> font(new BitmapFont(resourcePath, renderer));
+    auto font = std::make_shared<BitmapFont>(resourcePath, renderer);
     fonts.emplace(resourceIDHash, font);
+}
+
+void ResManager::loadAnimation(int resourceIDHash, std::string resourcePath) {
+    auto animation = std::make_shared<Animation>(resourcePath, renderer,
+        ANIM_FRAMEWIDTH, ANIM_FRAMEHEIGHT);
+
+    animations.emplace(resourceIDHash, animation);
 }
 
 // return whether done loading resources
@@ -131,9 +140,14 @@ bool ResManager::loadingResources() const {
     return !resourcesToLoad.empty();
 }
 
-// helper function to get the file extension for a resource
+// helper function to get the resource extension from a path
+// which should have the form res/EXT.../...
 std::string ResManager::getResExt(std::string path) {
-    return path.substr(path.length() - EXT_LENGTH);
+    size_t pos = 0;
+    size_t firstSlash = path.find(PATH_SEP, pos);
+    size_t secondSlash = path.find(PATH_SEP, firstSlash + 1);
+
+    return path.substr(firstSlash + 1, secondSlash - firstSlash - 1);
 }
 
 // to retrieve resources, call w/resource id
@@ -156,6 +170,10 @@ std::shared_ptr<Music> ResManager::getMusic(std::string id) const {
 
 std::shared_ptr<BitmapFont> ResManager::getFont(std::string id) const {
     return fonts.at(resHash(id));
+}
+
+std::shared_ptr<Animation> ResManager::getAnimation(std::string id) const {
+    return animations.at(resHash(id));
 }
 
 // Return the actual path to the file containing the resource with ID id

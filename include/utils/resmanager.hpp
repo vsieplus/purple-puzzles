@@ -22,26 +22,9 @@
 #include "utils/sound.hpp"
 #include "utils/music.hpp"
 #include "utils/bitmapfont.hpp"
+#include "utils/animation.hpp"
 
 using json = nlohmann::json;
-
-// constants for resource file extensions used in this project
-const int EXT_LENGTH = 3;
-
-const std::string RES_FOLDER_NAME = "res";
-const std::string RES_MAPS_NAME = "maps";
-
-const char PATH_SEP = '/';
-
-const std::string IMAGE_EXT = "png";
-const std::string MAP_EXT = "tmx";
-const std::string SOUND_EXT = "wav";
-const std::string MUSIC_EXT = "ogg";
-const std::string FONT_EXT = "son";
-
-const std::string BG_TILESET_NAME = "bgTiles";
-
-const std::string BASE_MAP_ID = "testing";
 
 class ResManager {
     private:
@@ -70,11 +53,34 @@ class ResManager {
         // fonts
         std::unordered_map<int, std::shared_ptr<BitmapFont>> fonts;
 
+        // animations
+        std::unordered_map<int, std::shared_ptr<Animation>> animations;
+
         // tileset names
         std::unordered_map<int, std::string> tilesetNames;
 
         // for hashing
         std::hash<std::string> resHash;
+
+        const int ANIM_FRAMEWIDTH = 32;
+        const int ANIM_FRAMEHEIGHT = 32;
+                
+        // constants for resource file extensions used in this project
+        inline const static std::string RES_FOLDER_NAME = "res";
+        inline const static std::string RES_MAPS_NAME = "maps";
+
+        inline const static char PATH_SEP = '/';
+
+        inline const static std::string ANIMATION_EXT = "animations";
+        inline const static std::string IMAGE_EXT = "images";
+        inline const static std::string MAP_EXT = "maps";
+        inline const static std::string SOUND_EXT = "sounds";
+        inline const static std::string MUSIC_EXT = "music";
+        inline const static std::string FONT_EXT = "fonts";
+
+        inline const static std::string BG_TILESET_NAME = "bgTiles";
+
+        inline const static std::string BASE_MAP_ID = "testing";
 
     public:
         // Construct the resource manager with a path to file containing the
@@ -92,6 +98,7 @@ class ResManager {
         void loadMusic(int resourceIDHash, std::string resourcePath);
         void loadSpritesheet(int resourceIDHash, std::string resourcePath);
         void loadFont(int resourceIDHash, std::string resourcePath);
+        void loadAnimation(int resourceIDHash, std::string resourcePath);
 
         bool loadingResources() const;
 
@@ -103,6 +110,7 @@ class ResManager {
         std::shared_ptr<Sound> getSound(std::string id) const;
         std::shared_ptr<Music> getMusic(std::string id) const;
         std::shared_ptr<BitmapFont> getFont(std::string id) const;
+        std::shared_ptr<Animation> getAnimation(std::string id) const;
         
         std::string getResPath(std::string id) const;
 };
