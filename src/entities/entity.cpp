@@ -31,8 +31,18 @@ bool Entity::checkCollision(Level * level, int destGridX, int destGridY) {
     return entityAtNewPos;
 }
 
+void Entity::update(Level * level, float delta) {
+    if(entityAnimator.isAnimating()) {
+        entityAnimator.update(delta);
+    }
+}
+
 void Entity::render(SDL_Renderer * renderer) const {
     entitySprite->render(renderer, renderArea);
+
+    if(entityAnimator.isAnimating()) {
+        entityAnimator.render(renderArea.x, renderArea.y, renderer);
+    }
 }
 
 // return the coordinates for the specified direction, relative to the entity

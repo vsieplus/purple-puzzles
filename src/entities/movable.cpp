@@ -31,6 +31,9 @@ void Movable::update(Level * level, float delta) {
         // if merging, update receptor, and then do 'merge' animation
         mReceptor->update(level, delta);
     }
+
+    // update animation
+    Entity::update(level, delta);
 }
 
 void Movable::render(SDL_Renderer* renderer) const {

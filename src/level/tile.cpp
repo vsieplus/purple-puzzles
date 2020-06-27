@@ -6,8 +6,11 @@
 Tile::Tile(int mapX, int mapY, int tileParity, std::shared_ptr<Sprite> tileSprite) 
     : Entity(mapX, mapY, tileParity, tileSprite) {
     
+    purpleStatus.fill(false);
+
     if(parity == PARITY_PURPLE) {
         flipped = true;
+        purpleStatus[DIR_NONE] = true;
     }
 }
 
@@ -16,7 +19,8 @@ void Tile::handleEvents(const Uint8 * keyStates, Level * level) {
 }
 
 void Tile::update(Level * level, float delta) {
-    
+    // update animation if needed
+    Entity::update(level, delta);
 }
 
 void Tile::render(SDL_Renderer * renderer) const {
@@ -29,6 +33,9 @@ void Tile::flip(std::shared_ptr<Sprite> newTileSprite) {
     entitySprite.reset();
     entitySprite = newTileSprite;
     flipped = true;
+
+    // flipping animation
+    // entityAnimator.setCurrAnimation(...)
 }
 
 bool Tile::isFlipped() const {

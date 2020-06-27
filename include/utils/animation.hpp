@@ -24,7 +24,7 @@ class Animation {
         SpriteSheet animationSpritesheet;
 
         // amt. of ms to show each frame of the animation for
-        int msPerFrame = 250;
+        int msPerFrame = 100;
 
         int numFrames;
 

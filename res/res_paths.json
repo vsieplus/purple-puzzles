@@ -27,7 +27,8 @@
         "2-9": "2-9.tmx", "2-X": "2-X.tmx"
     },
     "animations": {
-        "loading": "splash_loading.png"
+        "loading": "splash_loading.png",
+        "tileFlip": "tileFlip.png"
     },
     "sounds": {
         "flip": "flip.wav",

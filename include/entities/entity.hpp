@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "utils/sprite.hpp"
+#include "utils/animator.hpp"
 
 class Level;
 class Map;
@@ -42,6 +43,9 @@ class Entity {
         // render area on the screen
         SDL_Rect renderArea;
 
+        // animator for this entity
+        Animator entityAnimator;
+
     public:
         // for grid-based entities
         Entity(int screenX, int screenY, int gridX, int gridY, int parity, 
@@ -52,7 +56,7 @@ class Entity {
             std::shared_ptr<Sprite> entitySprite);
 
         virtual void handleEvents(const Uint8 * keyStates, Level * level) = 0;
-        virtual void update(Level * level, float delta) = 0;
+        virtual void update(Level * level, float delta);
         virtual void render(SDL_Renderer * renderer) const;
 
         static bool checkCollision(Level * level, int destGridX, int destGridY);

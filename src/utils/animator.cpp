@@ -16,6 +16,7 @@ void Animator::update(float delta) {
     if(currFrame > currAnimation->getNumFrames() - 1) {
         if(currAnimation->isLooping()) {
             currFrame = 0;
+            msFromStart = 0;
         } else {
             setAnimating(false);
         }

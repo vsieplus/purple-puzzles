@@ -1,6 +1,7 @@
 #ifndef TILE_HPP
 #define TILE_HPP
 
+#include <array>
 #include <SDL.h>
 
 #include "utils/sprite.hpp"
@@ -12,6 +13,9 @@ class Level;
 class Tile : public Entity {
     private:
         bool flipped = false;
+
+        // array of bools indicating purple status of surrounding tiles for each dir
+        std::array<bool, 5> purpleStatus;
         
     public:
         Tile(int gridX, int gridY, int tileParity, std::shared_ptr<Sprite> sprite);
