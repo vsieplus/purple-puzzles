@@ -8,31 +8,31 @@
 class Animation {
     public:
         Animation(std::string animationPath, SDL_Renderer * renderer, 
-            int numFrames, int frameWidth, int frameHeight);
+            int frameWidth, int frameHeight, bool looping = false);
 
-        void update(float delta);
-        void render(int x, int y, SDL_Renderer * renderer);
+        void render(int x, int y, int frameNum, SDL_Renderer * renderer);
 
-        void setAnimating(bool animating);
-        bool isAnimating() const;
+        int getMsPerFrame() const;
+        int getNumFrames() const;
+        int getFrameHeight() const;
+        int getFrameWidth() const;
+        bool isLooping() const;
+
+        void setLooping(bool looping);
 
     private:
         SpriteSheet animationSpritesheet;
 
-        // track the animation progress
-        bool animating = false;
+        // amt. of ms to show each frame of the animation for
+        int msPerFrame = 250;
 
         int numFrames;
-        int currFrame = 0;
-
-        // amt. of ms to show each frame of the animation for
-        const static int MS_PER_FRAME = 250;
 
         // size of animation frames
         int frameWidth;
         int frameHeight;
 
-        float msFromStart = 0;
+        bool looping;
         
 };
 
