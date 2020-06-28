@@ -8,6 +8,7 @@
 #include <string>
 #include <memory>
 #include <utility>
+#include <unordered_map>
 
 #include "utils/sprite.hpp"
 #include "utils/animator.hpp"
@@ -46,6 +47,9 @@ class Entity {
         // animator for this entity
         Animator entityAnimator;
 
+        // hold all animations to be used by this entity, key = enum ID val.
+        std::unordered_map<int, std::shared_ptr<Animation>> entityAnimations;
+
     public:
         // for grid-based entities
         Entity(int screenX, int screenY, int gridX, int gridY, int parity, 
@@ -65,6 +69,8 @@ class Entity {
         void setScreenY(int y);
         void setGridX(int x);
         void setGridY(int y);
+
+        void activateAnimation(int animationID);
 
         int getScreenX() const;
         int getScreenY() const;

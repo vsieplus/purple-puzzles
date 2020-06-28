@@ -104,3 +104,8 @@ int Entity::getGridY() const {
 Parity Entity::getParity() const {
     return parity;
 }
+
+void Entity::activateAnimation(int animationID) {
+    entityAnimator.setCurrAnimation(entityAnimations.at(animationID));
+    entityAnimator.start();
+}

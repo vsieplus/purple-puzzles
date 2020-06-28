@@ -16,6 +16,12 @@ class Tile : public Entity {
 
         // array of bools indicating purple status of surrounding tiles for each dir
         std::array<bool, 5> purpleStatus;
+
+        // tile animations
+        enum TileAnimation {
+            TILE_FLIP, TILE_MERGE_LEFT, TILE_MERGE_RIGHT, 
+            TILE_MERGE_UP, TILE_MERGE_DOWN
+        };
         
     public:
         Tile(int gridX, int gridY, int tileParity, std::shared_ptr<Sprite> sprite);

@@ -35,7 +35,7 @@ void Tile::flip(std::shared_ptr<Sprite> newTileSprite) {
     flipped = true;
 
     // flipping animation
-    // entityAnimator.setCurrAnimation(...)
+    activateAnimation(TILE_FLIP);
 }
 
 bool Tile::isFlipped() const {
