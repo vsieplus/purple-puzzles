@@ -9,8 +9,10 @@
 #include "level/level.hpp"
 
 Player::Player(int screenX, int screenY, int gridX, int gridY, int parity,
-    std::shared_ptr<Sprite> entitySprite) : Movable(screenX, screenY, gridX, 
-    gridY, PLAYER_VELOCITY, parity, entitySprite, PLAYER_SHAPE) {}
+    std::shared_ptr<Sprite> entitySprite,
+    const std::unordered_map<int, std::shared_ptr<Animation>> & entityAnimations) : 
+    Movable(screenX, screenY, gridX, gridY, PLAYER_VELOCITY, parity,
+    entitySprite, PLAYER_SHAPE, entityAnimations) {}
 
 void Player::handleEvents(const Uint8 * keyStates, Level * level) {
     // check for move undo ('u')
@@ -80,8 +82,8 @@ void Player::pushDiamond(Level * level) {
     Direction pushDir = currCheckDir();
     auto diamond = getEntity<Diamond>(level, pushDir);
 
-    // set move direction of diamond if not already merging/merged w/receptor
-    if(diamond.get() && !diamond->isMerging()) {
+    // set move direction of diamond if not already moving or merging/merged w/receptor
+    if(diamond.get() && !diamond->isMoving() && !diamond->isMerging()) {
         // set the move direction of the diamond
         diamond->setMoveDir(pushDir);
         pushedObjects.push(diamond);

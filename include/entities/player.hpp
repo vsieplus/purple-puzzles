@@ -39,7 +39,8 @@ class Player : public Movable {
         inline const static std::string PLAYER_SHAPE = "player";
 
         Player(int screenX, int screenY, int gridX, int gridY, int parity,
-            std::shared_ptr<Sprite> entitySprite);
+            std::shared_ptr<Sprite> entitySprite,
+            const std::unordered_map<int, std::shared_ptr<Animation>> & entityAnimations);
 
         // game loop stuff
         void handleEvents(const Uint8 * keyStates, Level * level) override;

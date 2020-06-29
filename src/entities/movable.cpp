@@ -2,9 +2,10 @@
 #include "level/level.hpp"
 
 Movable::Movable(int screenX, int screenY, int gridX, int gridY, int velocity,
-    int parity, std::shared_ptr<Sprite> entitySprite, std::string movableShape) : 
-    Entity(screenX, screenY, gridX, gridY, parity, entitySprite), startX(screenX),
-    startY(screenY), endX(screenX), endY(screenY), velocity(velocity), 
+    int parity, std::shared_ptr<Sprite> entitySprite, std::string movableShape,
+    const std::unordered_map<int, std::shared_ptr<Animation>> & entityAnimations) : 
+    Entity(screenX, screenY, gridX, gridY, parity, entitySprite, entityAnimations),
+    startX(screenX), startY(screenY), endX(screenX), endY(screenY), velocity(velocity), 
     movableShape(movableShape) {}
 
 void Movable::update(Level * level, float delta) {  

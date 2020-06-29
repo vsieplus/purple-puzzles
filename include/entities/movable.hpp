@@ -15,7 +15,8 @@ class Movable : public Entity {
     public:
         Movable(int screenX, int screenY, int gridX, int gridY, int velocity,
             int parity, std::shared_ptr<Sprite> entitySprite, 
-            std::string movableShape);
+            std::string movableShape,
+            const std::unordered_map<int, std::shared_ptr<Animation>> & entityAnimations);
 
         virtual void update(Level * level, float delta) override;
         void render(SDL_Renderer* renderer) const override;  

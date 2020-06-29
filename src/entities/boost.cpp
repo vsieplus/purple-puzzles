@@ -3,9 +3,10 @@
 #include "entities/boost.hpp"
 
 Boost::Boost(int screenX, int screenY, int gridX, int gridY, int parity,
-    std::shared_ptr<Sprite> entitySprite, int power, int direction) :
-    Entity(screenX, screenY, gridX, gridY, parity, entitySprite), power(power),
-    direction((Direction)direction) {}
+    int power, int direction, std::shared_ptr<Sprite> entitySprite,
+    const std::unordered_map<int, std::shared_ptr<Animation>> & entityAnimations) :
+    Entity(screenX, screenY, gridX, gridY, parity, entitySprite, entityAnimations), 
+    power(power), direction((Direction)direction) {}
 
 void Boost::handleEvents(const Uint8 * keyStates, Level * level) {
     
@@ -37,4 +38,7 @@ bool Boost::isActivated() const {
 
 void Boost::setActivated(bool activated) {
     this->activated = activated;
+    if(activated) {
+        activateAnimation(BOOST_VANISH1);
+    }
 }

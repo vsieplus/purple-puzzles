@@ -2,8 +2,9 @@
 #include "entities/player.hpp"
 
 Portal::Portal(int screenX, int screenY, int gridX, int gridY, int parity,
-    std::shared_ptr<Sprite> entitySprite) : Entity(screenX, screenY, gridX,
-    gridY, parity, entitySprite) {}
+    std::shared_ptr<Sprite> entitySprite,
+    const std::unordered_map<int, std::shared_ptr<Animation>> & entityAnimations) : 
+    Entity(screenX, screenY, gridX, gridY, parity, entitySprite, entityAnimations) {}
 
 void Portal::handleEvents(const Uint8 * keyStates, Level * level) {
 
@@ -24,7 +25,7 @@ void Portal::update(Level * level, float delta) {
             return;
         }
 
-        // if player has moved off of the portal(s), place them back in the grid
+        // if player has moved off of the portal, place them back in the grid
         if(!(player->getGridX() == gridX && player->getGridY() == gridY)) {
             
             // give ownership back to level

@@ -3,8 +3,10 @@
 #include "entities/receptor.hpp"
 
 Receptor::Receptor(int screenX, int screenY, int gridX, int gridY, int parity,
-    std::shared_ptr<Sprite> entitySprite, std::string shape) : Entity(screenX, 
-    screenY, gridX, gridY, parity, entitySprite), shape(shape) {}
+    std::shared_ptr<Sprite> entitySprite, std::string shape,
+    const std::unordered_map<int, std::shared_ptr<Animation>> & entityAnimations) : 
+    Entity(screenX, screenY, gridX, gridY, parity, entitySprite, entityAnimations), 
+    shape(shape) {}
 
 
 void Receptor::handleEvents(const Uint8 * keyStates, Level * level) {

@@ -7,6 +7,7 @@
 
 class Boost : public Entity {
     private:
+        enum BoostAnimation {BOOST_VANISH1, BOOST_VANISH2};
 
         // how far the boost sends an entity
         int power;
@@ -18,7 +19,8 @@ class Boost : public Entity {
 
     public:
         Boost(int screenX, int screenY, int gridX, int gridY, int parity,
-            std::shared_ptr<Sprite> entitySprite, int power, int direction);
+            int power, int direction, std::shared_ptr<Sprite> entitySprite,
+            const std::unordered_map<int, std::shared_ptr<Animation>> & entityAnimations);
 
         void handleEvents(const Uint8 * keyStates, Level * level) override;
         void update(Level * level, float delta) override;
