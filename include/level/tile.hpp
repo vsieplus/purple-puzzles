@@ -15,14 +15,8 @@ class Tile : public Entity {
     private:
         bool flipped = false;
 
-        // array of bools indicating purple status of surrounding tiles for each dir
-        std::array<bool, 5> purpleStatus;
-
         // tile animations
-        enum TileAnimation {
-            TILE_FLIP, TILE_MERGE_LEFT, TILE_MERGE_RIGHT, 
-            TILE_MERGE_UP, TILE_MERGE_DOWN
-        };
+        enum TileAnimation {TILE_FLIP};
 
         inline static const std::string TILE_FLIP_ID = "tileFlip";
         
@@ -36,7 +30,7 @@ class Tile : public Entity {
         void render(SDL_Renderer * renderer) const;
 
         // flip the tile parity
-        void flip(std::shared_ptr<Sprite> newTileSprite);
+        void flip(std::shared_ptr<Sprite> newTileSprite, bool undo);
         
         bool isFlipped() const;
 };

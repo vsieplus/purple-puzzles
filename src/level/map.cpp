@@ -299,7 +299,7 @@ void Map::flipTile(int tileX, int tileY, int entityParity, Level * level, bool u
 
         // Flip if parity differs from player's
         if(entityParity != currTile.getParity()) {
-            currTile.flip(parityTileSprites.at(entityParity));
+            currTile.flip(parityTileSprites.at(entityParity), undo);
 
             // add a flipped tile to the level count (if not an undo flip)
             if(!undo) {

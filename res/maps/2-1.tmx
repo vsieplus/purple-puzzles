@@ -226,7 +226,7 @@
  </tileset>
  <layer id="1" name="background" width="20" height="15">
   <data encoding="base64" compression="zlib">
-   eJytkzEOADAIAm3//+juRPBMOjiUKhrQW1VX4pjQvFTX4Yq5Xl1O6plyOtxhXW9SS2ab9JzeLkf5qF+Tt2kewk212fAlT5Rvs1fOp1/zUQ3I3bj/7cxUR7fLm92iN0h4HpfgAfQ=
+   eJytk0EOACEMAqv/f/TeG2CHxIMXrBShvTNz1znm7Lr0TuEbc71UTeqZahTuMNW77Uf/6PxodCs+mtdftkkP4abeNHwpk83XzJXL6ZU+6gHZG3ffaqY+ulluZovuIOH5AJRoAfM=
   </data>
  </layer>
  <layer id="2" name="entities" width="20" height="15">

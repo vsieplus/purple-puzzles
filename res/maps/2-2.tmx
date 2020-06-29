@@ -4,12 +4,12 @@
  <tileset firstgid="65" source="entityTiles.tsx"/>
  <layer id="1" name="background" width="20" height="15">
   <data encoding="base64" compression="zlib">
-   eJxjYmBgYIRiphGAqe1XaofbYDdvFI/igcQAbbsCUg==
+   eJxjYmBgYETCTFgwLnFy8UCah8+f5JpHbfcN5rAexaN4IDEAVXsCTA==
   </data>
  </layer>
  <layer id="2" name="entities" width="20" height="15">
   <data encoding="base64" compression="zlib">
-   eJzzZBgawBGI3WlovgcNzaY2CBpoBzBA4gMdUOIufHHrT4G5o2B4AQAZwAKV
+   eJzzZKA9CKaCGY5A7E4Fc2CAEQ17ILEHOwgaQLthcemIRY4Sd+GLW38KzB0FwwsAAGQOA0E=
   </data>
  </layer>
 </map>
