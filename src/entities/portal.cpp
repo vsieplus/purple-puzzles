@@ -25,11 +25,7 @@ void Portal::update(Level * level, float delta) {
         }
 
         // if player has moved off of the portal(s), place them back in the grid
-        int playerX = player->getGridX();
-        int playerY = player->getGridY();
-        if(!(playerX == gridX && playerY == gridY) && 
-           !(playerX == otherPortal->getGridX() && playerY == otherPortal->getGridY()) &&
-           !player->isMoving()) {
+        if(!(player->getGridX() == gridX && player->getGridY() == gridY)) {
             
             // give ownership back to level
             level->placePortals();
@@ -37,6 +33,8 @@ void Portal::update(Level * level, float delta) {
             resetPortalStatus(level);
         }
     }
+
+    Entity::update(level, delta);
 }
 
 // transfer ownership of portals back to level/reset active status
