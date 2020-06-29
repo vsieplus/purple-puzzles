@@ -48,7 +48,7 @@ void Map::handleEvents(Level * level, const Uint8 * keyStates) {
 
 // Update each tile in the map
 void Map::update(Level * level, float delta) {
-    for(Tile tile: mapTiles) {
+    for(Tile & tile: mapTiles) {
         tile.update(level, delta);
     }
 
@@ -66,15 +66,13 @@ void Map::update(Level * level, float delta) {
             if(entityGrid.at(currIdx)) {
                 entityGrid.at(currIdx)->update(level, delta);
             }
-
-            // if level has been compl
         }
     }
 }
 
 void Map::render(SDL_Renderer * renderer) const {
     // Render the background tiles
-    for(Tile tile: mapTiles) {
+    for(const Tile & tile: mapTiles) {
         tile.render(renderer);
     }
 
@@ -184,12 +182,12 @@ void Map::addTiles(const tmx::TileLayer * tileLayer, Level * level,
 
             // Depending on the type of layer we're loading, process differently
             if(layerName == BG_LAYER_NAME) {
-                addBGTile(screenX, screenY, tileID, tileSpritesheet);
+                addBGTile(screenX, screenY, tileID, tileSpritesheet, game);
             } else if(layerName == ENTITY_LAYER_NAME) {
                 // initialize grid before loading first entity
                 if(entityGrid.size() == 0) initGrid();
 
-                addEntity(screenX, screenY, x, y, tileID, tileSpritesheet);
+                addEntity(screenX, screenY, x, y, tileID, tileSpritesheet, game);
             }
         }
     }
@@ -197,7 +195,7 @@ void Map::addTiles(const tmx::TileLayer * tileLayer, Level * level,
 
 // add a given bg tile
 void Map::addBGTile(int screenX, int screenY, int tileID, 
-    const std::shared_ptr<SpriteSheet> & spritesheet) {
+    const std::shared_ptr<SpriteSheet> & spritesheet, MemSwap * game) {
     
     // Get parity of the BG Tile from spritesheet properties
     int tileParity = spritesheet->getPropertyValue<int>(tileID, PARITY_PROP);
@@ -208,11 +206,12 @@ void Map::addBGTile(int screenX, int screenY, int tileID,
     }
     
     // Add new tile to mapTiles
-    mapTiles.emplace_back(screenX, screenY, tileParity, spritesheet->getSprite(tileID));
+    mapTiles.emplace_back(screenX, screenY, tileParity, 
+        spritesheet->getSprite(tileID), game);
 }
 
 void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID, 
-    const std::shared_ptr<SpriteSheet> & spritesheet) {
+    const std::shared_ptr<SpriteSheet> & spritesheet, MemSwap * game) {
 
     auto entitySprite = spritesheet->getSprite(tileID);
 

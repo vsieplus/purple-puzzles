@@ -88,6 +88,6 @@ void SplashState::render(SDL_Renderer * renderer) const {
 
     // Render graphic indicating loading is done
     if(!loadingRes && splashFont.get() && splashFont->isRenderingDynamic()) {
-            splashFont->renderText(renderer);
+        splashFont->renderText(renderer);
     }
 }

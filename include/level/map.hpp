@@ -82,9 +82,9 @@ class Map {
             MemSwap * game, std::string layerName);
 
         void addBGTile(int screenX, int screenY, int tileID, 
-            const std::shared_ptr<SpriteSheet> & spritesheet);
+            const std::shared_ptr<SpriteSheet> & spritesheet, MemSwap * game);
         void addEntity(int screenX, int screenY, int gridX, int gridY, int tileID, 
-            const std::shared_ptr<SpriteSheet> & spritesheet);   
+            const std::shared_ptr<SpriteSheet> & spritesheet, MemSwap * game);   
 
         void initGrid();
 

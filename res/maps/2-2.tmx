@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.5" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" source="bgTiles.tsx"/>
+ <tileset firstgid="65" source="entityTiles.tsx"/>
+ <layer id="1" name="background" width="20" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYIRiphGAqe1XaofbYDdvFI/igcQAbbsCUg==
+  </data>
+ </layer>
+ <layer id="2" name="entities" width="20" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzzZBgawBGI3WlovgcNzaY2CBpoBzBA4gMdUOIufHHrT4G5o2B4AQAZwAKV
+  </data>
+ </layer>
+</map>

@@ -1,10 +1,15 @@
 // Implementation for tile class
 
+#include "memswap.hpp"
+
 #include "level/level.hpp"
 #include "level/tile.hpp"
 
-Tile::Tile(int mapX, int mapY, int tileParity, std::shared_ptr<Sprite> tileSprite) 
-    : Entity(mapX, mapY, tileParity, tileSprite) {
+Tile::Tile(int mapX, int mapY, int tileParity, std::shared_ptr<Sprite> tileSprite,
+    MemSwap * game) 
+    : Entity(mapX, mapY, tileParity, tileSprite, {
+        {TILE_FLIP, game->getResManager().getAnimation(TILE_FLIP_ID)}
+    }) {
     
     purpleStatus.fill(false);
 
@@ -19,12 +24,13 @@ void Tile::handleEvents(const Uint8 * keyStates, Level * level) {
 }
 
 void Tile::update(Level * level, float delta) {
-    // update animation if needed
     Entity::update(level, delta);
 }
 
 void Tile::render(SDL_Renderer * renderer) const {
     Entity::render(renderer);
+
+    // render tile borders
 }
 
 // Filp tile's parity, + update sprite

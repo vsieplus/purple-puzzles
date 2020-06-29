@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <stdio.h>
+#include <array>
 
 #include <SDL.h>
 #include <SDL_image.h>

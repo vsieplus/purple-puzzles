@@ -11,14 +11,18 @@ void Animator::start() {
 void Animator::update(float delta) {
     msFromStart += delta;
     currFrame = msFromStart / currAnimation->getMsPerFrame();
+/* 
+    printf("current frame: %dout of %d\n", currFrame, currAnimation->getNumFrames());
+    printf("delta: %.6f\n", delta);
+    printf("ms from start %.6f\n", msFromStart); */
 
     // check if Animator has finished, stop unless looping
     if(currFrame > currAnimation->getNumFrames() - 1) {
-        if(currAnimation->isLooping()) {
-            currFrame = 0;
-            msFromStart = 0;
-        } else {
+        currFrame = 0;
+        msFromStart = 0;
+        if(!currAnimation->isLooping()) {
             setAnimating(false);
+            currAnimation.reset();
         }
     }
 }
@@ -33,6 +37,10 @@ void Animator::setAnimating(bool animating) {
 
 bool Animator::isAnimating() const {
     return animating;
+}
+
+float Animator::getMsFromStart() const {
+    return msFromStart;
 }
 
 void Animator::setCurrAnimation(std::shared_ptr<Animation> currAnimation) {

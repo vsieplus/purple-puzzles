@@ -17,6 +17,8 @@ class Animator {
         void setAnimating(bool animating);
         bool isAnimating() const;
 
+        float getMsFromStart() const;
+
         void setCurrAnimation(std::shared_ptr<Animation> currAnimation);
 
     private:

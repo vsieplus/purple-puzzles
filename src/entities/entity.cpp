@@ -11,9 +11,11 @@ Entity::Entity(int screenX, int screenY, int gridX, int gridY, int parity,
     entitySprite->getHeight()} {}
 
 Entity::Entity(int screenX, int screenY, int parity, 
-    std::shared_ptr<Sprite> entitySprite) : gridX(0), gridY(0), parity(Parity(parity)),
-    entitySprite(entitySprite), renderArea{screenX, screenY, entitySprite->getWidth(), 
-    entitySprite->getHeight()} {}
+    std::shared_ptr<Sprite> entitySprite,
+    std::unordered_map<int, std::shared_ptr<Animation>> entityAnimations) : 
+    gridX(0), gridY(0), parity(Parity(parity)), entitySprite(entitySprite), 
+    renderArea{screenX, screenY, entitySprite->getWidth(), entitySprite->getHeight()},
+    entityAnimations(entityAnimations) {}
 
 /**
  * @brief Checks collision for current entity with the specified destination
@@ -32,16 +34,17 @@ bool Entity::checkCollision(Level * level, int destGridX, int destGridY) {
 }
 
 void Entity::update(Level * level, float delta) {
+    // update animation if needed
     if(entityAnimator.isAnimating()) {
         entityAnimator.update(delta);
     }
 }
 
 void Entity::render(SDL_Renderer * renderer) const {
-    entitySprite->render(renderer, renderArea);
-
     if(entityAnimator.isAnimating()) {
         entityAnimator.render(renderArea.x, renderArea.y, renderer);
+    } else {
+        entitySprite->render(renderer, renderArea);
     }
 }
 

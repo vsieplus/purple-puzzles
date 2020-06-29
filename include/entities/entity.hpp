@@ -57,7 +57,8 @@ class Entity {
 
         // for non grid-based entities (eg tiles)
         Entity(int screenX, int screenY, int parity, 
-            std::shared_ptr<Sprite> entitySprite);
+            std::shared_ptr<Sprite> entitySprite,
+            std::unordered_map<int, std::shared_ptr<Animation>> entityAnimations);
 
         virtual void handleEvents(const Uint8 * keyStates, Level * level) = 0;
         virtual void update(Level * level, float delta);

@@ -8,6 +8,7 @@
 
 #include "entities/entity.hpp"
 
+class MemSwap;
 class Level;
 
 class Tile : public Entity {
@@ -22,9 +23,12 @@ class Tile : public Entity {
             TILE_FLIP, TILE_MERGE_LEFT, TILE_MERGE_RIGHT, 
             TILE_MERGE_UP, TILE_MERGE_DOWN
         };
+
+        inline static const std::string TILE_FLIP_ID = "tileFlip";
         
     public:
-        Tile(int gridX, int gridY, int tileParity, std::shared_ptr<Sprite> sprite);
+        Tile(int gridX, int gridY, int tileParity, std::shared_ptr<Sprite> sprite,
+            MemSwap * game);
 
         void handleEvents(const Uint8 * keyStates, Level * level) override;
         void update(Level * level, float delta) override;
