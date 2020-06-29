@@ -283,10 +283,11 @@ void Map::flipTile(int tileX, int tileY, int entityParity, Level * level, bool u
     if(inBounds(tileX, tileY)) {
         int idx = xyToIndex(tileX, tileY);
 
-        // skip if a portal is on this tile/is curr. removed
+        // skip if a portal is on this tile/is curr. removed + not vanished
         if(!mapPortals.empty() && mapPortals.back()->isRemoved()) {
-            for(auto portal: mapPortals) {
-                if(idx == xyToIndex(portal->getGridX(), portal->getGridY())) {
+            for(auto & portal: mapPortals) {
+                if(idx == xyToIndex(portal->getGridX(), portal->getGridY()) &&
+                   !portal->isVanished()) {
                     return;
                 }
             }
@@ -294,7 +295,7 @@ void Map::flipTile(int tileX, int tileY, int entityParity, Level * level, bool u
 
         Tile & currTile = mapTiles.at(xyToIndex(tileX, tileY));
 
-        // skip if tile is parity-neutral/has already been flipped
+        // skip if tile is parity-neutral
         if(currTile.getParity() == PARITY_NONE) return;
 
         // Flip if parity differs from player's

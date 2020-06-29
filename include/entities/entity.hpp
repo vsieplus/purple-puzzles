@@ -90,6 +90,7 @@ class Entity {
         std::pair<int, int> getCoords(Direction direction);
         
         void setVanished(bool vanished);
+        bool isVanished() const;
 };
 
 #endif // ENTITY_HPP

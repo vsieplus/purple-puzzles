@@ -147,7 +147,7 @@ void ResManager::constructAnimationMaps() {
 
     diamondAnimations = {{0, getAnimation(DIAMOND_MERGE_ID)}};
 
-    portalAnimations = {};
+    portalAnimations = {{0, getAnimation(PORTAL_MERGE_ID)}};
 }
 
 // return whether done loading resources

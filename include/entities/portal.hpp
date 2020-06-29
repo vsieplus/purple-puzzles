@@ -12,6 +12,8 @@ class Portal : public Entity {
         bool activated = false;
         bool removed = false;
 
+        enum PortalAnimation {PORTAL_MERGE};
+
         // the corresponding portal
         std::shared_ptr<Portal> otherPortal;
 
@@ -28,6 +30,9 @@ class Portal : public Entity {
         void handleEvents(const Uint8 * keyStates, Level * level) override;
         void update(Level * level, float delta) override;
         void render(SDL_Renderer* renderer) const override;
+
+        // check if surrounded by purple tiles -> merge animation
+        void checkSurrounded(Level * level, bool playerTeleported = true);
 
         // teleport the player
         void teleportPlayer(Level * level, bool undo = false);

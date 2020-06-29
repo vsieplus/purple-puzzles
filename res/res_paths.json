@@ -33,10 +33,10 @@
         "playerMoveFailRight": "playerMoveFailRight.png",
         "playerMoveFailUp": "playerMoveFailUp.png",
         "playerMoveFailDown": "playerMoveFailDown.png",
-        "playerMerge": "playerMerge.png",
         "playerTeleport": "playerTeleport.png",
+        "playerMerge": "playerMerge.png",
         "diamondMerge": "diamondMerge.png",
-        "portalVanish": "portalVanish.png",
+        "portalMerge": "portalMerge.png",
         "boostVanish1": "boostVanish1.png",
         "boostVanish2": "boostVanish2.png"
     },

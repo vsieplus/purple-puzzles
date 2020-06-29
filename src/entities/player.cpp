@@ -40,7 +40,9 @@ void Player::update(Level * level, float delta) {
         checkPortal(level);
     } else if(merging) {
         // if player not moving + is merging, check if level is complete
-        if(!moving && !level->isCompleted()) level->checkComplete();
+        if(!moving && !level->isCompleted() && !entityAnimator.isAnimating()) {
+            level->checkComplete();
+        }
     }
 
     // update player movement
@@ -128,6 +130,7 @@ void Player::undoAction(Level * level) {
             // if teleport was last action, player must still be on portal
             // -> portal is still tracking player, so teleport them back
             case TELEPORT:
+                lastPortal->setVanished(false);
                 lastPortal->teleportPlayer(level, true);
                 actionHistory.pop();
 

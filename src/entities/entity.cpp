@@ -117,3 +117,7 @@ void Entity::activateAnimation(int animationID) {
 void Entity::setVanished(bool vanished) {
     this->vanished = vanished;
 }
+
+bool Entity::isVanished() const {
+    return vanished;
+}

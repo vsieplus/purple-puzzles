@@ -295,6 +295,10 @@ void Movable::undoMovement(Direction direction, Level * level) {
     if(!actionHistory.empty() && actionHistory.top() == TELEPORT) {
         lastPortal->removePortals(level);
         lastPortal->setActivated(true);
+        lastPortal->setVanished(false);
+        if(level->getTileParity(lastPortal->getGridX(), lastPortal->getGridY()) == PARITY_PURPLE) {
+            level->flipMapTiles(lastPortal->getGridX(), lastPortal->getGridY(), PARITY_GRAY);
+        }
         lastPortal->setPlayer(level->getPlayer());
     }
 

@@ -66,11 +66,6 @@ void Level::checkComplete() {
     // check if each tile parity matches purple parity
     for(int y = 0; y < gridHeight; y++) {
         for(int x = 0; x < gridWidth; x++) {
-            // skip tiles with portals
-            if(map.hasPortals() && map.getGridElement<Portal>(x, y).get()) {
-                continue;
-            }
-
             // if some tile isn't flipped, level has not been succesfully completed
             if(getTileParity(x, y) != PARITY_PURPLE) {
                 return;
