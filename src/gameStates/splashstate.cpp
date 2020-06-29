@@ -21,7 +21,7 @@ void SplashState::enterState(MemSwap * game) {
         game->getRenderer());
 
     auto loadingAnimation = std::make_shared<Animation>(game->getResManager().getResPath(
-        LOAD_ANIM_ID), game->getRenderer(), 32, 32, true);
+        LOAD_ANIM_ID), game->getRenderer(), 32, 32, 50, true);
 
     loadX = game->getScreenWidth() / 2 - loadingAnimation->getFrameWidth() / 2;
     loadY = game->getScreenHeight() / 2 - loadingAnimation->getFrameHeight() / 2;

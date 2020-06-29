@@ -43,7 +43,7 @@ void Entity::update(Level * level, float delta) {
 
 void Entity::render(SDL_Renderer * renderer) const {
     if(entityAnimator.isAnimating()) {
-        entityAnimator.render(renderArea.x, renderArea.y, renderer);
+        entityAnimator.render(renderArea.x, renderArea.y, renderer, angle);
     } else {
         entitySprite->render(renderer, renderArea);
     }

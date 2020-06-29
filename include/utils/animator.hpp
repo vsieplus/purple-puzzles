@@ -12,7 +12,7 @@ class Animator {
         void start();
 
         void update(float delta);
-        void render(int x, int y, SDL_Renderer * renderer) const;
+        void render(int x, int y, SDL_Renderer * renderer, double angle = 0.0) const;
 
         void setAnimating(bool animating);
         bool isAnimating() const;

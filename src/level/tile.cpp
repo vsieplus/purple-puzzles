@@ -1,15 +1,11 @@
 // Implementation for tile class
 
-#include "memswap.hpp"
-
 #include "level/level.hpp"
 #include "level/tile.hpp"
 
 Tile::Tile(int mapX, int mapY, int tileParity, std::shared_ptr<Sprite> tileSprite,
-    MemSwap * game) 
-    : Entity(mapX, mapY, tileParity, tileSprite, {
-        {TILE_FLIP, game->getResManager().getAnimation(TILE_FLIP_ID)}
-    }) {}
+    const std::unordered_map<int, std::shared_ptr<Animation>> & entityAnimations) 
+    : Entity(mapX, mapY, tileParity, tileSprite, entityAnimations) {}
 
 void Tile::handleEvents(const Uint8 * keyStates, Level * level) {
 

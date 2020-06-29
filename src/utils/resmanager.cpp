@@ -141,7 +141,7 @@ void ResManager::constructAnimationMaps() {
     tileAnimations = {{0, getAnimation(TILE_FLIP_ID)}};
 
     boostAnimations = {{0, getAnimation(BOOST_VANISH1_ID)}, 
-    {1, getAnimation(BOOST_VANISH2_ID)}};
+        {1, getAnimation(BOOST_VANISH2_ID)}};
 
     playerAnimations = {};
 

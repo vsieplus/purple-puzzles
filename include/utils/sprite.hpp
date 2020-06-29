@@ -17,7 +17,9 @@ class Sprite {
     public:
         Sprite(std::shared_ptr<Texture> spritesheet, const SDL_Rect & clip);
 
-        void render(SDL_Renderer * renderer, const SDL_Rect & renderArea) const;
+        void render(SDL_Renderer * renderer, const SDL_Rect & renderArea,
+        double angle = 0.0, SDL_Point * center = NULL, 
+        SDL_RendererFlip flip = SDL_FLIP_NONE) const;
 
         int getWidth() const;
         int getHeight() const;

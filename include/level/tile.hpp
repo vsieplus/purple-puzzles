@@ -8,7 +8,6 @@
 
 #include "entities/entity.hpp"
 
-class MemSwap;
 class Level;
 
 class Tile : public Entity {
@@ -17,12 +16,10 @@ class Tile : public Entity {
 
         // tile animations
         enum TileAnimation {TILE_FLIP};
-
-        inline static const std::string TILE_FLIP_ID = "tileFlip";
         
     public:
         Tile(int gridX, int gridY, int tileParity, std::shared_ptr<Sprite> sprite,
-            MemSwap * game);
+            const std::unordered_map<int, std::shared_ptr<Animation>> & entityAnimations);
 
         void handleEvents(const Uint8 * keyStates, Level * level) override;
         void update(Level * level, float delta) override;

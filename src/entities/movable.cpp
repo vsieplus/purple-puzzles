@@ -322,6 +322,9 @@ void Movable::undoBoost(Direction direction, Level * level, MovableAction lastAc
         // transfer ownership back to the map
         if(lastBoost->getGridX() == gridX && lastBoost->getGridY() == gridY) {
             boosters.pop();
+
+            lastBoost->setActivated(false);
+            lastBoost->setVanished(false);
             
             // undo the movement onto the boost
             undoAction(level);

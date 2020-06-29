@@ -27,8 +27,8 @@ void Animator::update(float delta) {
     }
 }
 
-void Animator::render(int x, int y, SDL_Renderer * renderer) const {
-    currAnimation->render(x, y, currFrame, renderer);
+void Animator::render(int x, int y, SDL_Renderer * renderer, double angle) const {
+    currAnimation->render(x, y, currFrame, renderer, angle);
 }
 
 void Animator::setAnimating(bool animating) {

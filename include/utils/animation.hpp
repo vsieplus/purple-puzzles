@@ -8,9 +8,11 @@
 class Animation {
     public:
         Animation(std::string animationPath, SDL_Renderer * renderer, 
-            int frameWidth, int frameHeight, bool looping = false);
+            int frameWidth, int frameHeight, int msPerFrame = 50,
+            bool looping = false);
 
-        void render(int x, int y, int frameNum, SDL_Renderer * renderer) const;
+        void render(int x, int y, int frameNum, SDL_Renderer * renderer,
+            double angle = 0.0) const;
 
         int getMsPerFrame() const;
         int getNumFrames() const;
@@ -24,7 +26,7 @@ class Animation {
         SpriteSheet animationSpritesheet;
 
         // amt. of ms to show each frame of the animation for
-        int msPerFrame = 100;
+        int msPerFrame;
 
         int numFrames;
 

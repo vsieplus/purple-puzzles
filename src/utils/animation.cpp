@@ -1,15 +1,16 @@
 #include "utils/animation.hpp"
 
 Animation::Animation(std::string animationPath, SDL_Renderer * renderer, 
-    int frameWidth, int frameHeight, bool looping) : 
+    int frameWidth, int frameHeight, int msPerFrame, bool looping) : 
     animationSpritesheet(animationPath, renderer, frameWidth, frameHeight),
+    msPerFrame(msPerFrame),
     numFrames(animationSpritesheet.getNumSprites()),
     frameWidth(frameWidth), frameHeight(frameHeight),
     looping(looping) {}
 
-void Animation::render(int x, int y, int frameNum, SDL_Renderer * renderer) const {
+void Animation::render(int x, int y, int frameNum, SDL_Renderer * renderer, double angle) const {
     animationSpritesheet.getSprite(frameNum)->render(renderer, 
-        (struct SDL_Rect) {x, y, frameWidth, frameHeight});
+        (struct SDL_Rect) {x, y, frameWidth, frameHeight}, angle);
 }
 
 int Animation::getMsPerFrame() const {

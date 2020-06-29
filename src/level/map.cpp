@@ -207,7 +207,7 @@ void Map::addBGTile(int screenX, int screenY, int tileID,
     
     // Add new tile to mapTiles
     mapTiles.emplace_back(screenX, screenY, tileParity, 
-        spritesheet->getSprite(tileID), game);
+        spritesheet->getSprite(tileID), game->getResManager().getTileAnimations());
 }
 
 void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID, 
@@ -223,28 +223,28 @@ void Map::addEntity(int screenX, int screenY, int gridX, int gridY, int tileID,
 
     if(entityName == PLAYER_ENAME) {
         newEntity = std::make_shared<Player>(screenX, screenY, gridX, gridY, 
-            parity, entitySprite);
+            parity, entitySprite, game->getResManager().getPlayerAnimations());
         mapPlayer = std::dynamic_pointer_cast<Player>(newEntity);
     } else if(entityName == DIAMOND_ENAME) {
         newEntity = std::make_shared<Diamond>(screenX, screenY, gridX, gridY, 
-            parity, entitySprite);
+            parity, entitySprite, game->getResManager().getDiamondAnimations());
     } else if(entityName == RECEPTOR_ENAME) {
         auto shape = spritesheet->getPropertyValue<std::string>(tileID, SHAPE_PROP);
 
         newEntity = std::make_shared<Receptor>(screenX, screenY, gridX, gridY, 
-            parity, entitySprite, shape);
+            parity, entitySprite, shape, game->getResManager().getReceptorAnimations());
     } else if(entityName == BOOST_ENAME) {
         // get direction/power properties for boost
         int power = spritesheet->getPropertyValue<int>(tileID, POWER_PROP);
         int direction = spritesheet->getPropertyValue<int>(tileID, DIR_PROP);
 
         newEntity = std::make_shared<Boost>(screenX, screenY, gridX, gridY,
-            parity, entitySprite, power, direction);
+            parity, power, direction, entitySprite, game->getResManager().getBoostAnimations());
     } else if(entityName == PORTAL_ENAME && mapPortals.size() < 2) {
         usesPortals = true;
 
         newEntity = std::make_shared<Portal>(screenX, screenY, gridX, gridY, 
-            parity, entitySprite);
+            parity, entitySprite, game->getResManager().getPortalAnimations());
 
         std::shared_ptr<Portal> newPortal = std::dynamic_pointer_cast<Portal>(newEntity);
 

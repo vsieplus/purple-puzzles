@@ -28,7 +28,17 @@
     },
     "animations": {
         "loading": "splash_loading.png",
-        "tileFlip": "tileFlip.png"
+        "tileFlip": "tileFlip.png",
+        "playerMoveFailLeft": "playerMoveFailLeft.png",
+        "playerMoveFailRight": "playerMoveFailRight.png",
+        "playerMoveFailUp": "playerMoveFailUp.png",
+        "playerMoveFailDown": "playerMoveFailDown.png",
+        "playerMerge": "playerMerge.png",
+        "playerTeleport": "playerTeleport.png",
+        "diamondMerge": "diamondMerge.png",
+        "portalVanish": "portalVanish.png",
+        "boostVanish1": "boostVanish1.png",
+        "boostVanish2": "boostVanish2.png"
     },
     "sounds": {
         "flip": "flip.wav",

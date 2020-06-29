@@ -44,6 +44,9 @@ class Entity {
         // render area on the screen
         SDL_Rect renderArea;
 
+        // rotation angle
+        double angle = 0.0;
+
         // animator for this entity
         Animator entityAnimator;
 
