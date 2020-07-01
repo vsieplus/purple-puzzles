@@ -45,13 +45,13 @@
         "bonk": "bonk.wav",
         "teleport": "teleport.wav",
         "zoom": "zoom.wav",
-        "jump": "jump.wav",
+        "merge": "merge.wav",
+        "vanish": "vanish.wav",
         "complete": "complete.wav"
     },
     "music": {
         "world01": "world01.ogg",
-        "world02": "world02.ogg",
-        "world03": "world03.ogg"
+        "world02": "world02.ogg"
     },
     "fonts": {
         "mainFont": "rhodum_libre.json"

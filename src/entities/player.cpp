@@ -76,9 +76,6 @@ void Player::update(Level * level, float delta) {
 
     // update player movement
     Movable::update(level, delta);
-
-    // Update player parity
-    //tileParity = level->getTileParity(gridX, gridY);
 }
 
 void Player::render(SDL_Renderer* renderer) const {
