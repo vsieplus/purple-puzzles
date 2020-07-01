@@ -84,6 +84,8 @@ class Entity {
 
         int getScreenX() const;
         int getScreenY() const;
+        int getWidth() const;
+        int getHeight() const;
         int getGridX() const;
         int getGridY() const;
 

@@ -89,6 +89,14 @@ int Entity::getScreenY() const {
     return renderArea.y;
 }
 
+int Entity::getWidth() const {
+    return renderArea.w;
+}
+
+int Entity::getHeight() const {
+    return renderArea.h;
+}
+
 void Entity::setGridX(int x) {
     gridX = x;
 }
