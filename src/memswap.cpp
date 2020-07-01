@@ -214,8 +214,11 @@ void MemSwap::setNextState(GameStateID stateID) {
 /// Change states if needed
 void MemSwap::changeState() {
     if(nextState != currState) {
-        // exit current state/cleanup
-        if(currState != GAME_STATE_NULL) gameStates.at(currState)->exitState();
+        // exit current state/cleanup + fade out
+        if(currState != GAME_STATE_NULL) {
+            gameStates.at(currState)->exitState();
+            gameStates.at(currState)->fade(renderer, this, false); 
+        } 
 
         // If next state set to exit/null, stop playing
         if(nextState == GAME_STATE_EXIT || nextState == GAME_STATE_NULL) {
@@ -251,11 +254,6 @@ void MemSwap::changeState() {
             }
         }
 
-        // Remove splash state if switching off (since it's only used 1x)
-        if(currState == GAME_STATE_SPLASH) {
-            removeGameState(currState);
-        }
-
         // if we're entering the play state start tracking time
         if(nextState == GAME_STATE_PLAY) {
             startPlayTime = SDL_GetPerformanceCounter();
@@ -264,10 +262,14 @@ void MemSwap::changeState() {
         // if we're exiting the play state, update play time
         if(currState == GAME_STATE_PLAY) {
             updatePlayTime();
+        } else if(currState == GAME_STATE_SPLASH) {
+            // Remove splash state if switching off (since it's only used 1x)
+            removeGameState(currState);
         }
 
-        // exit curr state, enter new state
+        // enter new state + fadein        
         gameStates.at(nextState)->enterState(this);
+        gameStates.at(nextState)->fade(renderer, this, true);
         currState = nextState;
     }
 }
