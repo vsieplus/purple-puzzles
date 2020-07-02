@@ -3,6 +3,7 @@
 #ifndef GAMESTATE_HPP
 #define GAMESTATE_HPP
 
+#include <string>
 #include <memory>
 
 #include <SDL.h>
@@ -24,6 +25,9 @@ class GameState {
     protected:
         int gameStateID;
         SDL_Event e;
+
+        inline const static std::string ACTIVATE_SOUND_ID = "menuActivate";
+        inline const static std::string SWITCH_SOUND_ID = "menuSwitch";
 
     public:
         GameState(int stateID) : gameStateID(stateID) {};

@@ -33,6 +33,8 @@ class PlayState : public GameState {
 
         inline const static std::string POSTGAME_TEXT = "Level Complete!";
 
+        inline const static std::string COMPLETE_SOUND_ID = "complete";
+
         // enum for postgame menu buttons
         enum PGButton {
             BUTTON_NEXT,

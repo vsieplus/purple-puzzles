@@ -118,6 +118,9 @@ class MemSwap {
         /// Render the current state of the game
         void render() const;
 
+        // play the specified sound
+        void playSound(std::string soundID) const;
+
         // Manage game states
         void setNextState(GameStateID gameID);
 

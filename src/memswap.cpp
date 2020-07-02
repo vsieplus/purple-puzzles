@@ -206,6 +206,10 @@ void MemSwap::render() const {
     }    
 }
 
+void MemSwap::playSound(std::string soundID) const {
+    resourceManager.getSound(soundID)->play();
+}
+
 /// Set next state to change to indicated by the given state ID
 void MemSwap::setNextState(GameStateID stateID) {
     nextState = stateID;

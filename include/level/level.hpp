@@ -25,6 +25,8 @@ class Level {
         // how many tiles have been flipped in this map
         int tilesFlipped = 0;
 
+        MemSwap * mGame;
+
         // The map representation of the background
         Map map;
 
@@ -81,6 +83,8 @@ class Level {
         std::shared_ptr<T> getGridElement(int x, int y) const {
             return map.getGridElement<T>(x, y);
         }
+
+        void playSound(std::string soundID) const;
 
         bool inBounds(int x, int y) const;
         Parity getTileParity(int x, int y) const;

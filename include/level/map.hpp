@@ -53,15 +53,25 @@ class Map {
         // track the player in the map
         std::shared_ptr<Player> mapPlayer;
 
-    public:
         // strings used to interface with tiledmap properties/labels
-        const static std::string BG_LAYER_NAME, ENTITY_LAYER_NAME;
-        const static std::string PARITY_PROP, NAME_PROP, DIR_PROP, POWER_PROP,
-            SHAPE_PROP;
+        inline const static std::string BG_LAYER_NAME = "background";
+        inline const static std::string ENTITY_LAYER_NAME = "entities";
 
-        const static std::string PLAYER_ENAME, RECEPTOR_ENAME, DIAMOND_ENAME,
-            BOOST_ENAME, PORTAL_ENAME, EXIT_ENAME;
+        inline const static std::string PARITY_PROP = "parity";
+        inline const static std::string NAME_PROP = "name";
+        inline const static std::string DIR_PROP = "direction";
+        inline const static std::string POWER_PROP = "power";
+        inline const static std::string SHAPE_PROP = "shape";
 
+        inline const static std::string PLAYER_ENAME = "player";
+        inline const static std::string RECEPTOR_ENAME = "receptor";
+        inline const static std::string BOOST_ENAME = "boost";
+        inline const static std::string DIAMOND_ENAME = "diamond";
+        inline const static std::string PORTAL_ENAME = "portal";
+
+        inline const static std::string FLIP_SOUND_ID = "flip";
+
+    public:
         Map();
         Map(std::string tiledMapPath, SDL_Renderer * renderer, Level * level, 
             MemSwap * game);

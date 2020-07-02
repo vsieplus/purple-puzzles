@@ -253,12 +253,12 @@ void MenuState::handleEvents(MemSwap * game, const SDL_Event & e) {
 
     // handle switching button focus (except for credit screen [only back btn])
     if(currScreen != MenuScreen::MENU_CREDITS && e.type == SDL_KEYDOWN) {
-        changeCurrButton(e);
+        changeCurrButton(e, game);
     }
 }
 
 // general function to change the current button focus (for any screen)
-void MenuState::changeCurrButton(const SDL_Event & e) {
+void MenuState::changeCurrButton(const SDL_Event & e, MemSwap * game) {
     auto sym = e.key.keysym.sym;
 
     // depending on dir, change button in current direction, depending on 
@@ -350,6 +350,8 @@ void MenuState::changeCurrButton(const SDL_Event & e) {
             return;                                         
     }
 
+    game->playSound(SWITCH_SOUND_ID);
+
     updateCurrButton();
 }
 
@@ -360,6 +362,9 @@ void MenuState::update(MemSwap * game, float delta) {
     // check if current button is activated
     if(currButton->isActivated()) {
         currButton->setActivated(false);
+
+        // play activate button
+        game->playSound(ACTIVATE_SOUND_ID);
 
         // if on the back button (for non-main screens), reset to main
         if(checkOnBackButton()) {

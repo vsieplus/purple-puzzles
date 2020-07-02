@@ -101,7 +101,7 @@ class MenuState : public GameState {
         inline const static std::string STATS_TITLE = "Player Stats";
         inline const static std::string HTP_TITLE = "How To Play";
         inline const static std::string CREDITS_TITLE = "Credits";
-
+        
         // bg texture
         std::shared_ptr<Texture> bgTexture;
 
@@ -143,7 +143,7 @@ class MenuState : public GameState {
         void addTextBoard(std::vector<Label> & labels, std::string label, 
             MemSwap * game, Label::TextAlignment vAlignment);
 
-        void changeCurrButton(const SDL_Event & e);
+        void changeCurrButton(const SDL_Event & e, MemSwap * game);
         void updateCurrButton();
 
         // handle button activations for each screen

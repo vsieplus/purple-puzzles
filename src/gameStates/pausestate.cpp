@@ -63,14 +63,14 @@ void PauseState::handleEvents(MemSwap * game, const SDL_Event & e) {
     // check if user switch between buttons (press A/D key to cycle through)
     if(e.type == SDL_KEYDOWN) {
         if(e.key.keysym.sym == SDLK_a) {
-            changeCurrButton(true);
+            changeCurrButton(true, game);
         } else if(e.key.keysym.sym == SDLK_d) {
-            changeCurrButton(false);
+            changeCurrButton(false, game);
         }
     }
 }
 
-void PauseState::changeCurrButton(bool left) {
+void PauseState::changeCurrButton(bool left, MemSwap * game) {
     buttons.at(currButton).setFocus(false);
     if(left) {
         currButton = currButton == RESUME_BTN ? LVLSELECT_BTN : currButton - 1;
@@ -78,6 +78,8 @@ void PauseState::changeCurrButton(bool left) {
         currButton = currButton == LVLSELECT_BTN ? RESUME_BTN : currButton + 1;
     }
     buttons.at(currButton).setFocus(true);
+
+    game->playSound(SWITCH_SOUND_ID);
 }
 
 void PauseState::update(MemSwap * game, float delta) {
@@ -87,6 +89,8 @@ void PauseState::update(MemSwap * game, float delta) {
     if(buttons.at(currButton).isActivated()) {
         buttons.at(currButton).setActivated(false);
         buttons.at(currButton).setFocus(false);
+
+        game->playSound(ACTIVATE_SOUND_ID);
 
         switch(currButton) {
             case RESUME_BTN:

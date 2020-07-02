@@ -21,6 +21,7 @@ void Portal::update(Level * level, float delta) {
             if(!player->isVanished()) {
                 player->activateAnimation(Player::PlayerAnimation::PLAYER_TELEPORT);
                 player->setVanished(true);
+                level->playSound(TELEPORT_SOUND_ID);
             } else if(!player->isAnimating()) {
                 // once animation finished, teleport the player + activate teleport-out animation (reversed)
                 teleportPlayer(level);

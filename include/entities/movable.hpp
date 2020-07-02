@@ -80,6 +80,8 @@ class Movable : public Entity {
         bool moving = false;
 
         std::string movableShape;
+        
+        inline const static std::string MERGE_SOUND_ID = "merge";
 
         // initialize movement from a direction
         void initMovement(Direction direction, Level * level);

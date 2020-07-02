@@ -44,14 +44,15 @@
         "flip": "flip.wav",
         "bonk": "bonk.wav",
         "teleport": "teleport.wav",
-        "zoom": "zoom.wav",
         "merge": "merge.wav",
-        "vanish": "vanish.wav",
-        "complete": "complete.wav"
+        "complete": "complete.wav",
+        "menuActivate": "menuActivate.wav",
+        "menuSwitch": "menuSwitch.wav"
     },
     "music": {
-        "world01": "world01.ogg",
-        "world02": "world02.ogg"
+        "menuMusic": "menuMusic.ogg",
+        "world01": "world1.ogg",
+        "world02": "world2.ogg"
     },
     "fonts": {
         "mainFont": "rhodum_libre.json"

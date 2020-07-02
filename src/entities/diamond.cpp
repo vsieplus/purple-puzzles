@@ -22,6 +22,7 @@ void Diamond::update(Level * level, float delta) {
     if(merging) {
         // start merge animation once movement onto receptor is finished
         if(!moving && !vanished && !entityAnimator.isAnimating()) {
+            level->playSound(MERGE_SOUND_ID);
             activateAnimation(DIAMOND_MERGE);
             vanished = true;
         }

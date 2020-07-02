@@ -113,9 +113,9 @@ void ResManager::loadSpritesheet(int resourceIDHash, std::string resourcePath) {
 }
 
 void ResManager::loadSound(int resourceIDHash, std::string resourcePath) {
-/*    std::shared_ptr<Sound> (resourcePath)
-      sounds.emplace(resourceIDHash, resourcePath)
- */
+    auto sound = std::make_shared<Sound>(resourcePath);
+
+    sounds.emplace(resourceIDHash, sound);
 }
 
 void ResManager::loadMusic(int resourceIDHash, std::string resourcePath) {

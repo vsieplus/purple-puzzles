@@ -20,6 +20,8 @@ class Portal : public Entity {
         // the player being teleported by this portal
         std::shared_ptr<Player> player;
 
+        inline const static std::string TELEPORT_SOUND_ID = "teleport";
+
         void resetPortalStatus(Level * level);
 
     public:

@@ -63,6 +63,7 @@ void PlayState::handleEvents(MemSwap * game, const SDL_Event & e) {
         } else if(keyStates[SDL_SCANCODE_ESCAPE]) {
             // Check for pause
             game->setPaused(true);
+            game->playSound(ACTIVATE_SOUND_ID);
         }
 
         level.handleEvents(keyStates);
@@ -81,6 +82,7 @@ void PlayState::handleEvents(MemSwap * game, const SDL_Event & e) {
                     currButton = currButton == postGameButtons.size() - 1 ? 0 : currButton + 1;
                     break;
             }
+            game->playSound(SWITCH_SOUND_ID);
             postGameButtons.at(currButton).setFocus(true);
         }
     }
@@ -112,6 +114,8 @@ void PlayState::update(MemSwap * game, float delta) {
         postGameButtons.at(currButton).update();
         if(postGameButtons.at(currButton).isActivated()) {
             postGameButtons.at(currButton).setActivated(false);
+            game->playSound(ACTIVATE_SOUND_ID);
+            
             handlePGActivation(game);
         }
     } else {
@@ -124,6 +128,8 @@ void PlayState::update(MemSwap * game, float delta) {
         if(levelComplete) {
             postGameButtons.front().setFocus(true);
             updateStats(game);
+
+            game->playSound(COMPLETE_SOUND_ID);
         }
     }
 }

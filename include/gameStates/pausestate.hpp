@@ -51,7 +51,7 @@ class PauseState : public GameState {
         const bool CLICKABLE = false; 
 
         void addButtons(MemSwap * game);
-        void changeCurrButton(bool left);
+        void changeCurrButton(bool left, MemSwap * game);
 };
 
 #endif // PAUSESTATE_HPP

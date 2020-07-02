@@ -12,7 +12,7 @@ class Portal;
 
 class Player : public Movable {
     private:
-        static const int PLAYER_VELOCITY = 7;
+        static const int PLAYER_VELOCITY = 6;
 
         // track when a player is undoing a buffer/set to BUFFER_CAP each time
         static const int UNDO_BUFFER_CAP = 10;
@@ -27,6 +27,7 @@ class Player : public Movable {
         std::stack<std::shared_ptr<Movable>> pushedObjects;
 
         inline const static std::string PLAYER_SHAPE = "player";
+        inline const static std::string BONK_SOUND_ID = "bonk";
         
         // check if player has input movement
         void checkMovement(const Uint8 * keyStates, Level * level);

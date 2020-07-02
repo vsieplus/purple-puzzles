@@ -12,21 +12,6 @@
 #include "level/map.hpp"
 
 
-const std::string Map::BG_LAYER_NAME = "background";
-const std::string Map::ENTITY_LAYER_NAME = "entities";
-
-const std::string Map::PARITY_PROP = "parity";
-const std::string Map::NAME_PROP = "name";
-const std::string Map::DIR_PROP = "direction";
-const std::string Map::POWER_PROP = "power";
-const std::string Map::SHAPE_PROP = "shape";
-
-const std::string Map::PLAYER_ENAME = "player";
-const std::string Map::RECEPTOR_ENAME = "receptor";
-const std::string Map::BOOST_ENAME = "boost";
-const std::string Map::DIAMOND_ENAME = "diamond";
-const std::string Map::PORTAL_ENAME = "portal";
-
 // constructors
 Map::Map() {}
 Map::Map(std::string tiledMapPath, SDL_Renderer * renderer, Level * level,
@@ -305,6 +290,7 @@ void Map::flipTile(int tileX, int tileY, int entityParity, Level * level, bool u
             // add a flipped tile to the level count (if not an undo flip)
             if(!undo) {
                 level->addTileFlipped();
+                level->playSound(FLIP_SOUND_ID);
             }
         }
     }

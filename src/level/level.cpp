@@ -7,7 +7,7 @@
 Level::Level() {}
 
 Level::Level(std::string tiledMapPath, SDL_Renderer * renderer, MemSwap * game) 
-    : map(tiledMapPath, renderer, this, game), mapPath(tiledMapPath) {}
+    : mGame(game), map(tiledMapPath, renderer, this, game), mapPath(tiledMapPath) {}
 
 // Event loop (down right)
 void Level::handleEvents(const Uint8 * keyStates) {
@@ -84,6 +84,10 @@ void Level::reset(MemSwap * game) {
 
     tilesFlipped = 0;
     perfect = false;
+}
+
+void Level::playSound(std::string soundID) const {
+    mGame->playSound(soundID);
 }
 
 bool Level::isCompleted() const {

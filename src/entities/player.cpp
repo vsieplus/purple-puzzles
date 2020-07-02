@@ -61,6 +61,8 @@ void Player::update(Level * level, float delta) {
                                 break;
                 default:        break;
             }
+
+            level->playSound(BONK_SOUND_ID);
         }
     } else if(merging) {
         // if player not moving + is merging, check if level is complete
