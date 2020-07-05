@@ -396,16 +396,7 @@ std::string MemSwap::getStatsString() const {
 }
 
 std::string MemSwap::getCreditsString() const {
-    std::string credits;
-
-    // get current player data ...
-    credits += "Purple Puzzles\n\n";
-    credits += "Design: vsie\n";
-    credits += "Programming: vsie\n";
-    credits += "Art: vsie\n";
-    credits += "SFX/Music: vsie\n";
-
-    return credits;
+    return CREDITS_STRING;
 }
 
 std::vector<std::string> MemSwap::getLevelLabels() const {

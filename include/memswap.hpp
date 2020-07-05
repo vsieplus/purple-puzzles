@@ -48,6 +48,13 @@ class MemSwap {
         const std::string ICON_ID = "window_icon";
         const std::string SAVE_PATH = "res/saves/playerSave.data";
 
+        const std::string CREDITS_STRING = "Purple Puzzles\n\n"
+            "Design: vsie\n"
+            "Programming: vsie\n"
+            "Art: vsie\n"
+            "SFX: vsie\n"
+            "Music: onemansymphony\n";
+
         // levelID management
         std::string currLevelID;
 
