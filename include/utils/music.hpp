@@ -16,11 +16,12 @@ class Music {
         Music(std::string musicPath);
 
         void play();
-        void deafen();
-        void undeafen();
-        void pause();
-        void resume();
-        void stop();
+        
+        static void deafen();
+        static void undeafen();
+        static void pause();
+        static void resume();
+        static void stop();
 };
 
 #endif // MUSIC_HPP

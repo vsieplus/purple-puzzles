@@ -27,7 +27,7 @@ void PlayState::enterState(MemSwap * game) {
     // load current level (if entering from non-paused state)
     if(game->isPaused()) {
         game->setPaused(false);
-        playMusic->undeafen();
+        Music::undeafen();
     } else {
         loadLevel(game, true);
         playMusic->play();
@@ -46,7 +46,7 @@ void PlayState::loadLevel(MemSwap * game, bool enteringState) {
 }
 
 void PlayState::exitState() {
-    playMusic->stop();
+    
 }
 
 void PlayState::handleEvents(MemSwap * game, const SDL_Event & e) {
@@ -113,7 +113,7 @@ void PlayState::update(MemSwap * game, float delta) {
     if(game->isPaused()) {
         updateStats(game);
         game->setNextState(GAME_STATE_PAUSE);
-        playMusic->deafen();
+        Music::deafen();
     } else if(levelComplete) {
         // update curr button/check if it has been activated
         postGameButtons.at(currButton).update();
@@ -147,16 +147,18 @@ void PlayState::handlePGActivation(MemSwap * game) {
             if(game->advanceLevel()) {
                 loadLevel(game);
             } else {
-                // do something special
+                // do something special for last level
             }
             break;
         case PGButton::BUTTON_MAIN:
             game->setNextState(GAME_STATE_MENU);
             game->setCurrMenuScreen(MenuState::MenuScreen::MENU_MAIN);
+            Music::stop();
             break;
         case PGButton::BUTTON_LVLS:
             game->setNextState(GAME_STATE_MENU);
             game->setCurrMenuScreen(MenuState::MenuScreen::MENU_LVLS);
+            Music::stop();
             break;
     }
 }

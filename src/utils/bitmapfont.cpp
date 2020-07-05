@@ -57,7 +57,7 @@ void BitmapFont::initRenderDynamicText(int x, int y, const std::string & text,
     renderX = x;
     renderY = y;
     currString = text;
-    currChar = 0;
+    currChar = typed ? text.length() - 1 : 0;
 
     this->flashing = flashing;
 }

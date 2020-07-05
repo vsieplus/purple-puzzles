@@ -12,6 +12,7 @@
 #include "memswap.hpp"
 #include "gameStates/menustate.hpp"
 #include "gameStates/pausestate.hpp"
+#include "utils/music.hpp"
 
 PauseState::PauseState(MemSwap * game) : GameState(GAME_STATE_PAUSE) {
     // get bg texture
@@ -100,11 +101,13 @@ void PauseState::update(MemSwap * game, float delta) {
                 game->setPaused(false);
                 game->setNextState(GAME_STATE_MENU);
                 game->setCurrMenuScreen(MenuState::MenuScreen::MENU_MAIN);
+                Music::stop();
                 break;
             case LVLSELECT_BTN:
                 game->setPaused(false);
                 game->setNextState(GAME_STATE_MENU);
                 game->setCurrMenuScreen(MenuState::MenuScreen::MENU_LVLS);
+                Music::stop();
                 break;
         }
     }

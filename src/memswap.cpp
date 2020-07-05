@@ -219,10 +219,10 @@ void MemSwap::setNextState(GameStateID stateID) {
 void MemSwap::changeState() {
     if(nextState != currState) {
         // exit current state/cleanup + fade out
-        if(currState != GAME_STATE_NULL) {
+        if(currState != GAME_STATE_NULL && currState != GAME_STATE_EXIT) {
             gameStates.at(currState)->exitState();
             gameStates.at(currState)->fade(renderer, this, false); 
-        } 
+        }
 
         // If next state set to exit/null, stop playing
         if(nextState == GAME_STATE_EXIT || nextState == GAME_STATE_NULL) {

@@ -46,7 +46,7 @@ void MenuState::enterState(MemSwap * game) {
 }
 
 void MenuState::exitState() {
-    menuMusic->stop();
+    Music::stop();
 }
 
 // functions to add buttons for the specified screen

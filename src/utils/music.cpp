@@ -8,19 +8,21 @@ Music::Music(std::string musicPath) :
 // play the track if not currently playing
 void Music::play() {
     if(Mix_PlayingMusic() == 0) {
-        // -1 for looping, 1000 ms fade-in
-        Mix_FadeInMusic(music.get(), -1, 750); 
+        // -1 for looping,
+        Mix_PlayMusic(music.get(), -1);
+
+        Mix_VolumeMusic(MIX_MAX_VOLUME * 2 / 3);
     } 
 }
 
-// cut volume in half (e.g. b/c of pause/popup)
+// cut curr. volume in half (e.g. b/c of pause/popup)
 void Music::deafen() {
-    Mix_VolumeMusic(MIX_MAX_VOLUME/2);
+    Mix_VolumeMusic(Mix_VolumeMusic(-1) / 2);
 }
 
-// set volume to default (max)
+// double the curr. volume
 void Music::undeafen() {
-    Mix_VolumeMusic(MIX_MAX_VOLUME);
+    Mix_VolumeMusic(Mix_VolumeMusic(-1) * 2);
 }
 
 void Music::pause() {
@@ -32,5 +34,5 @@ void Music::resume() {
 }
 
 void Music::stop() {
-    Mix_FadeOutMusic(750);
+    Mix_HaltMusic();
 }

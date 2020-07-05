@@ -84,6 +84,7 @@ void SplashState::update(MemSwap * game, float delta) {
             // typed and flashing, with dark green text
             splashFont->initRenderDynamicText(advTextX, advTextY, ADV_TEXT, 
                 TYPED, FLASHING);
+            splashFont->setAlpha(0xFF);
         } else {
             splashFont->updateText(delta);
         }
