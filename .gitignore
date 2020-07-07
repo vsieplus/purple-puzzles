@@ -7,3 +7,4 @@ release/*
 *.exe
 *.dll
 *.dll.a
+*.zip
