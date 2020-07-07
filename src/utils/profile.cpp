@@ -10,7 +10,8 @@ Profile::Profile() {
 }
 
 void Profile::initLevelsCompleted() {
-    levelsCompleted.fill(true);
+    // start all levels not completed
+    levelsCompleted.fill(false);
 }
 
 // only call these periodically (when level complete/stats activated/exit/etc.)
@@ -57,7 +58,7 @@ void Profile::resetProfile() {
     initLevelsCompleted();
 }
 
-// construct stats string 你好
+// construct stats string
 std::string Profile::getStatsString() const {
     std::string stats;
 
