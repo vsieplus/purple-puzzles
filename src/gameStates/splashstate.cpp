@@ -53,21 +53,14 @@ void SplashState::update(MemSwap * game, float delta) {
         // retrieve font once it's loaded
         if(!splashFont.get()) {
             splashFont = game->getResManager().getFont(FONT_ID);
+            splashFont->setFontColor(game->getButtonTextColor());
 
             // set advText render pos
             advTextX = (game->getScreenWidth() / 2) - 
                 (splashFont->getTextWidth(LOADING_TEXT) / 2);
             advTextY = (game->getScreenHeight() * 3 / 5);
-        } else if(!splashFont->isRenderingDynamic()){
-            splashFont->initRenderDynamicText(advTextX, advTextY, LOADING_TEXT, 
-                !TYPED, FLASHING);
-            splashFont->setFontColor(game->getButtonTextColor());
         } else {
             splashFont->updateText(delta);
-        }
-
-        if(!loadingRes) {
-            splashFont->setRenderingDynamic(false);
         }
 
     } else {
@@ -101,7 +94,12 @@ void SplashState::render(SDL_Renderer * renderer) const {
     splashAnim.render(loadX, loadY, renderer);
 
     // Render graphic indicating loading is done, or 'loading text'
-    if(splashFont.get() && splashFont->isRenderingDynamic()) {
-        splashFont->renderText(renderer);
+    if(splashFont.get()) {
+        if(splashFont->isRenderingDynamic()) {
+            splashFont->renderText(renderer);
+        } else {
+            splashFont->renderText(renderer, LOADING_TEXT, advTextX, advTextY,
+                LOADING_TEXT.length() - 1);
+        }
     }
 }
