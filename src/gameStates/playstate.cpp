@@ -143,11 +143,9 @@ void PlayState::update(MemSwap * game, float delta) {
 void PlayState::handlePGActivation(MemSwap * game) {
     switch(currButton) {
         case PGButton::BUTTON_NEXT:
-            // try to advance level (or go to special screen if unable to)
+            // try to advance level (or do nothing if unable to)
             if(game->advanceLevel()) {
                 loadLevel(game);
-            } else {
-                // do something special for last level
             }
             break;
         case PGButton::BUTTON_MAIN:

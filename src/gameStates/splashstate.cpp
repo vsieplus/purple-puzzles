@@ -59,8 +59,15 @@ void SplashState::update(MemSwap * game, float delta) {
             advTextX = (game->getScreenWidth() / 2) - 
                 (splashFont->getTextWidth(LOADING_TEXT) / 2);
             advTextY = (game->getScreenHeight() * 3 / 5);
+
+            splashFont->initRenderDynamicText(advTextX, advTextY, LOADING_TEXT, 
+                !TYPED, FLASHING);
         } else {
             splashFont->updateText(delta);
+        }
+
+        if(!loadingRes) {
+            splashFont->setRenderingDynamic(false);
         }
 
     } else {
@@ -94,12 +101,7 @@ void SplashState::render(SDL_Renderer * renderer) const {
     splashAnim.render(loadX, loadY, renderer);
 
     // Render graphic indicating loading is done, or 'loading text'
-    if(splashFont.get()) {
-        if(splashFont->isRenderingDynamic()) {
-            splashFont->renderText(renderer);
-        } else {
-            splashFont->renderText(renderer, LOADING_TEXT, advTextX, advTextY,
-                LOADING_TEXT.length() - 1);
-        }
+    if(splashFont.get() && splashFont->isRenderingDynamic()) {
+        splashFont->renderText(renderer);
     }
 }
