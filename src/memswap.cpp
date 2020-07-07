@@ -454,3 +454,7 @@ bool MemSwap::isPaused() const {
 void MemSwap::resetPlayerData() {
     playerProfile.resetProfile();
 }
+
+bool MemSwap::fontIsLoaded() const {
+    return resourceManager.fontIsLoaded();
+}

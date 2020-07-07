@@ -166,6 +166,7 @@ class MemSwap {
 
         void setPaused(bool paused);
         bool isPaused() const;
+        bool fontIsLoaded() const;
 
         void loadNextResource();
         const ResManager & getResManager();

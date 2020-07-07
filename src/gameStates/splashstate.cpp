@@ -51,19 +51,21 @@ void SplashState::update(MemSwap * game, float delta) {
         loadingRes = game->getResManager().loadingResources();
 
         // retrieve font once it's loaded
-        if(!splashFont.get()) {
-            splashFont = game->getResManager().getFont(FONT_ID);
-            splashFont->setFontColor(game->getButtonTextColor());
+        if(game->fontIsLoaded()) {
+            if(!splashFont.get()) {
+                splashFont = game->getResManager().getFont(FONT_ID);
+                splashFont->setFontColor(game->getButtonTextColor());
 
-            // set advText render pos
-            advTextX = (game->getScreenWidth() / 2) - 
-                (splashFont->getTextWidth(LOADING_TEXT) / 2);
-            advTextY = (game->getScreenHeight() * 3 / 5);
+                // set advText render pos
+                advTextX = (game->getScreenWidth() / 2) - 
+                    (splashFont->getTextWidth(LOADING_TEXT) / 2);
+                advTextY = (game->getScreenHeight() * 3 / 5);
 
-            splashFont->initRenderDynamicText(advTextX, advTextY, LOADING_TEXT, 
-                !TYPED, FLASHING);
-        } else {
-            splashFont->updateText(delta);
+                splashFont->initRenderDynamicText(advTextX, advTextY, LOADING_TEXT, 
+                    !TYPED, FLASHING);
+            } else {
+                splashFont->updateText(delta);
+            }
         }
 
         if(!loadingRes) {

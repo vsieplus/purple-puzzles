@@ -101,6 +101,8 @@ class ResManager {
         inline const static std::string PLAYER_MFLEFT_ID = "playerMoveFailLeft";
         inline const static std::string PLAYER_MFRIGHT_ID = "playerMoveFailRight";
 
+        bool fontLoaded = false;
+
     public:
         // Construct the resource manager with a path to file containing the
         // resource paths (json)
@@ -141,6 +143,8 @@ class ResManager {
         const std::unordered_map<int, std::shared_ptr<Animation>> & getBoostAnimations() const;
         const std::unordered_map<int, std::shared_ptr<Animation>> & getPortalAnimations() const;
         const std::unordered_map<int, std::shared_ptr<Animation>> & getReceptorAnimations() const;
+
+        bool fontIsLoaded() const;
 };
 
 #endif // RESMANAGER_HPP

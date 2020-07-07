@@ -121,6 +121,8 @@ void ResManager::loadMusic(int resourceIDHash, std::string resourcePath) {
 void ResManager::loadFont(int resourceIDHash, std::string resourcePath) {
     // pass path to font json (config) file
     fonts.emplace(resourceIDHash, std::make_shared<BitmapFont>(resourcePath, renderer));
+
+    fontLoaded = true;
 }
 
 void ResManager::loadAnimation(int resourceIDHash, std::string resourcePath) {
@@ -214,4 +216,8 @@ const std::unordered_map<int, std::shared_ptr<Animation>> & ResManager::getPorta
 
 const std::unordered_map<int, std::shared_ptr<Animation>> & ResManager::getReceptorAnimations() const {
     return receptorAnimations;
+}
+
+bool ResManager::fontIsLoaded() const {
+    return fontLoaded;
 }
