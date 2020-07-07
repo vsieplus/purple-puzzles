@@ -111,7 +111,7 @@ class Map {
         // check for a particular entity shared_ptr at the given tile
         template <class T>
         std::shared_ptr<T> getGridElement(int x, int y) const {
-            std::shared_ptr<T> gridElement;
+            std::shared_ptr<T> gridElement = nullptr;
             if(inBounds(x, y)) {
                 gridElement = std::dynamic_pointer_cast<T>(
                     entityGrid.at(xyToIndex(x, y)));

@@ -35,7 +35,8 @@ void Player::update(Level * level, float delta) {
         undoAction(level);
     } else if(moveDir != DIR_NONE || bufferedDir != DIR_NONE) {
         // signal last portal to check surrounded upon move if not yet vanished   
-        if(lastPortal.get() && !lastPortal->isVanished()) {
+        if(lastPortal.get() && !lastPortal->isVanished() && 
+            !(gridX == lastPortal->getGridX() && gridY == lastPortal->getGridY())) {
             lastPortal->checkSurrounded(level);
         }
 
@@ -114,10 +115,21 @@ void Player::pushDiamond(Level * level) {
 
     // set move direction of diamond if not already moving or merging/merged w/receptor
     if(diamond.get() && !diamond->isMoving() && !diamond->isMerging()) {
+        auto newDCoords = diamond->getCoords(pushDir);
+        
         // set the move direction of the diamond
         diamond->setMoveDir(pushDir);
-        pushedObjects.push(diamond);
-        actionHistory.push(Movable::MovableAction::PUSH);
+        
+        // add push only if diamond has a legal move
+        auto diamondReceptor = diamond->getEntity<Receptor>(level, pushDir);
+
+        if((!diamond->checkCollision(level, newDCoords.first, newDCoords.second) &&
+            diamond->getParity() != level->getTileParity(newDCoords.first, newDCoords.second)) ||
+            diamondReceptor.get() != nullptr) {
+            
+            pushedObjects.push(diamond);
+            actionHistory.push(Movable::MovableAction::PUSH);   
+        }
     }
 }
 

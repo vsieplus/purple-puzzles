@@ -1,6 +1,7 @@
 res/spritesheets/sprites/*
 res/spritesheets/pdns/*
 res/music/production/*
+release/*
 *.pdn
 *.txt
 *.exe
